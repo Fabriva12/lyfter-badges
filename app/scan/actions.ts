@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { resolveScanTarget, type ScanTarget } from "@/lib/scan/target";
+import { resolveScanTarget, toScanQr, type ScanTarget } from "@/lib/scan/target";
 import { getSession } from "@/lib/session";
 
 export type { ScanTarget };
@@ -24,38 +24,52 @@ export async function resolveScanToken(token: string): Promise<ScanTarget> {
       expiresAt: true,
       eventId: true,
       eventBadgeId: true,
-      eventBadge: { select: { startsAt: true } },
-      event: { select: { name: true } },
+      eventBadge: {
+        select: { startsAt: true, badge: { select: { id: true } } },
+      },
+      event: {
+        select: {
+          name: true,
+          status: true,
+          startsAt: true,
+          endsAt: true,
+        },
+      },
     },
   });
 
-  if (!qr) {
+  if (!qr || !qr.active) {
     return { status: "invalid" };
   }
 
-  let isRegistered = false;
-
-  if (qr.active && qr.kind === "BADGE") {
-    const registration = await prisma.registration.findUnique({
+  const [registration, existingScan] = await Promise.all([
+    prisma.registration.findUnique({
       where: {
         userId_eventId: { userId: session.user.id, eventId: qr.eventId },
       },
       select: { id: true },
-    });
-    isRegistered = registration !== null;
-  }
+    }),
+    qr.eventBadgeId
+      ? prisma.scan.findUnique({
+          where: {
+            userId_eventBadgeId: {
+              userId: session.user.id,
+              eventBadgeId: qr.eventBadgeId,
+            },
+          },
+          select: { id: true },
+        })
+      : Promise.resolve(null),
+  ]);
+
+  const isRegistered = registration !== null;
+  const hasExistingClaim =
+    qr.kind === "WELCOME" ? isRegistered : existingScan !== null;
 
   return resolveScanTarget(
-    {
-      token: qr.token,
-      kind: qr.kind,
-      active: qr.active,
-      startsAt: qr.startsAt,
-      expiresAt: qr.expiresAt,
-      badgeStartsAt: qr.eventBadge?.startsAt ?? null,
-      hasBadge: qr.eventBadgeId !== null,
-      eventName: qr.event.name,
-    },
+    toScanQr(qr),
     isRegistered,
+    new Date(),
+    hasExistingClaim,
   );
 }

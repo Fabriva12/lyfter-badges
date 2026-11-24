@@ -86,6 +86,14 @@ export async function getRegistrationForClaim(userId: string, eventId: string) {
   });
 }
 
+/** Whether the attendee already collected this badge, for idempotent previews. */
+export async function getScanForClaim(userId: string, eventBadgeId: string) {
+  return prisma.scan.findUnique({
+    where: { userId_eventBadgeId: { userId, eventBadgeId } },
+    select: { id: true },
+  });
+}
+
 /** Recent check-ins shown above the scanner, newest first. */
 export async function getRecentRegistrations(userId: string) {
   return prisma.registration.findMany({

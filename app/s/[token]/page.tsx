@@ -7,9 +7,11 @@ import ScanClaim from "@/components/scan/ScanClaim";
 import {
   getQrTokenForClaim,
   getRegistrationForClaim,
+  getScanForClaim,
 } from "@/lib/gamification/queries";
-import { resolveScanTarget } from "@/lib/scan/target";
 import { getRequestOrigin } from "@/lib/request";
+import { EVENT_WINDOW_MESSAGES } from "@/lib/scan/event-window";
+import { resolveScanTarget, toScanQr, type ScanTarget } from "@/lib/scan/target";
 import { getSession } from "@/lib/session";
 
 export const metadata: Metadata = {
@@ -20,6 +22,14 @@ interface ScanPageProps {
   params: Promise<{ token: string }>;
 }
 
+const BLOCKED_MESSAGES: Partial<Record<ScanTarget["status"], string>> = {
+  invalid: "This QR code is not valid or is no longer active.",
+  not_started: "This QR code or badge is not available yet.",
+  expired: "This QR code has expired.",
+  needs_check_in: "Scan the welcome QR at the entrance before collecting badges.",
+  ...EVENT_WINDOW_MESSAGES,
+};
+
 function BlockedScan({ message }: { message: string }) {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#171b21] px-4 py-10 sm:py-16">
@@ -27,7 +37,7 @@ function BlockedScan({ message }: { message: string }) {
         <h1 className="text-lg font-bold text-[#f1f1ed]">{message}</h1>
         <Link
           href="/scan"
-          className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-[#394351] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+          className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-[#39424f] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
         >
           Scan a QR code
         </Link>
@@ -56,40 +66,26 @@ export default async function ScanPage({ params }: ScanPageProps) {
   const isWelcome = qr.kind === "WELCOME";
   const badge = qr.eventBadge?.badge ?? null;
 
-  let isRegistered = false;
+  const registration = await getRegistrationForClaim(
+    session.user.id,
+    qr.eventId,
+  );
+  const isRegistered = registration !== null;
 
-  if (!isWelcome) {
-    const registration = await getRegistrationForClaim(
-      session.user.id,
-      qr.eventId,
-    );
-    isRegistered = registration !== null;
-  }
+  const existingScan =
+    !isWelcome && qr.eventBadgeId
+      ? await getScanForClaim(session.user.id, qr.eventBadgeId)
+      : null;
+  const hasExistingClaim = isWelcome ? isRegistered : existingScan !== null;
 
   const target = resolveScanTarget(
-    {
-      token: qr.token,
-      kind: qr.kind,
-      active: qr.active,
-      startsAt: qr.startsAt,
-      expiresAt: qr.expiresAt,
-      badgeStartsAt: qr.eventBadge?.startsAt ?? null,
-      hasBadge: badge !== null,
-      eventName: qr.event.name,
-    },
+    toScanQr(qr),
     isRegistered,
+    new Date(),
+    hasExistingClaim,
   );
 
-  const blockedMessage =
-    target.status === "invalid"
-      ? "This QR code is not valid or is no longer active."
-      : target.status === "not_started"
-        ? "This QR code or badge is not available yet."
-        : target.status === "expired"
-          ? "This QR code has expired."
-          : target.status === "needs_check_in"
-            ? "Scan the welcome QR at the entrance before collecting badges."
-            : null;
+  const blockedMessage = BLOCKED_MESSAGES[target.status] ?? null;
 
   if (blockedMessage) {
     return <BlockedScan message={blockedMessage} />;
@@ -154,7 +150,7 @@ export default async function ScanPage({ params }: ScanPageProps) {
             </h1>
             <Link
               href="/"
-              className="mt-6 inline-block rounded-lg border border-[#394351] px-6 py-3 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="mt-6 inline-block rounded-lg border border-[#39424f] px-6 py-3 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
             >
               Go to the homepage
             </Link>

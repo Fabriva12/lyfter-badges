@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveScanTarget, type ScanQr } from "./target";
+import { resolveScanTarget, toScanQr, type ScanQr } from "./target";
 
 const NOW = new Date("2026-11-06T12:00:00.000Z");
 
@@ -14,6 +14,9 @@ function qr(overrides: Partial<ScanQr> = {}): ScanQr {
     badgeStartsAt: null,
     hasBadge: true,
     eventName: "Lyfter Demo Costa Rica 2026",
+    eventStatus: "ACTIVE",
+    eventStartsAt: new Date("2026-11-06T11:00:00.000Z"),
+    eventEndsAt: new Date("2026-11-06T18:00:00.000Z"),
     ...overrides,
   };
 }
@@ -135,6 +138,111 @@ describe("resolveScanTarget", () => {
       status: "ready",
       token: "demo-keynote",
       eventName: "Lyfter Demo Costa Rica 2026",
+    });
+  });
+
+  it("blocks a welcome QR when the event has not started", () => {
+    expect(
+      resolveScanTarget(
+        qr({
+          kind: "WELCOME",
+          hasBadge: false,
+          eventStartsAt: new Date("2026-11-07T12:00:00.000Z"),
+        }),
+        false,
+        NOW,
+      ),
+    ).toEqual({ status: "event_not_started" });
+  });
+
+  it("blocks a badge QR when the event has ended", () => {
+    expect(
+      resolveScanTarget(
+        qr({ eventEndsAt: new Date("2026-11-05T18:00:00.000Z") }),
+        true,
+        NOW,
+      ),
+    ).toEqual({ status: "event_ended" });
+  });
+
+  it("blocks both QR kinds when the event is not active", () => {
+    const closed = { eventStatus: "DRAFT" as const };
+
+    expect(
+      resolveScanTarget(qr({ ...closed, kind: "WELCOME", hasBadge: false }), false, NOW),
+    ).toEqual({ status: "event_not_active" });
+    expect(resolveScanTarget(qr(closed), true, NOW)).toEqual({
+      status: "event_not_active",
+    });
+  });
+
+  it("keeps a repeat check-in available after the event closes", () => {
+    expect(
+      resolveScanTarget(
+        qr({
+          kind: "WELCOME",
+          hasBadge: false,
+          eventStatus: "FINISHED",
+        }),
+        true,
+        NOW,
+        true,
+      ),
+    ).toEqual({
+      status: "welcome",
+      token: "demo-keynote",
+      eventName: "Lyfter Demo Costa Rica 2026",
+    });
+  });
+
+  it("keeps a collected badge available after the event closes", () => {
+    expect(
+      resolveScanTarget(
+        qr({ eventStatus: "FINISHED" }),
+        true,
+        NOW,
+        true,
+      ),
+    ).toEqual({
+      status: "ready",
+      token: "demo-keynote",
+      eventName: "Lyfter Demo Costa Rica 2026",
+    });
+  });
+});
+
+describe("toScanQr", () => {
+  it("maps the event window and badge fields into the pure projection", () => {
+    expect(
+      toScanQr({
+        token: "demo-keynote",
+        kind: "BADGE",
+        active: true,
+        startsAt: new Date("2026-11-06T11:30:00.000Z"),
+        expiresAt: null,
+        eventBadge: {
+          startsAt: new Date("2026-11-06T11:45:00.000Z"),
+          badge: { id: "badge-1" },
+        },
+        event: {
+          name: "Lyfter Demo Costa Rica 2026",
+          status: "ACTIVE",
+          startsAt: new Date("2026-11-06T11:00:00.000Z"),
+          endsAt: new Date("2026-11-06T18:00:00.000Z"),
+        },
+      }),
+    ).toEqual({
+      token: "demo-keynote",
+      kind: "BADGE",
+      active: true,
+      startsAt: new Date("2026-11-06T11:30:00.000Z"),
+      expiresAt: null,
+      badgeStartsAt: new Date("2026-11-06T11:45:00.000Z"),
+      hasBadge: true,
+      eventName: "Lyfter Demo Costa Rica 2026",
+      eventStatus: "ACTIVE",
+      eventStartsAt: new Date("2026-11-06T11:00:00.000Z"),
+      eventEndsAt: new Date("2026-11-06T18:00:00.000Z"),
     });
   });
 });

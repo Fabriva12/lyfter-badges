@@ -10,6 +10,9 @@ export type ScanErrorReason =
   | "scan_limit"
   | "not_started"
   | "expired"
+  | "event_not_started"
+  | "event_ended"
+  | "event_not_active"
   | "unauthenticated"
   | "unexpected";
 

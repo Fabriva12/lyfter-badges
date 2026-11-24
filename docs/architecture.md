@@ -10,12 +10,12 @@ por accidente.
 | Capa | Archivos reales | Responsabilidad |
 | --- | --- | --- |
 | Acceso a datos | `lib/db.ts`, `lib/auth.ts`, `lib/admin/queries.ts`, `lib/gamification/queries.ts`, `lib/share/collection.ts`; escrituras de auditoría/roles/guards en `lib/admin/audit.ts`, `lib/admin/roles.ts`, `lib/admin/guards.ts` | Único lugar con `prisma`. Consultas, caché con tags y escrituras de apoyo |
-| Lógica de negocio | `lib/admin/{access,validation,metrics,badges,gallery,slug}.ts`, `lib/gamification/{levels,collection,leaderboard}.ts`, `lib/scan/target.ts`, `lib/share/token.ts`, `lib/{date,qr,redirect,share}.ts` | Funciones puras: permisos, validación, métricas, niveles, ranking, tokens y fechas |
+| Lógica de negocio | `lib/admin/{access,validation,metrics,badges,gallery,slug}.ts`, `lib/gamification/{levels,collection,leaderboard}.ts`, `lib/scan/{event-window,target}.ts`, `lib/share/token.ts`, `lib/{date,qr,redirect,share}.ts` | Funciones puras: permisos, validación, métricas, niveles, ranking, tokens y fechas |
 | Interfaz | `app/**/page.tsx`, `app/**/layout.tsx`, `components/**` y los módulos `app/**/actions.ts` | Render, interacción y orquestación de Server Actions |
 
 Las reglas puras tienen su test al lado (`lib/admin/access.test.ts`,
-`lib/gamification/levels.test.ts`, `lib/scan/target.test.ts`, etc.). Hoy `lib/admin/slug.ts` y
-`lib/redirect.ts` no tienen un `*.test.ts` dedicado.
+`lib/gamification/levels.test.ts`, `lib/scan/{event-window,target}.test.ts`, etc.). Hoy
+`lib/admin/slug.ts` y `lib/redirect.ts` no tienen un `*.test.ts` dedicado.
 
 ## Regla de dependencias
 
@@ -48,12 +48,14 @@ orden y manejo de errores.
 ## Flujo: reclamo de un badge por QR
 
 1. `app/s/[token]/page.tsx` exige sesión y pide el QR a `lib/gamification/queries.ts`.
-2. Si el QR está activo, consulta si el usuario ya hizo check-in y pasa ambos datos a
-   `resolveScanTarget` (`lib/scan/target.ts`): sabe si es bienvenida, si falta el check-in, si
-   el badge aún no arranca o si el QR expiró.
+2. Si el QR está activo, consulta si el usuario ya hizo check-in o ya recolectó el badge y pasa
+   ambos datos a `resolveScanTarget` (`lib/scan/target.ts`): sabe si es bienvenida, si falta el
+   check-in, si el badge aún no arranca, si el QR expiró o si el evento está fuera de vigencia.
 3. La página muestra el bloqueo correspondiente o el componente `ScanClaim`.
-4. `recordScan` (`app/s/[token]/actions.ts`) revalida sesión y QR, escribe `Scan` dentro de una
-   transacción y confía en los `@@unique` para la idempotencia.
+4. `recordScan` (`app/s/[token]/actions.ts`) revalida sesión y QR, conserva primero la
+   idempotencia de check-in/badge ya obtenidos, aplica la regla pura `evaluateEventWindow`
+   (`lib/scan/event-window.ts`) a eventos y QR por igual, escribe `Scan` dentro de una transacción
+   y confía en los `@@unique` para la idempotencia concurrente.
 5. La acción llama a `collectionTag`, `leaderboardTag` y `globalLeaderboardTag` con `updateTag`,
    y la siguiente renderización refleja el badge recién obtenido.
 

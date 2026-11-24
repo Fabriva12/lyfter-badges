@@ -11,6 +11,11 @@ import {
   globalLeaderboardTag,
   leaderboardTag,
 } from "@/lib/gamification/queries";
+import {
+  EVENT_WINDOW_MESSAGES,
+  evaluateEventWindow,
+  type EventWindowReason,
+} from "@/lib/scan/event-window";
 import { getSession } from "@/lib/session";
 
 const INVALID_QR = "This QR code is not valid.";
@@ -27,6 +32,15 @@ function isUniqueViolation(error: unknown) {
   return (
     error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002"
   );
+}
+
+function blockedByEvent(reason: EventWindowReason): ScanFormState {
+  return {
+    status: "error",
+    message: EVENT_WINDOW_MESSAGES[reason],
+    retryable: false,
+    reason,
+  };
 }
 
 export async function recordScan(rawToken: string): Promise<ScanFormState> {
@@ -69,7 +83,30 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
       };
     }
 
+    const now = new Date();
+    const eventWindow = evaluateEventWindow(qr.event, now);
+
     if (qr.kind === "WELCOME") {
+      // A repeat check-in stays idempotent even after the event closes.
+      const existingRegistration = await prisma.registration.findUnique({
+        where: { userId_eventId: { userId, eventId: qr.eventId } },
+        select: { id: true },
+      });
+
+      if (existingRegistration) {
+        updateTag(collectionTag(userId));
+
+        return {
+          status: "checked-in",
+          eventName: qr.event.name,
+          alreadyCheckedIn: true,
+        };
+      }
+
+      if (!eventWindow.ok) {
+        return blockedByEvent(eventWindow.reason);
+      }
+
       let alreadyCheckedIn = false;
 
       try {
@@ -80,7 +117,7 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
         if (!isUniqueViolation(error)) {
           throw error;
         }
-        // A duplicate registration just means the attendee was already checked in.
+        // Another request checked the attendee in between the read and the write.
         alreadyCheckedIn = true;
       }
 
@@ -138,7 +175,9 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
       };
     }
 
-    const now = new Date();
+    if (!eventWindow.ok) {
+      return blockedByEvent(eventWindow.reason);
+    }
 
     if (qr.startsAt && now < qr.startsAt) {
       return {

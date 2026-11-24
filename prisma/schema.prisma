@@ -1,0 +1,341 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ATTENDEE
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum QrKind {
+  WELCOME
+  BADGE
+}
+
+enum EventMode {
+  IN_PERSON
+  VIRTUAL
+  HYBRID
+}
+
+enum EventStatus {
+  DRAFT
+  ACTIVE
+  FINISHED
+}
+
+enum BadgeType {
+  WELCOME
+  TALK
+  STAND
+  SPECIAL
+}
+
+enum BadgeRarity {
+  COMMON
+  RARE
+  LIMITED
+}
+
+// --- Better Auth models -----------------------------------------------------
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          Role      @default(ATTENDEE)
+  sessions      Session[]
+  accounts      Account[]
+
+  organizedEvents    Event[]         @relation("EventOrganizer")
+  companyMemberships CompanyMember[]
+  registrations      Registration[]
+  scans              Scan[]
+  // Stands (event badges) this admin is responsible for.
+  partnerBadges      EventBadge[]    @relation("EventBadgePartner")
+  auditLogs          AuditLog[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// --- Domain models ----------------------------------------------------------
+
+// A company groups events and one or more administrators. Membership is
+// many-to-many on purpose: an admin can manage more than one company.
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  logoUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members   CompanyMember[]
+  events    Event[]
+  auditLogs AuditLog[]
+
+  @@index([name])
+}
+
+model CompanyMember {
+  id        String   @id @default(cuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([companyId, userId])
+  @@index([userId])
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  location    String?
+  country     String?
+  mode        EventMode   @default(IN_PERSON)
+  status      EventStatus @default(DRAFT)
+  startsAt    DateTime
+  endsAt      DateTime
+  organizerId String
+  organizer   User        @relation("EventOrganizer", fields: [organizerId], references: [id])
+  companyId   String?
+  company     Company?    @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  badges        EventBadge[]
+  qrTokens      QrToken[]
+  registrations Registration[]
+  scans         Scan[]
+  images        EventImage[]
+  prize         Prize?
+  auditLogs     AuditLog[]
+
+  @@index([organizerId])
+  @@index([companyId])
+  @@index([status])
+}
+
+model EventImage {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([eventId])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String?
+  xpValue     Int
+  imageUrl    String?
+  iconKey     String?
+  type        BadgeType   @default(TALK)
+  rarity      BadgeRarity @default(COMMON)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  eventBadges EventBadge[]
+}
+
+model EventBadge {
+  id       String    @id @default(cuid())
+  eventId  String
+  event    Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  badgeId  String
+  badge    Badge     @relation(fields: [badgeId], references: [id])
+  room     String?
+  startsAt DateTime?
+
+  // A partner (a company with a stand) owns the badge of that stand. The
+  // relation is optional: a talk badge has no partner, and deleting the user
+  // must never delete the stand.
+  partnerId String?
+  partner   User?   @relation("EventBadgePartner", fields: [partnerId], references: [id], onDelete: SetNull)
+
+  qrTokens QrToken[]
+  scans    Scan[]
+
+  @@unique([eventId, badgeId])
+  @@index([badgeId])
+  @@index([partnerId])
+}
+
+model QrToken {
+  id           String      @id @default(cuid())
+  token        String      @unique
+  // WELCOME tokens check the attendee in; BADGE tokens award a badge.
+  kind         QrKind      @default(BADGE)
+  eventId      String
+  event        Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventBadgeId String?
+  eventBadge   EventBadge? @relation(fields: [eventBadgeId], references: [id], onDelete: Cascade)
+  active       Boolean     @default(true)
+  // null means unlimited scans for this token.
+  maxScans     Int?
+  startsAt     DateTime?
+  expiresAt    DateTime?
+  createdAt    DateTime    @default(now())
+
+  scans Scan[]
+
+  @@index([eventId])
+  @@index([eventBadgeId])
+  @@index([startsAt])
+  @@index([expiresAt])
+}
+
+model Registration {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, eventId])
+  @@index([eventId])
+}
+
+model Scan {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qrTokenId    String
+  qrToken      QrToken    @relation(fields: [qrTokenId], references: [id], onDelete: Cascade)
+  // Denormalized on purpose: the badge is the collectible. A badge can have
+  // several QR tokens (printed copies, rotation), and the attendee still earns
+  // it once. The unique key below is what enforces that, not app code.
+  eventBadgeId String
+  eventBadge   EventBadge @relation(fields: [eventBadgeId], references: [id], onDelete: Cascade)
+  eventId      String
+  event        Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  xpAwarded    Int
+  scannedAt    DateTime   @default(now())
+
+  // Non-negotiable: one scan per user per physical QR.
+  @@unique([userId, qrTokenId])
+  // Non-negotiable: one scan per user per badge, whatever QR they used.
+  @@unique([userId, eventBadgeId])
+  @@index([userId])
+  @@index([eventId])
+  @@index([eventBadgeId])
+}
+
+model Level {
+  id    Int    @id @default(autoincrement())
+  level Int    @unique
+  name  String
+  minXp Int    @unique
+}
+
+model Prize {
+  id                  String    @id @default(cuid())
+  eventId             String    @unique
+  event               Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name                String
+  description         String?
+  imageUrl            String?
+  requiredBadgesCount Int
+  revealedAt          DateTime?
+}
+
+// Audit trail scoped to an event, a company or the whole platform. Snapshots
+// (eventName, companyName, actorName) keep rows readable after deletes.
+model AuditLog {
+  id          String   @id @default(cuid())
+  eventId     String?
+  event       Event?   @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  eventName   String?
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyName String?
+  actorId     String?
+  actor       User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  actorName   String
+  actorRole   Role?
+  action      String
+  entityType  String
+  entityId    String?
+  summary     String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([eventId, createdAt])
+  @@index([companyId, createdAt])
+  @@index([actorId])
+}

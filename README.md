@@ -19,8 +19,8 @@ dominio están en [`PLAN.md`](./PLAN.md).
 
 | Entorno | URL | Notas |
 | --- | --- | --- |
-| Producción | https://lyfter-badges-app.vercel.app | Alias estable; hoy apunta al deployment de la importación inicial, no a los work units nuevos |
-| Preview | https://lyfter-badges-app-git-docs-deploy-and-footer-pages-fabriva12.vercel.app | Preview del último work unit; cada rama genera su propio `*.vercel.app` |
+| Producción | https://lyfter-badges-app.vercel.app | Alias estable; apunta al último deployment de producción (work unit unificado) |
+| Preview | https://lyfter-badges-app-git-docs-deploy-and-footer-pages-fabriva12.vercel.app | Preview de la rama `docs/deploy-and-footer-pages`; cada rama genera su propio `*.vercel.app` |
 
 El proyecto de Vercel sigue vinculado al repo eliminado `Fabriva12/Lyfter-Badges-App`, así
 que los pushes a `main` no crean deployments automáticos; los previews de los work units se

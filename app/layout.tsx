@@ -5,11 +5,12 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SiteChrome from "@/components/SiteChrome";
 import { getRequestOrigin } from "@/lib/request";
+import { UI_COLORS } from "@/lib/theme/colors";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#171b21",
+  themeColor: UI_COLORS.background,
 };
 
 export async function generateMetadata(): Promise<Metadata> {

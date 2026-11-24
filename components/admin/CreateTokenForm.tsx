@@ -61,7 +61,7 @@ export default function CreateTokenForm({
       </button>
 
       {state.status === "error" ? (
-        <p role="alert" className="w-full text-xs text-[#ffb3ba]">
+        <p role="alert" className="w-full text-xs text-coral-soft">
           {state.message}
         </p>
       ) : null}

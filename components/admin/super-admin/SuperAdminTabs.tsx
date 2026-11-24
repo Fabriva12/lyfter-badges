@@ -33,8 +33,8 @@ export default function SuperAdminTabs() {
             aria-current={isActive ? "page" : undefined}
             className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold transition ${
               isActive
-                ? "bg-[#36bde9]/15 text-[#7fd8f5]"
-                : "text-[#9ca3af] hover:bg-[#272d36] hover:text-[#f1f1ed]"
+                ? "bg-celeste/15 text-celeste-soft"
+                : "text-muted hover:bg-ink hover:text-foreground"
             }`}
           >
             {tab.label}

@@ -34,26 +34,26 @@ interface BadgeVisitGroupProps {
 function BadgeVisitGroup({ title, items, maxScans }: BadgeVisitGroupProps) {
   return (
     <div>
-      <h3 className="text-sm font-bold uppercase tracking-wide text-[#9ca3af]">
+      <h3 className="text-sm font-bold uppercase tracking-wide text-muted">
         {title}
       </h3>
 
       {items.length === 0 ? (
-        <p className="mt-3 text-sm text-[#9ca3af]">Todavía no hay escaneos.</p>
+        <p className="mt-3 text-sm text-muted">Todavía no hay escaneos.</p>
       ) : (
         <ul className="mt-3 space-y-4">
           {items.map((badge) => (
             <li key={badge.eventBadgeId}>
               <div className="flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#39424f] bg-[#1f252d] text-[#9ca3af]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-stroke bg-surface-low text-muted">
                     <BadgeIcon name={badge.iconKey} className="h-4 w-4" />
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate font-semibold text-[#f1f1ed]">
+                    <p className="truncate font-semibold text-foreground">
                       {badge.name}
                     </p>
-                    <p className="text-xs text-[#9ca3af]">
+                    <p className="text-xs text-muted">
                       {BADGE_TYPE_LABELS[badge.type] ?? badge.type}
                       {badge.room ? ` · ${badge.room}` : ""}
                       {badge.rarity !== "COMMON"
@@ -62,13 +62,13 @@ function BadgeVisitGroup({ title, items, maxScans }: BadgeVisitGroupProps) {
                     </p>
                   </div>
                 </div>
-                <span className="shrink-0 text-sm font-bold text-[#a8d889]">
+                <span className="shrink-0 text-sm font-bold text-sage">
                   {badge.scans}
                 </span>
               </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#1f252d]">
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-low">
                 <div
-                  className="h-full rounded-full bg-[#36bde9]"
+                  className="h-full rounded-full bg-celeste"
                   style={{ width: `${barWidth(badge.scans, maxScans)}%` }}
                 />
               </div>
@@ -103,12 +103,12 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
       <div>
         <Link
           href={`/admin/events/${event.id}`}
-          className="text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+          className="text-sm font-semibold text-muted transition hover:text-foreground"
         >
           ← {event.name}
         </Link>
         <h1 className="mt-3 text-2xl font-bold sm:text-3xl">Métricas</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Qué visitaron los asistentes y cuándo. Todas las horas son de Costa
           Rica.
         </p>
@@ -132,19 +132,19 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
 
       <section className={cardClassName}>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <h2 className="text-lg font-bold text-foreground">
             Insignias más visitadas
           </h2>
           {busiestBadge ? (
-            <p className="text-sm text-[#9ca3af]">
-              Más visitada: <span className="font-semibold text-[#f1f1ed]">{busiestBadge.name}</span>{" "}
+            <p className="text-sm text-muted">
+              Más visitada: <span className="font-semibold text-foreground">{busiestBadge.name}</span>{" "}
               ({busiestBadge.scans} escaneos)
             </p>
           ) : null}
         </div>
 
         {metrics.topBadges.length === 0 ? (
-          <p className="mt-5 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-6 text-center text-sm text-[#9ca3af]">
+          <p className="mt-5 rounded-lg border border-stroke bg-surface-low px-4 py-6 text-center text-sm text-muted">
             Agrega insignias a este evento para empezar a recopilar métricas.
           </p>
         ) : (
@@ -173,10 +173,10 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <section className={cardClassName}>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">
+            <h2 className="text-lg font-bold text-foreground">
               Asistencia por hora
             </h2>
-            <p className="text-sm text-[#9ca3af]">
+            <p className="text-sm text-muted">
               {peak
                 ? `Pico a las ${formatHour(peak.hour)} (${peak.count} escaneos)`
                 : "Todavía no hay escaneos"}
@@ -195,7 +195,7 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
                 >
                   <div
                     className={`w-full rounded-t ${
-                      isPeak ? "bg-[#a8d889]" : "bg-[#36bde9]/60"
+                      isPeak ? "bg-sage" : "bg-celeste/60"
                     }`}
                     style={{
                       height: `${Math.max(
@@ -204,7 +204,7 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
                       )}%`,
                     }}
                   />
-                  <span className="text-[9px] text-[#6b7280]">
+                  <span className="text-[9px] text-muted">
                     {bucket.hour % 3 === 0 ? formatHour(bucket.hour) : ""}
                   </span>
                 </div>
@@ -214,13 +214,13 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
         </section>
 
         <section className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">Escaneos por tipo</h2>
-          <p className="mt-1 text-sm text-[#9ca3af]">
+          <h2 className="text-lg font-bold text-foreground">Escaneos por tipo</h2>
+          <p className="mt-1 text-sm text-muted">
             Qué tipo de insignia es la que más atrae a los asistentes.
           </p>
 
           {Object.keys(metrics.byType).length === 0 ? (
-            <p className="mt-5 text-sm text-[#9ca3af]">Todavía no hay escaneos.</p>
+            <p className="mt-5 text-sm text-muted">Todavía no hay escaneos.</p>
           ) : (
             <ul className="mt-5 space-y-4">
               {Object.entries(metrics.byType)
@@ -228,14 +228,14 @@ export default async function AdminMetricsPage({ params }: MetricsPageProps) {
                 .map(([type, count]) => (
                   <li key={type}>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-semibold text-[#d7dce3]">
+                      <span className="font-semibold text-subtle">
                         {BADGE_TYPE_LABELS[type] ?? type}
                       </span>
-                      <span className="text-[#a8d889]">{count}</span>
+                      <span className="text-sage">{count}</span>
                     </div>
-                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#1f252d]">
+                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-low">
                       <div
-                        className="h-full rounded-full bg-[#a8d889]"
+                        className="h-full rounded-full bg-sage"
                         style={{
                           width: `${barWidth(count, Math.max(...Object.values(metrics.byType), 1))}%`,
                         }}

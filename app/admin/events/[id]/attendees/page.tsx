@@ -36,12 +36,12 @@ export default async function AdminAttendeesPage({
       <div>
         <Link
           href={`/admin/events/${event.id}`}
-          className="text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+          className="text-sm font-semibold text-muted transition hover:text-foreground"
         >
           ← {event.name}
         </Link>
         <h1 className="mt-3 text-2xl font-bold sm:text-3xl">Participantes</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Asistentes registrados, las insignias que canjeó cada uno y su XP en
           este evento.
         </p>
@@ -56,10 +56,10 @@ export default async function AdminAttendeesPage({
       </div>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">Lista de asistentes</h2>
+        <h2 className="text-lg font-bold text-foreground">Lista de asistentes</h2>
 
         {attendees.length === 0 ? (
-          <p className="mt-5 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-6 text-center text-sm text-[#9ca3af]">
+          <p className="mt-5 rounded-lg border border-stroke bg-surface-low px-4 py-6 text-center text-sm text-muted">
             Todavía nadie se registró en este evento.
           </p>
         ) : (
@@ -68,35 +68,35 @@ export default async function AdminAttendeesPage({
               {attendees.map((attendee) => (
                 <li
                   key={attendee.userId}
-                  className="rounded-lg border border-[#39424f] bg-[#1f252d] p-4"
+                  className="rounded-lg border border-stroke bg-surface-low p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-[#f1f1ed]">
+                      <p className="truncate text-sm font-semibold text-foreground">
                         {attendee.name}
                       </p>
-                      <p className="truncate text-xs text-[#6b7280]">
+                      <p className="truncate text-xs text-muted">
                         {attendee.email}
                       </p>
                     </div>
-                    <p className="shrink-0 text-sm font-semibold text-[#a8d889]">
+                    <p className="shrink-0 text-sm font-semibold text-sage">
                       {attendee.xpEarned} XP
                     </p>
                   </div>
 
-                  <p className="mt-2 text-xs text-[#9ca3af]">
+                  <p className="mt-2 text-xs text-muted">
                     Registrado el {formatDateTime(attendee.registeredAt)}
                   </p>
 
                   <div className="mt-3">
                     {attendee.badges.length === 0 ? (
-                      <span className="text-xs text-[#6b7280]">Aún no</span>
+                      <span className="text-xs text-muted">Aún no</span>
                     ) : (
                       <ul className="flex flex-wrap gap-1.5">
                         {attendee.badges.map((badge) => (
                           <li
                             key={badge.eventBadgeId}
-                            className="rounded-full bg-[#36bde9]/10 px-2.5 py-0.5 text-xs font-semibold text-[#7fd8f5]"
+                            className="rounded-full bg-celeste/10 px-2.5 py-0.5 text-xs font-semibold text-celeste-soft"
                             title={`${formatDateTime(badge.scannedAt)}`}
                           >
                             {badge.name}
@@ -111,7 +111,7 @@ export default async function AdminAttendeesPage({
 
             <div className="mt-5 hidden overflow-x-auto md:block">
               <table className="w-full text-left text-sm">
-                <thead className="text-xs uppercase tracking-widest text-[#9ca3af]">
+                <thead className="text-xs uppercase tracking-widest text-muted">
                   <tr>
                     <th className="py-2 pr-4 font-semibold">Asistente</th>
                     <th className="py-2 pr-4 font-semibold">Registrado</th>
@@ -119,27 +119,27 @@ export default async function AdminAttendeesPage({
                     <th className="py-2 font-semibold">XP</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#303743]">
+                <tbody className="divide-y divide-stroke">
                   {attendees.map((attendee) => (
                     <tr key={attendee.userId}>
-                      <td className="py-3 pr-4 align-top text-[#f1f1ed]">
+                      <td className="py-3 pr-4 align-top text-foreground">
                         {attendee.name}
-                        <span className="block text-xs text-[#6b7280]">
+                        <span className="block text-xs text-muted">
                           {attendee.email}
                         </span>
                       </td>
-                      <td className="py-3 pr-4 align-top text-[#9ca3af]">
+                      <td className="py-3 pr-4 align-top text-muted">
                         {formatDateTime(attendee.registeredAt)}
                       </td>
                       <td className="py-3 pr-4 align-top">
                         {attendee.badges.length === 0 ? (
-                          <span className="text-[#6b7280]">Aún no</span>
+                          <span className="text-muted">Aún no</span>
                         ) : (
                           <ul className="flex flex-wrap gap-1.5">
                             {attendee.badges.map((badge) => (
                               <li
                                 key={badge.eventBadgeId}
-                                className="rounded-full bg-[#36bde9]/10 px-2.5 py-0.5 text-xs font-semibold text-[#7fd8f5]"
+                                className="rounded-full bg-celeste/10 px-2.5 py-0.5 text-xs font-semibold text-celeste-soft"
                                 title={`${formatDateTime(badge.scannedAt)}`}
                               >
                                 {badge.name}
@@ -148,7 +148,7 @@ export default async function AdminAttendeesPage({
                           </ul>
                         )}
                       </td>
-                      <td className="py-3 align-top font-semibold text-[#a8d889]">
+                      <td className="py-3 align-top font-semibold text-sage">
                         {attendee.xpEarned}
                       </td>
                     </tr>

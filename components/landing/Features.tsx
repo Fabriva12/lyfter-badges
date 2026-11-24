@@ -15,7 +15,7 @@ const features = [
     title: "Subí de nivel",
     description:
       "Cada badge te da XP. Acumulá experiencia y desbloqueá nuevos niveles durante el evento.",
-    iconClassName: "bg-[#d77bdb] text-[#352238]",
+    iconClassName: "bg-lilac text-[#352238]",
   },
   {
     step: "03",
@@ -23,7 +23,7 @@ const features = [
     title: "Compará tu posición",
     description:
       "Mirá el leaderboard en vivo y competí con el resto de los asistentes por el podio.",
-    iconClassName: "bg-[#f47f8a] text-[#43272b]",
+    iconClassName: "bg-coral text-[#43272b]",
   },
 ];
 
@@ -34,13 +34,13 @@ export default function Features() {
       className="scroll-mt-24 px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10"
     >
       <div className="max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#36bde9]">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-celeste">
           Cómo funciona
         </p>
         <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight sm:text-4xl">
           Escaneá. Sumá XP. Competí.
         </h2>
-        <p className="mt-4 text-base leading-7 text-[#9ca3af] sm:text-lg">
+        <p className="mt-4 text-base leading-7 text-muted sm:text-lg">
           Tres pasos y tu asistencia se convierte en una colección que podés
           compartir.
         </p>

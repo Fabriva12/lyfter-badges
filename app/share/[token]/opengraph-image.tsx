@@ -4,6 +4,7 @@ import {
   loadShareCollection,
   type ShareCollection,
 } from "@/lib/share/collection";
+import { BRAND_COLORS, SAGE_TINT_RGBA, UI_COLORS } from "@/lib/theme/colors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,9 +35,9 @@ export async function generateImageMetadata({ params }: ImageParams) {
 }
 
 const typeColors: Record<string, { background: string; foreground: string }> = {
-  WELCOME: { background: "#a8d889", foreground: "#263021" },
-  TALK: { background: "#36bde9", foreground: "#10232d" },
-  STAND: { background: "#d77bdb", foreground: "#2b1630" },
+  WELCOME: { background: BRAND_COLORS.sage, foreground: "#263021" },
+  TALK: { background: BRAND_COLORS.celeste, foreground: "#10232d" },
+  STAND: { background: BRAND_COLORS.lilac, foreground: "#2b1630" },
   SPECIAL: { background: "#f2c14e", foreground: "#2e2410" },
 };
 
@@ -57,7 +58,7 @@ function FallbackCard() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#171b21",
+        backgroundColor: UI_COLORS.background,
         padding: 64,
       }}
     >
@@ -72,8 +73,8 @@ function FallbackCard() {
           borderRadius: 40,
           borderWidth: 2,
           borderStyle: "solid",
-          borderColor: "#39424f",
-          backgroundColor: "#252c35",
+          borderColor: UI_COLORS.stroke,
+          backgroundColor: UI_COLORS.surface,
           padding: 48,
         }}
       >
@@ -82,7 +83,7 @@ function FallbackCard() {
             display: "flex",
             fontSize: 26,
             letterSpacing: 5,
-            color: "#a8d889",
+            color: BRAND_COLORS.sage,
           }}
         >
           LYFTER BADGES
@@ -92,7 +93,7 @@ function FallbackCard() {
             display: "flex",
             marginTop: 24,
             fontSize: 56,
-            color: "#f1f1ed",
+            color: UI_COLORS.foreground,
           }}
         >
           Collection not available
@@ -102,7 +103,7 @@ function FallbackCard() {
             display: "flex",
             marginTop: 16,
             fontSize: 28,
-            color: "#9ca3af",
+            color: UI_COLORS.muted,
           }}
         >
           Scan. Collect. Level up.
@@ -114,8 +115,8 @@ function FallbackCard() {
 
 function BadgeTile({ name, type }: { name: string; type: string }) {
   const colors = typeColors[type] ?? {
-    background: "#39424f",
-    foreground: "#f1f1ed",
+    background: UI_COLORS.stroke,
+    foreground: UI_COLORS.foreground,
   };
 
   return (
@@ -149,7 +150,7 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
         width: "100%",
         height: "100%",
         display: "flex",
-        backgroundColor: "#171b21",
+        backgroundColor: UI_COLORS.background,
         padding: 32,
       }}
     >
@@ -162,8 +163,8 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
           borderRadius: 40,
           borderWidth: 2,
           borderStyle: "solid",
-          borderColor: "#39424f",
-          backgroundColor: "#252c35",
+          borderColor: UI_COLORS.stroke,
+          backgroundColor: UI_COLORS.surface,
           padding: 32,
         }}
       >
@@ -179,12 +180,12 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
               display: "flex",
               fontSize: 26,
               letterSpacing: 5,
-              color: "#a8d889",
+              color: BRAND_COLORS.sage,
             }}
           >
             LYFTER BADGES
           </div>
-          <div style={{ display: "flex", fontSize: 24, color: "#89919e" }}>
+          <div style={{ display: "flex", fontSize: 24, color: UI_COLORS.muted }}>
             {truncate(collection.eventDate, 28)}
           </div>
         </div>
@@ -196,7 +197,7 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
             marginTop: 60,
           }}
         >
-          <div style={{ display: "flex", fontSize: 30, color: "#9ca3af" }}>
+          <div style={{ display: "flex", fontSize: 30, color: UI_COLORS.muted }}>
             {truncate(collection.eventName, 42)}
           </div>
           <div
@@ -205,7 +206,7 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
               marginTop: 12,
               fontSize: 68,
               lineHeight: 1.05,
-              color: "#f1f1ed",
+              color: UI_COLORS.foreground,
             }}
           >
             {truncate(collection.attendeeName, 24)}
@@ -224,8 +225,8 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
                 display: "flex",
                 padding: "12px 28px",
                 borderRadius: 40,
-                backgroundColor: "rgba(168, 216, 137, 0.15)",
-                color: "#a8d889",
+                backgroundColor: SAGE_TINT_RGBA,
+                color: BRAND_COLORS.sage,
                 fontSize: 30,
               }}
             >
@@ -239,8 +240,8 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
                 borderRadius: 40,
                 borderWidth: 2,
                 borderStyle: "solid",
-                borderColor: "#394351",
-                color: "#d7dce3",
+                borderColor: UI_COLORS.stroke,
+                color: UI_COLORS.subtle,
                 fontSize: 30,
               }}
             >
@@ -276,8 +277,8 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
                   borderRadius: 32,
                   borderWidth: 2,
                   borderStyle: "solid",
-                  borderColor: "#394351",
-                  color: "#9ca3af",
+                  borderColor: UI_COLORS.stroke,
+                  color: UI_COLORS.muted,
                   fontSize: 32,
                 }}
               >
@@ -291,7 +292,7 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
               display: "flex",
               marginTop: 52,
               fontSize: 30,
-              color: "#9ca3af",
+              color: UI_COLORS.muted,
             }}
           >
             No badges collected yet.
@@ -306,10 +307,10 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
             marginTop: "auto",
           }}
         >
-          <div style={{ display: "flex", fontSize: 24, color: "#89919e" }}>
+          <div style={{ display: "flex", fontSize: 24, color: UI_COLORS.muted }}>
             Lyfter Badges
           </div>
-          <div style={{ display: "flex", fontSize: 24, color: "#a8d889" }}>
+          <div style={{ display: "flex", fontSize: 24, color: BRAND_COLORS.sage }}>
             Scan. Collect. Level up.
           </div>
         </div>

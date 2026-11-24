@@ -27,15 +27,15 @@ interface Medal {
 const MEDALS: Record<number, Medal> = {
   1: {
     label: "1st place",
-    text: "text-[#ffc875]",
-    border: "border-[#ffc875]/40",
-    background: "bg-[#ffc875]/10",
+    text: "text-peach",
+    border: "border-peach/40",
+    background: "bg-peach/10",
   },
   2: {
     label: "2nd place",
-    text: "text-[#d7dce3]",
-    border: "border-[#d7dce3]/40",
-    background: "bg-[#d7dce3]/10",
+    text: "text-subtle",
+    border: "border-subtle/40",
+    background: "bg-subtle/10",
   },
   3: {
     label: "3rd place",
@@ -47,9 +47,9 @@ const MEDALS: Record<number, Medal> = {
 
 const NO_MEDAL: Medal = {
   label: "place",
-  text: "text-[#9ca3af]",
-  border: "border-[#39424f]",
-  background: "bg-[#1f252d]",
+  text: "text-muted",
+  border: "border-stroke",
+  background: "bg-surface-low",
 };
 
 // The taller the step, the higher the place. The first place is in the
@@ -76,11 +76,11 @@ export default function LeaderboardPodium({
   );
 
   return (
-    <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+    <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
+      <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
         Podium
       </p>
-      <h2 className="mt-2 text-xl font-bold text-[#f1f1ed]">
+      <h2 className="mt-2 text-xl font-bold text-foreground">
         Top three by {METRIC_NOUN[metric]}
       </h2>
 
@@ -97,10 +97,10 @@ export default function LeaderboardPodium({
               }`}
             >
               <p className={`text-3xl font-black ${medal.text}`}>{entry.rank}</p>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#9ca3af]">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted">
                 {medal.label}
               </p>
-              <p className="mt-3 w-full truncate text-sm font-bold text-[#f1f1ed]">
+              <p className="mt-3 w-full truncate text-sm font-bold text-foreground">
                 {entry.name}
               </p>
               <p
@@ -108,10 +108,10 @@ export default function LeaderboardPodium({
               >
                 {entry[metric]}
               </p>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#9ca3af]">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">
                 {metricUnit(metric, entry[metric])}
               </p>
-              <p className="mt-2 text-xs text-[#9ca3af]">
+              <p className="mt-2 text-xs text-muted">
                 {secondaryStats(entry, metric)}
               </p>
             </article>

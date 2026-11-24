@@ -58,14 +58,14 @@ export default async function LeaderboardPage({
     !topRows.some((row) => row.userId === currentUser.userId);
 
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
             {isGlobal ? "All events" : "Per-event ranking"}
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Leaderboard</h1>
-          <p className="mt-2 text-sm text-[#9ca3af]">
+          <p className="mt-2 text-sm text-muted">
             {isGlobal
               ? `Ranked by ${METRIC_DESCRIPTION[metric]} across every event. Pick a scope or switch the metric below.`
               : `Ranked by ${METRIC_DESCRIPTION[metric]} inside a single event. Only that event's badges count, so every event is a fair fight.`}
@@ -85,11 +85,11 @@ export default async function LeaderboardPage({
             />
           </div>
 
-          <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8">
-            <h2 className="text-xl font-bold text-[#f1f1ed]">
+          <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
+            <h2 className="text-xl font-bold text-foreground">
               {isGlobal ? "Global ranking" : (selected?.name ?? "")}
             </h2>
-            <p className="mt-1 text-sm text-[#9ca3af]">
+            <p className="mt-1 text-sm text-muted">
               {isGlobal
                 ? "Every attendee with at least one badge, across every event."
                 : `${formatEventRange(selected.startsAt, selected.endsAt)}${
@@ -99,11 +99,11 @@ export default async function LeaderboardPage({
           </section>
 
           {rows.length === 0 ? (
-            <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
-              <h2 className="text-lg font-bold text-[#f1f1ed]">
+            <section className="rounded-xl border border-stroke bg-surface p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
+              <h2 className="text-lg font-bold text-foreground">
                 Nobody scored yet{isGlobal ? "" : " in this event"}.
               </h2>
-              <p className="mt-2 text-sm text-[#9ca3af]">
+              <p className="mt-2 text-sm text-muted">
                 The ranking appears as soon as the first attendee scans a
                 badge.
               </p>
@@ -119,11 +119,11 @@ export default async function LeaderboardPage({
               />
 
               {isCurrentUserOutsideTop && currentUser ? (
-                <section className="rounded-xl border border-[#36bde9]/40 bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+                <section className="rounded-xl border border-celeste/40 bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
                     Your position
                   </p>
-                  <h2 className="mt-2 text-xl font-bold text-[#f1f1ed]">
+                  <h2 className="mt-2 text-xl font-bold text-foreground">
                     You are outside the top {TOP_ROWS}
                   </h2>
 
@@ -135,7 +135,7 @@ export default async function LeaderboardPage({
                     />
                   </div>
 
-                  <p className="mt-4 text-sm text-[#9ca3af]">
+                  <p className="mt-4 text-sm text-muted">
                     Keep scanning badges to climb the ranking.
                   </p>
                 </section>

@@ -39,7 +39,7 @@ function RankedBadgeList({
 }) {
   if (badges.length === 0) {
     return (
-      <p className="mt-5 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-6 text-center text-sm text-[#9ca3af]">
+      <p className="mt-5 rounded-lg border border-stroke bg-surface-low px-4 py-6 text-center text-sm text-muted">
         {emptyMessage}
       </p>
     );
@@ -53,14 +53,14 @@ function RankedBadgeList({
         <li key={badge.eventBadgeId}>
           <div className="flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#39424f] bg-[#1f252d] text-[#9ca3af]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-stroke bg-surface-low text-muted">
                 <BadgeIcon name={badge.iconKey} className="h-4 w-4" />
               </span>
               <div className="min-w-0">
-                <p className="truncate font-semibold text-[#f1f1ed]">
+                <p className="truncate font-semibold text-foreground">
                   {badge.name}
                 </p>
-                <p className="text-xs text-[#9ca3af]">
+                <p className="text-xs text-muted">
                   {badge.eventName}
                   {badge.room ? ` · ${badge.room}` : ""}
                   {badge.rarity !== "COMMON"
@@ -69,13 +69,13 @@ function RankedBadgeList({
                 </p>
               </div>
             </div>
-            <span className="shrink-0 text-sm font-bold text-[#a8d889]">
+            <span className="shrink-0 text-sm font-bold text-sage">
               {badge.scans}
             </span>
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#1f252d]">
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-low">
             <div
-              className="h-full rounded-full bg-[#36bde9]"
+              className="h-full rounded-full bg-celeste"
               style={{ width: `${barWidth(badge.scans, max)}%` }}
             />
           </div>
@@ -103,13 +103,13 @@ export default async function SuperAdminMetricsPage() {
   return (
     <div className="space-y-8">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Super admin
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
           Métricas de la plataforma
         </h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Actividad de todos los eventos. Las horas están en hora de Costa Rica.
         </p>
       </header>
@@ -131,10 +131,10 @@ export default async function SuperAdminMetricsPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <h2 className="text-lg font-bold text-foreground">
             Charlas más populares
           </h2>
-          <p className="mt-1 text-sm text-[#9ca3af]">
+          <p className="mt-1 text-sm text-muted">
             Badges de charla con más escaneos en todos los eventos.
           </p>
           <RankedBadgeList
@@ -144,10 +144,10 @@ export default async function SuperAdminMetricsPage() {
         </section>
 
         <section className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <h2 className="text-lg font-bold text-foreground">
             Stands más populares
           </h2>
-          <p className="mt-1 text-sm text-[#9ca3af]">
+          <p className="mt-1 text-sm text-muted">
             Badges de stand con más escaneos en todos los eventos.
           </p>
           <RankedBadgeList
@@ -160,10 +160,10 @@ export default async function SuperAdminMetricsPage() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <section className={cardClassName}>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">
+            <h2 className="text-lg font-bold text-foreground">
               Afluencia por hora
             </h2>
-            <p className="text-sm text-[#9ca3af]">
+            <p className="text-sm text-muted">
               {peak
                 ? `Pico a las ${formatHour(peak.hour)} (${peak.count} escaneos)`
                 : "Todavía no hay escaneos"}
@@ -182,7 +182,7 @@ export default async function SuperAdminMetricsPage() {
                 >
                   <div
                     className={`w-full rounded-t ${
-                      isPeak ? "bg-[#a8d889]" : "bg-[#36bde9]/60"
+                      isPeak ? "bg-sage" : "bg-celeste/60"
                     }`}
                     style={{
                       height: `${Math.max(
@@ -191,7 +191,7 @@ export default async function SuperAdminMetricsPage() {
                       )}%`,
                     }}
                   />
-                  <span className="text-[9px] text-[#6b7280]">
+                  <span className="text-[9px] text-muted">
                     {bucket.hour % 3 === 0 ? formatHour(bucket.hour) : ""}
                   </span>
                 </div>
@@ -201,15 +201,15 @@ export default async function SuperAdminMetricsPage() {
         </section>
 
         <section className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <h2 className="text-lg font-bold text-foreground">
             Escaneos por tipo
           </h2>
-          <p className="mt-1 text-sm text-[#9ca3af]">
+          <p className="mt-1 text-sm text-muted">
             Con qué tipo de badge interactúan más los asistentes.
           </p>
 
           {Object.keys(metrics.byType).length === 0 ? (
-            <p className="mt-5 text-sm text-[#9ca3af]">
+            <p className="mt-5 text-sm text-muted">
               Todavía no hay escaneos.
             </p>
           ) : (
@@ -219,14 +219,14 @@ export default async function SuperAdminMetricsPage() {
                 .map(([type, count]) => (
                   <li key={type}>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-semibold text-[#d7dce3]">
+                      <span className="font-semibold text-subtle">
                         {BADGE_TYPE_LABELS_ES[type] ?? type}
                       </span>
-                      <span className="text-[#a8d889]">{count}</span>
+                      <span className="text-sage">{count}</span>
                     </div>
-                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#1f252d]">
+                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-low">
                       <div
-                        className="h-full rounded-full bg-[#a8d889]"
+                        className="h-full rounded-full bg-sage"
                         style={{ width: `${barWidth(count, maxTypeCount)}%` }}
                       />
                     </div>
@@ -238,15 +238,15 @@ export default async function SuperAdminMetricsPage() {
       </div>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">
+        <h2 className="text-lg font-bold text-foreground">
           Eventos con más participación
         </h2>
-        <p className="mt-1 text-sm text-[#9ca3af]">
+        <p className="mt-1 text-sm text-muted">
           Ordenados por asistentes registrados y luego por escaneos.
         </p>
 
         {topEvents.length === 0 ? (
-          <p className="mt-5 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-6 text-center text-sm text-[#9ca3af]">
+          <p className="mt-5 rounded-lg border border-stroke bg-surface-low px-4 py-6 text-center text-sm text-muted">
             Todavía no hay eventos creados.
           </p>
         ) : (
@@ -257,22 +257,22 @@ export default async function SuperAdminMetricsPage() {
                   <div className="min-w-0">
                     <Link
                       href={`/admin/events/${event.id}`}
-                      className="truncate font-semibold text-[#f1f1ed] transition hover:text-[#7fd8f5]"
+                      className="truncate font-semibold text-foreground transition hover:text-celeste-soft"
                     >
                       {event.name}
                     </Link>
-                    <p className="text-xs text-[#9ca3af]">
+                    <p className="text-xs text-muted">
                       {event.companyName ?? "Sin empresa"} · {event.attendees}{" "}
                       asistentes · {event.scans} escaneos
                     </p>
                   </div>
-                  <span className="shrink-0 text-sm font-bold text-[#a8d889]">
+                  <span className="shrink-0 text-sm font-bold text-sage">
                     {event.attendees}
                   </span>
                 </div>
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#1f252d]">
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-low">
                   <div
-                    className="h-full rounded-full bg-[#36bde9]"
+                    className="h-full rounded-full bg-celeste"
                     style={{
                       width: `${barWidth(event.scans, maxEventScans)}%`,
                     }}

@@ -158,7 +158,7 @@ export default function AddBadgeForm({
             {BADGE_ICON_KEYS.map((key) => (
               <label
                 key={key}
-                className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-[#39424f] bg-[#1f252d] px-2 py-3 text-center text-[11px] font-semibold text-[#9ca3af] transition has-[:checked]:border-[#36bde9] has-[:checked]:bg-[#36bde9]/15 has-[:checked]:text-[#7fd8f5]"
+                className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-stroke bg-surface-low px-2 py-3 text-center text-[11px] font-semibold text-muted transition has-[:checked]:border-celeste has-[:checked]:bg-celeste/15 has-[:checked]:text-celeste-soft"
               >
                 <input
                   type="radio"
@@ -175,7 +175,7 @@ export default function AddBadgeForm({
         </fieldset>
       </div>
 
-      <p className="mt-3 text-xs text-[#9ca3af]">
+      <p className="mt-3 text-xs text-muted">
         Reutilizar un nombre del catálogo conserva el XP, la descripción, el
         tipo, la rareza y el ícono actuales de esa insignia.
       </p>
@@ -183,7 +183,7 @@ export default function AddBadgeForm({
       {state.status === "error" ? (
         <p
           role="alert"
-          className="mt-3 rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+          className="mt-3 rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
         >
           {state.message}
         </p>

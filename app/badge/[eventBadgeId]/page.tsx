@@ -62,17 +62,17 @@ export default async function BadgePage({ params }: BadgePageProps) {
   const eventDate = formatDate(event.startsAt);
 
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
             Badge
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{badge.name}</h1>
         </header>
 
         <div className="space-y-6 sm:space-y-8">
-          <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8">
+          <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
             <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:text-left">
               {badge.imageUrl ? (
                 <Image
@@ -86,40 +86,40 @@ export default async function BadgePage({ params }: BadgePageProps) {
               ) : (
                 <div
                   aria-hidden="true"
-                  className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-[#a8d889] text-4xl font-black text-[#263021]"
+                  className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-sage text-4xl font-black text-[#263021]"
                 >
                   {badge.name.charAt(0).toUpperCase()}
                 </div>
               )}
 
               <div>
-                <h2 className="text-xl font-bold text-[#f1f1ed]">
+                <h2 className="text-xl font-bold text-foreground">
                   {badge.name}
                 </h2>
                 {badge.description ? (
-                  <p className="mt-2 text-sm text-[#d7dce3]">
+                  <p className="mt-2 text-sm text-subtle">
                     {badge.description}
                   </p>
                 ) : null}
-                <p className="mt-3 text-sm font-semibold text-[#a8d889]">
+                <p className="mt-3 text-sm font-semibold text-sage">
                   +{badge.xpValue} XP
                 </p>
                 {eventBadge.room ? (
-                  <p className="mt-1 text-sm text-[#9ca3af]">
+                  <p className="mt-1 text-sm text-muted">
                     {eventBadge.room}
                   </p>
                 ) : null}
-                <p className="mt-4 text-sm text-[#9ca3af]">{event.name}</p>
-                <p className="mt-1 text-sm text-[#89919e]">{eventDate}</p>
+                <p className="mt-4 text-sm text-muted">{event.name}</p>
+                <p className="mt-1 text-sm text-muted">{eventDate}</p>
               </div>
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8">
-            <h2 className="text-xl font-bold text-[#f1f1ed]">
+          <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
+            <h2 className="text-xl font-bold text-foreground">
               Share this badge
             </h2>
-            <p className="mt-2 text-sm text-[#9ca3af]">
+            <p className="mt-2 text-sm text-muted">
               Show off what you collected and let the rest of the room know
               which talks are worth attending.
             </p>
@@ -134,17 +134,17 @@ export default async function BadgePage({ params }: BadgePageProps) {
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#394351] bg-[#1f252d] p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <section className="rounded-xl border border-stroke bg-surface-low p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
+            <h2 className="text-lg font-bold text-foreground">
               Not collecting badges yet?
             </h2>
-            <p className="mt-2 text-sm text-[#9ca3af]">
+            <p className="mt-2 text-sm text-muted">
               Create an account, scan the QR codes at the talks and stands, and
               start your own collection.
             </p>
             <Link
               href="/login"
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#a8d889] px-6 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
             >
               Create an account
             </Link>

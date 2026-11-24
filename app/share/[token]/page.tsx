@@ -63,22 +63,22 @@ export default async function SharePage({ params }: SharePageProps) {
   });
 
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[960px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
             Shared collection
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
             {collection.attendeeName}&apos;s collection
           </h1>
-          <p className="mt-2 text-sm text-[#9ca3af]">
+          <p className="mt-2 text-sm text-muted">
             {collection.eventName} · {collection.eventDate}
           </p>
         </header>
 
         <div className="space-y-6">
-          <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-4 shadow-2xl shadow-black/30 sm:p-8">
+          <section className="rounded-xl border border-stroke bg-surface p-4 shadow-2xl shadow-black/30 sm:p-8">
             <Image
               src={imageUrl}
               alt={`${collection.attendeeName}'s ${collection.eventName} badge collection`}
@@ -89,19 +89,19 @@ export default async function SharePage({ params }: SharePageProps) {
             />
 
             <dl className="mt-6 grid grid-cols-2 gap-3 text-center">
-              <div className="rounded-lg border border-[#394351] bg-[#1f252d] px-4 py-3">
-                <dt className="text-xs font-semibold uppercase tracking-widest text-[#9ca3af]">
+              <div className="rounded-lg border border-stroke bg-surface-low px-4 py-3">
+                <dt className="text-xs font-semibold uppercase tracking-widest text-muted">
                   Badges
                 </dt>
-                <dd className="mt-1 text-lg font-bold text-[#f1f1ed]">
+                <dd className="mt-1 text-lg font-bold text-foreground">
                   {collection.collected} / {collection.total}
                 </dd>
               </div>
-              <div className="rounded-lg border border-[#394351] bg-[#1f252d] px-4 py-3">
-                <dt className="text-xs font-semibold uppercase tracking-widest text-[#9ca3af]">
+              <div className="rounded-lg border border-stroke bg-surface-low px-4 py-3">
+                <dt className="text-xs font-semibold uppercase tracking-widest text-muted">
                   XP
                 </dt>
-                <dd className="mt-1 text-lg font-bold text-[#a8d889]">
+                <dd className="mt-1 text-lg font-bold text-sage">
                   {collection.xp}
                 </dd>
               </div>
@@ -117,17 +117,17 @@ export default async function SharePage({ params }: SharePageProps) {
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#394351] bg-[#1f252d] p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <section className="rounded-xl border border-stroke bg-surface-low p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
+            <h2 className="text-lg font-bold text-foreground">
               Collect your own badges
             </h2>
-            <p className="mt-2 text-sm text-[#9ca3af]">
+            <p className="mt-2 text-sm text-muted">
               Scan the QR codes at Lyfter talks and stands, earn XP, and build
               your own collection.
             </p>
             <Link
               href="/login"
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#a8d889] px-6 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
             >
               Create an account
             </Link>

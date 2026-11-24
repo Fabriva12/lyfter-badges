@@ -16,6 +16,7 @@ dominio están en [`PLAN.md`](./PLAN.md).
 ## Documentación
 
 - [`docs/architecture.md`](./docs/architecture.md) — capas, regla de dependencias y flujos.
+- [`docs/design-tokens.md`](./docs/design-tokens.md) — paleta oficial, tokens y reglas de contraste.
 - [`docs/database.md`](./docs/database.md) — entidades, relaciones e invariantes.
 - [`docs/schema.sql`](./docs/schema.sql) — SQL generado desde `prisma/schema.prisma`.
 

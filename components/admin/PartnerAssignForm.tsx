@@ -62,7 +62,7 @@ export default function PartnerAssignForm({
       </div>
 
       {state.status === "error" ? (
-        <p role="alert" className="text-xs text-[#ffb3ba]">
+        <p role="alert" className="text-xs text-coral-soft">
           {state.message}
         </p>
       ) : null}

@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 
 import { formatDate } from "@/lib/date";
 import { loadPublicEventBadge } from "@/lib/share/collection";
+import { BRAND_COLORS, SAGE_TINT_RGBA, UI_COLORS } from "@/lib/theme/colors";
 
 export const runtime = "nodejs";
 export const alt = "Lyfter Badges";
@@ -50,7 +51,7 @@ function FallbackCard() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#171b21",
+        backgroundColor: UI_COLORS.background,
         padding: 72,
       }}
     >
@@ -58,7 +59,7 @@ function FallbackCard() {
         style={{
           display: "flex",
           fontSize: 72,
-          color: "#f1f1ed",
+          color: UI_COLORS.foreground,
           letterSpacing: -1,
         }}
       >
@@ -69,7 +70,7 @@ function FallbackCard() {
           display: "flex",
           marginTop: 24,
           fontSize: 32,
-          color: "#9ca3af",
+          color: UI_COLORS.muted,
         }}
       >
         Collect badges, earn XP, and level up.
@@ -98,7 +99,7 @@ export default async function Image({ params }: ImageParams) {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          backgroundColor: "#171b21",
+          backgroundColor: UI_COLORS.background,
           padding: 72,
         }}
       >
@@ -114,12 +115,12 @@ export default async function Image({ params }: ImageParams) {
               display: "flex",
               fontSize: 26,
               letterSpacing: 5,
-              color: "#a8d889",
+              color: BRAND_COLORS.sage,
             }}
           >
             LYFTER BADGES
           </div>
-          <div style={{ display: "flex", fontSize: 26, color: "#89919e" }}>
+          <div style={{ display: "flex", fontSize: 26, color: UI_COLORS.muted }}>
             {event.name}
           </div>
         </div>
@@ -139,7 +140,7 @@ export default async function Image({ params }: ImageParams) {
               width: 128,
               height: 128,
               borderRadius: 32,
-              backgroundColor: "#a8d889",
+              backgroundColor: BRAND_COLORS.sage,
               color: "#263021",
               fontSize: 64,
             }}
@@ -153,7 +154,7 @@ export default async function Image({ params }: ImageParams) {
               marginTop: 36,
               fontSize: 66,
               lineHeight: 1.1,
-              color: "#f1f1ed",
+              color: UI_COLORS.foreground,
             }}
           >
             {badge.name}
@@ -166,7 +167,7 @@ export default async function Image({ params }: ImageParams) {
                 marginTop: 20,
                 fontSize: 30,
                 lineHeight: 1.3,
-                color: "#9ca3af",
+                color: UI_COLORS.muted,
               }}
             >
               {badge.description}
@@ -187,8 +188,8 @@ export default async function Image({ params }: ImageParams) {
               display: "flex",
               padding: "12px 28px",
               borderRadius: 40,
-              backgroundColor: "rgba(168, 216, 137, 0.15)",
-              color: "#a8d889",
+              backgroundColor: SAGE_TINT_RGBA,
+              color: BRAND_COLORS.sage,
               fontSize: 30,
             }}
           >
@@ -203,8 +204,8 @@ export default async function Image({ params }: ImageParams) {
                 borderRadius: 40,
                 borderWidth: 2,
                 borderStyle: "solid",
-                borderColor: "#394351",
-                color: "#d7dce3",
+                borderColor: UI_COLORS.stroke,
+                color: UI_COLORS.subtle,
                 fontSize: 30,
               }}
             >
@@ -217,7 +218,7 @@ export default async function Image({ params }: ImageParams) {
               display: "flex",
               marginLeft: "auto",
               fontSize: 28,
-              color: "#89919e",
+              color: UI_COLORS.muted,
             }}
           >
             {eventDate}

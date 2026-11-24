@@ -32,12 +32,12 @@ const BLOCKED_MESSAGES: Partial<Record<ScanTarget["status"], string>> = {
 
 function BlockedScan({ message }: { message: string }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#171b21] px-4 py-10 sm:py-16">
-      <div className="w-full max-w-md rounded-xl border border-[#39424f] bg-[#252c35] p-6 text-center shadow-2xl shadow-black/30 sm:p-8">
-        <h1 className="text-lg font-bold text-[#f1f1ed]">{message}</h1>
+    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 sm:py-16">
+      <div className="w-full max-w-md rounded-xl border border-stroke bg-surface p-6 text-center shadow-2xl shadow-black/30 sm:p-8">
+        <h1 className="text-lg font-bold text-foreground">{message}</h1>
         <Link
           href="/scan"
-          className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-[#39424f] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+          className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
         >
           Scan a QR code
         </Link>
@@ -94,17 +94,17 @@ export default async function ScanPage({ params }: ScanPageProps) {
   const origin = await getRequestOrigin();
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-[#171b21] px-4 py-10 sm:py-16">
-      <div className="w-full max-w-md rounded-xl border border-[#39424f] bg-[#252c35] p-6 text-center shadow-2xl shadow-black/30 sm:p-8">
+    <main className="flex min-h-screen flex-col items-center bg-background px-4 py-10 sm:py-16">
+      <div className="w-full max-w-md rounded-xl border border-stroke bg-surface p-6 text-center shadow-2xl shadow-black/30 sm:p-8">
         {isWelcome ? (
           <>
-            <p className="text-sm font-semibold uppercase tracking-widest text-[#36bde9]">
+            <p className="text-sm font-semibold uppercase tracking-widest text-celeste">
               Check in
             </p>
-            <h1 className="mt-3 text-2xl font-bold text-[#f1f1ed]">
+            <h1 className="mt-3 text-2xl font-bold text-foreground">
               {qr.event.name}
             </h1>
-            <p className="mt-3 text-sm text-[#9ca3af]">
+            <p className="mt-3 text-sm text-muted">
               Welcome! Claim your check-in below.
             </p>
           </>
@@ -122,35 +122,35 @@ export default async function ScanPage({ params }: ScanPageProps) {
             ) : (
               <div
                 aria-hidden="true"
-                className="mx-auto flex h-24 w-24 items-center justify-center rounded-2xl bg-[#a8d889] text-4xl font-black text-[#263021]"
+                className="mx-auto flex h-24 w-24 items-center justify-center rounded-2xl bg-sage text-4xl font-black text-[#263021]"
               >
                 {badge.name.charAt(0).toUpperCase()}
               </div>
             )}
-            <h1 className="mt-5 text-2xl font-bold text-[#f1f1ed]">
+            <h1 className="mt-5 text-2xl font-bold text-foreground">
               {badge.name}
             </h1>
             {badge.description ? (
-              <p className="mt-2 text-sm text-[#d7dce3]">{badge.description}</p>
+              <p className="mt-2 text-sm text-subtle">{badge.description}</p>
             ) : null}
-            <p className="mt-3 text-sm font-semibold text-[#a8d889]">
+            <p className="mt-3 text-sm font-semibold text-sage">
               +{badge.xpValue} XP
             </p>
             {qr.eventBadge?.room ? (
-              <p className="mt-1 text-sm text-[#9ca3af]">
+              <p className="mt-1 text-sm text-muted">
                 {qr.eventBadge.room}
               </p>
             ) : null}
-            <p className="mt-4 text-sm text-[#9ca3af]">{qr.event.name}</p>
+            <p className="mt-4 text-sm text-muted">{qr.event.name}</p>
           </>
         ) : (
           <>
-            <h1 className="text-lg font-bold text-[#f1f1ed]">
+            <h1 className="text-lg font-bold text-foreground">
               This QR code is not configured correctly.
             </h1>
             <Link
               href="/"
-              className="mt-6 inline-block rounded-lg border border-[#39424f] px-6 py-3 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="mt-6 inline-block rounded-lg border border-stroke px-6 py-3 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Go to the homepage
             </Link>

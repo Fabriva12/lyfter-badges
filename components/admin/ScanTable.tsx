@@ -12,7 +12,7 @@ export default function ScanTable({
 }: ScanTableProps) {
   if (scans.length === 0) {
     return (
-      <p className="rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-6 text-center text-sm text-[#9ca3af]">
+      <p className="rounded-lg border border-stroke bg-surface-low px-4 py-6 text-center text-sm text-muted">
         {emptyMessage}
       </p>
     );
@@ -24,24 +24,24 @@ export default function ScanTable({
         {scans.map((scan) => (
           <li
             key={scan.id}
-            className="rounded-lg border border-[#39424f] bg-[#1f252d] p-4"
+            className="rounded-lg border border-stroke bg-surface-low p-4"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-[#f1f1ed]">
+                <p className="truncate text-sm font-semibold text-foreground">
                   {scan.attendeeName}
                 </p>
-                <p className="truncate text-xs text-[#6b7280]">
+                <p className="truncate text-xs text-muted">
                   {scan.attendeeEmail}
                 </p>
               </div>
-              <span className="shrink-0 text-sm font-semibold text-[#a8d889]">
+              <span className="shrink-0 text-sm font-semibold text-sage">
                 +{scan.xpAwarded}
               </span>
             </div>
 
-            <p className="mt-3 text-sm text-[#d7dce3]">{scan.badgeName}</p>
-            <p className="mt-1 text-xs text-[#9ca3af]">
+            <p className="mt-3 text-sm text-subtle">{scan.badgeName}</p>
+            <p className="mt-1 text-xs text-muted">
               {formatDateTime(scan.scannedAt)}
             </p>
           </li>
@@ -50,7 +50,7 @@ export default function ScanTable({
 
       <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-widest text-[#9ca3af]">
+          <thead className="text-xs uppercase tracking-widest text-muted">
             <tr>
               <th className="py-2 pr-4 font-semibold">Asistente</th>
               <th className="py-2 pr-4 font-semibold">Insignia</th>
@@ -58,18 +58,18 @@ export default function ScanTable({
               <th className="py-2 font-semibold">Cuándo</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#303743]">
+          <tbody className="divide-y divide-stroke">
             {scans.map((scan) => (
               <tr key={scan.id}>
-                <td className="py-3 pr-4 text-[#f1f1ed]">
+                <td className="py-3 pr-4 text-foreground">
                   {scan.attendeeName}
-                  <span className="block text-xs text-[#6b7280]">
+                  <span className="block text-xs text-muted">
                     {scan.attendeeEmail}
                   </span>
                 </td>
-                <td className="py-3 pr-4 text-[#d7dce3]">{scan.badgeName}</td>
-                <td className="py-3 pr-4 text-[#a8d889]">+{scan.xpAwarded}</td>
-                <td className="py-3 text-[#9ca3af]">
+                <td className="py-3 pr-4 text-subtle">{scan.badgeName}</td>
+                <td className="py-3 pr-4 text-sage">+{scan.xpAwarded}</td>
+                <td className="py-3 text-muted">
                   {formatDateTime(scan.scannedAt)}
                 </td>
               </tr>

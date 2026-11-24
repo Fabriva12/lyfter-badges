@@ -43,7 +43,7 @@ function ErrorMessage({ message }: { message?: string }) {
   }
 
   return (
-    <p role="alert" className="mt-2 text-xs text-[#ffb3ba]">
+    <p role="alert" className="mt-2 text-xs text-coral-soft">
       {message}
     </p>
   );
@@ -79,8 +79,8 @@ export default function BadgeEditForm({
   const shared = isCatalogBadgeShared(catalogUsage);
 
   return (
-    <details className="mt-4 rounded-lg border border-[#303743] bg-[#1f252d] px-4 py-3">
-      <summary className="cursor-pointer text-sm font-semibold text-[#d7dce3]">
+    <details className="mt-4 rounded-lg border border-stroke bg-surface-low px-4 py-3">
+      <summary className="cursor-pointer text-sm font-semibold text-subtle">
         Editar o quitar insignia
       </summary>
 
@@ -89,10 +89,10 @@ export default function BadgeEditForm({
           <input type="hidden" name="eventId" value={eventId} />
           <input type="hidden" name="eventBadgeId" value={eventBadgeId} />
 
-          <h4 className="text-sm font-bold text-[#f1f1ed]">
+          <h4 className="text-sm font-bold text-foreground">
             Programación del evento
           </h4>
-          <p className="mt-1 text-xs text-[#9ca3af]">
+          <p className="mt-1 text-xs text-muted">
             La sala y la hora de inicio son propias de este evento.
           </p>
 
@@ -144,9 +144,9 @@ export default function BadgeEditForm({
           </button>
         </form>
 
-        <div className="border-t border-[#303743] pt-5">
+        <div className="border-t border-stroke pt-5">
           {shared ? (
-            <p className="rounded-lg border border-[#ffc875]/40 bg-[#ffc875]/10 px-4 py-3 text-xs text-[#ffe0b2]">
+            <p className="rounded-lg border border-peach/40 bg-peach/10 px-4 py-3 text-xs text-peach/70">
               Esta insignia se usa en {catalogUsage} eventos. Editar la entrada
               del catálogo cambiaría el nombre, el XP y el ícono en todos
               lados, por eso acá es de solo lectura. Agregá una insignia con
@@ -157,10 +157,10 @@ export default function BadgeEditForm({
               <input type="hidden" name="eventId" value={eventId} />
               <input type="hidden" name="eventBadgeId" value={eventBadgeId} />
 
-              <h4 className="text-sm font-bold text-[#f1f1ed]">
+              <h4 className="text-sm font-bold text-foreground">
                 Catálogo de insignias
               </h4>
-              <p className="mt-1 text-xs text-[#9ca3af]">
+              <p className="mt-1 text-xs text-muted">
                 Solo este evento usa esta insignia, así que todavía se pueden
                 cambiar su nombre, XP e ícono.
               </p>
@@ -267,7 +267,7 @@ export default function BadgeEditForm({
                     {BADGE_ICON_KEYS.map((key) => (
                       <label
                         key={key}
-                        className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-[#39424f] bg-[#171b21] px-2 py-3 text-center text-[11px] font-semibold text-[#9ca3af] transition has-[:checked]:border-[#36bde9] has-[:checked]:bg-[#36bde9]/15 has-[:checked]:text-[#7fd8f5]"
+                        className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-stroke bg-background px-2 py-3 text-center text-[11px] font-semibold text-muted transition has-[:checked]:border-celeste has-[:checked]:bg-celeste/15 has-[:checked]:text-celeste-soft"
                       >
                         <input
                           type="radio"
@@ -303,15 +303,15 @@ export default function BadgeEditForm({
 
         <form
           action={removeAction}
-          className="border-t border-[#303743] pt-5"
+          className="border-t border-stroke pt-5"
         >
           <input type="hidden" name="eventId" value={eventId} />
           <input type="hidden" name="eventBadgeId" value={eventBadgeId} />
 
-          <h4 className="text-sm font-bold text-[#f1f1ed]">
+          <h4 className="text-sm font-bold text-foreground">
             Quitar insignia
           </h4>
-          <p className="mt-1 text-xs text-[#9ca3af]">
+          <p className="mt-1 text-xs text-muted">
             {scans > 0
               ? `Esta insignia ya tiene ${scans} ${
                   scans === 1 ? "escaneo" : "escaneos"
@@ -339,7 +339,7 @@ export default function BadgeEditForm({
             <button
               type="submit"
               disabled={removePending || scans > 0}
-              className="rounded-lg border border-[#f47f8a]/50 px-4 py-2 text-xs font-semibold text-[#ffb3ba] transition hover:bg-[#f47f8a]/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg border border-coral/50 px-4 py-2 text-xs font-semibold text-coral-soft transition hover:bg-coral/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {removePending ? "Quitando…" : "Quitar del evento"}
             </button>

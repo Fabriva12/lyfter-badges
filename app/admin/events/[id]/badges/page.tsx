@@ -55,12 +55,12 @@ export default async function AdminBadgesPage({
       <div>
         <Link
           href={`/admin/events/${event.id}`}
-          className="text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+          className="text-sm font-semibold text-muted transition hover:text-foreground"
         >
           ← {event.name}
         </Link>
         <h1 className="mt-3 text-2xl font-bold sm:text-3xl">Insignias y QR</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Cada insignia tiene su propio token QR. Imprímelo y pégalo en la pared
           de las charlas o en el stand; el token de bienvenida va en la entrada.
         </p>
@@ -73,8 +73,8 @@ export default async function AdminBadgesPage({
       <EventTabs eventId={event.id} active="badges" />
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">Agregar una insignia</h2>
-        <p className="mt-1 text-sm text-[#9ca3af]">
+        <h2 className="text-lg font-bold text-foreground">Agregar una insignia</h2>
+        <p className="mt-1 text-sm text-muted">
           Elige un nombre del catálogo o escribe uno nuevo.
         </p>
 
@@ -84,12 +84,12 @@ export default async function AdminBadgesPage({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-bold text-[#f1f1ed]">
+        <h2 className="text-lg font-bold text-foreground">
           Insignias del evento ({badges.length})
         </h2>
 
         {badges.length === 0 ? (
-          <p className="rounded-xl border border-[#39424f] bg-[#252c35] px-4 py-8 text-center text-sm text-[#9ca3af]">
+          <p className="rounded-xl border border-stroke bg-surface px-4 py-8 text-center text-sm text-muted">
             Este evento todavía no tiene insignias. Agrega la primera arriba.
           </p>
         ) : (
@@ -108,15 +108,15 @@ export default async function AdminBadgesPage({
       </section>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">QR de bienvenida</h2>
-        <p className="mt-1 text-sm text-[#9ca3af]">
+        <h2 className="text-lg font-bold text-foreground">QR de bienvenida</h2>
+        <p className="mt-1 text-sm text-muted">
           Un token de bienvenida registra la entrada del asistente. No otorga XP;
           las insignias solo cuentan después del registro.
         </p>
 
         <ul className="mt-5 space-y-3">
           {welcomeTokens.length === 0 ? (
-            <li className="text-sm text-[#9ca3af]">
+            <li className="text-sm text-muted">
               Todavía no hay token de bienvenida. Crea uno para la entrada del evento.
             </li>
           ) : (

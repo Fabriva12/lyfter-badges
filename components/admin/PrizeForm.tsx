@@ -39,10 +39,10 @@ export default function PrizeForm({
     <form action={formAction} className={cardClassName}>
       <input type="hidden" name="eventId" value={eventId} />
 
-      <h2 className="text-lg font-bold text-[#f1f1ed]">
+      <h2 className="text-lg font-bold text-foreground">
         {prize ? "Editar premio" : "Crear premio"}
       </h2>
-      <p className="mt-1 text-sm text-[#9ca3af]">
+      <p className="mt-1 text-sm text-muted">
         El premio permanece secreto para los asistentes hasta que completen la
         cantidad de insignias requerida. Anunciarlo revela los detalles a todos
         sin otorgarlo.
@@ -81,7 +81,7 @@ export default function PrizeForm({
             className={inputClassName}
             disabled={!canSave}
           />
-          <p className="mt-1 text-xs text-[#9ca3af]">
+          <p className="mt-1 text-xs text-muted">
             Este evento tiene {badgeCount}{" "}
             {badgeCount === 1 ? "insignia" : "insignias"}.
           </p>
@@ -118,20 +118,20 @@ export default function PrizeForm({
           />
         </div>
 
-        <label className="flex items-center gap-3 text-sm font-semibold text-[#d7dce3] sm:col-span-2">
+        <label className="flex items-center gap-3 text-sm font-semibold text-subtle sm:col-span-2">
           <input
             type="checkbox"
             name="announce"
             defaultChecked={Boolean(prize?.revealedAt)}
             disabled={!canSave}
-            className="h-4 w-4 rounded border-[#39424f] bg-[#171b21]"
+            className="h-4 w-4 rounded border-stroke bg-background"
           />
           Anunciar el premio a todos los asistentes ahora
         </label>
       </div>
 
       {!canSave ? (
-        <p className="mt-4 rounded-lg border border-[#ffc875]/40 bg-[#ffc875]/10 px-4 py-3 text-sm font-medium text-[#ffe0b2]">
+        <p className="mt-4 rounded-lg border border-peach/40 bg-peach/10 px-4 py-3 text-sm font-medium text-peach/70">
           Agregá al menos una insignia al evento antes de crear un premio.
         </p>
       ) : null}
@@ -139,7 +139,7 @@ export default function PrizeForm({
       {state.status === "error" ? (
         <p
           role="alert"
-          className="mt-4 rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+          className="mt-4 rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
         >
           {state.message}
         </p>

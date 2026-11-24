@@ -21,7 +21,7 @@ export default function Spinner({
     <span role="status" className="inline-flex">
       <span
         aria-hidden="true"
-        className={`block rounded-full border-[#39424f] border-t-[#a8d889] motion-safe:animate-spin motion-reduce:animate-pulse ${sizeClasses[size]} ${className}`}
+        className={`block rounded-full border-stroke border-t-sage motion-safe:animate-spin motion-reduce:animate-pulse ${sizeClasses[size]} ${className}`}
       />
       <span className="sr-only">{label}</span>
     </span>

@@ -29,8 +29,8 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
 
   return (
     <section className={cardClassName}>
-      <h2 className="text-lg font-bold text-[#f1f1ed]">Galería</h2>
-      <p className="mt-1 text-sm text-[#9ca3af]">
+      <h2 className="text-lg font-bold text-foreground">Galería</h2>
+      <p className="mt-1 text-sm text-muted">
         Fotos del evento. Pegá una URL pública de imagen; usá las flechas para
         reordenar y la primera imagen se usa como portada en el listado público.
       </p>
@@ -71,7 +71,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
         {state.status === "error" ? (
           <p
             role="alert"
-            className="mt-4 rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+            className="mt-4 rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
           >
             {state.message}
           </p>
@@ -87,7 +87,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
       </form>
 
       {images.length === 0 ? (
-        <p className="mt-6 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-6 text-center text-sm text-[#9ca3af]">
+        <p className="mt-6 rounded-lg border border-stroke bg-surface-low px-4 py-6 text-center text-sm text-muted">
           Todavía no hay imágenes.
         </p>
       ) : (
@@ -95,7 +95,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
           {images.map((image, index) => (
             <li
               key={image.id}
-              className="overflow-hidden rounded-lg border border-[#39424f] bg-[#1f252d]"
+              className="overflow-hidden rounded-lg border border-stroke bg-surface-low"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -105,11 +105,11 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
               />
               <div className="space-y-3 p-3">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="min-w-0 truncate text-xs text-[#9ca3af]">
+                  <p className="min-w-0 truncate text-xs text-muted">
                     {image.alt ?? image.url}
                   </p>
                   {index === 0 ? (
-                    <span className="shrink-0 rounded-full bg-[#a8d889]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#d8f0c4]">
+                    <span className="shrink-0 rounded-full bg-sage/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sage/60">
                       Portada
                     </span>
                   ) : null}
@@ -124,7 +124,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
                       type="submit"
                       disabled={index === 0}
                       aria-label={`Subir ${image.alt ?? "imagen"}`}
-                      className="rounded border border-[#394351] px-2 py-1 text-xs font-semibold text-[#d7dce3] transition hover:bg-[#272d36] disabled:cursor-not-allowed disabled:opacity-40"
+                      className="rounded border border-stroke px-2 py-1 text-xs font-semibold text-subtle transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       ↑
                     </button>
@@ -138,7 +138,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
                       type="submit"
                       disabled={index === images.length - 1}
                       aria-label={`Bajar ${image.alt ?? "imagen"}`}
-                      className="rounded border border-[#394351] px-2 py-1 text-xs font-semibold text-[#d7dce3] transition hover:bg-[#272d36] disabled:cursor-not-allowed disabled:opacity-40"
+                      className="rounded border border-stroke px-2 py-1 text-xs font-semibold text-subtle transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       ↓
                     </button>
@@ -150,7 +150,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
                       <input type="hidden" name="imageId" value={image.id} />
                       <button
                         type="submit"
-                        className="text-xs font-semibold text-[#7fd8f5] transition hover:text-[#c9effb]"
+                        className="text-xs font-semibold text-celeste-soft transition hover:text-celeste/60"
                       >
                         Definir portada
                       </button>
@@ -162,7 +162,7 @@ export default function EventGallery({ eventId, images }: EventGalleryProps) {
                     <input type="hidden" name="imageId" value={image.id} />
                     <button
                       type="submit"
-                      className="ml-auto text-xs font-semibold text-[#f47f8a] transition hover:text-[#ffb3ba]"
+                      className="ml-auto text-xs font-semibold text-coral transition hover:text-coral-soft"
                     >
                       Quitar
                     </button>

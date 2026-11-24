@@ -112,11 +112,11 @@ export default async function AdminAuditPage({
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Admin
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Registro de auditoría</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Todas las acciones administrativas en las empresas que administras, de
           la más reciente a la más antigua. Las horas se muestran en la hora
           local de Costa Rica.
@@ -204,14 +204,14 @@ export default async function AdminAuditPage({
           <div className="flex gap-2 sm:col-span-2 lg:col-span-4">
             <button
               type="submit"
-              className="rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Filtrar
             </button>
             {hasFilters ? (
               <Link
                 href="/admin/audit"
-                className="rounded-lg px-4 py-2 text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+                className="rounded-lg px-4 py-2 text-sm font-semibold text-muted transition hover:text-foreground"
               >
                 Limpiar
               </Link>
@@ -219,19 +219,19 @@ export default async function AdminAuditPage({
           </div>
         </form>
 
-        <p className="mt-5 text-sm text-[#9ca3af]">
+        <p className="mt-5 text-sm text-muted">
           {logs.total} {logs.total === 1 ? "registro" : "registros"}
           {logs.query ? ` que coinciden con “${logs.query}”` : ""}.
         </p>
 
         <div className="mt-4 overflow-x-auto">
           {logs.rows.length === 0 ? (
-            <p className="rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-8 text-center text-sm text-[#9ca3af]">
+            <p className="rounded-lg border border-stroke bg-surface-low px-4 py-8 text-center text-sm text-muted">
               Ningún registro de auditoría coincide con este filtro.
             </p>
           ) : (
             <table className="w-full min-w-[720px] text-left text-sm">
-              <thead className="text-xs uppercase tracking-widest text-[#9ca3af]">
+              <thead className="text-xs uppercase tracking-widest text-muted">
                 <tr>
                   <th className="py-2 pr-4 font-semibold">Cuándo</th>
                   <th className="py-2 pr-4 font-semibold">Actor</th>
@@ -240,29 +240,29 @@ export default async function AdminAuditPage({
                   <th className="py-2 font-semibold">Detalle</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#303743]">
+              <tbody className="divide-y divide-stroke">
                 {logs.rows.map((row) => (
                   <tr key={row.id}>
-                    <td className="whitespace-nowrap py-3 pr-4 align-top text-[#9ca3af]">
+                    <td className="whitespace-nowrap py-3 pr-4 align-top text-muted">
                       {formatDateTime(row.createdAt)}
                     </td>
-                    <td className="py-3 pr-4 align-top text-[#f1f1ed]">
+                    <td className="py-3 pr-4 align-top text-foreground">
                       {row.actorName}
-                      <span className="block text-xs text-[#6b7280]">
+                      <span className="block text-xs text-muted">
                         {row.actorRole
                           ? (ROLE_LABELS_EN[row.actorRole] ?? row.actorRole)
                           : "Rol desconocido"}
                       </span>
                     </td>
                     <td className="py-3 pr-4 align-top">
-                      <span className="whitespace-nowrap rounded-full bg-[#36bde9]/10 px-2.5 py-0.5 text-xs font-semibold text-[#7fd8f5]">
+                      <span className="whitespace-nowrap rounded-full bg-celeste/10 px-2.5 py-0.5 text-xs font-semibold text-celeste-soft">
                         {auditActionLabel(row.action)}
                       </span>
                     </td>
-                    <td className="py-3 pr-4 align-top text-xs text-[#9ca3af]">
+                    <td className="py-3 pr-4 align-top text-xs text-muted">
                       {row.eventName ?? row.companyName ?? "—"}
                     </td>
-                    <td className="py-3 align-top text-[#d7dce3]">
+                    <td className="py-3 align-top text-subtle">
                       {row.summary}
                     </td>
                   </tr>
@@ -280,7 +280,7 @@ export default async function AdminAuditPage({
             {logs.page > 1 ? (
               <Link
                 href={auditHref(logs.page - 1, filters)}
-                className="font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+                className="font-semibold text-celeste hover:text-celeste-soft"
               >
                 ← Más recientes
               </Link>
@@ -288,14 +288,14 @@ export default async function AdminAuditPage({
               <span />
             )}
 
-            <span className="text-[#9ca3af]">
+            <span className="text-muted">
               Página {logs.page} de {totalPages}
             </span>
 
             {logs.page < totalPages ? (
               <Link
                 href={auditHref(logs.page + 1, filters)}
-                className="font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+                className="font-semibold text-celeste hover:text-celeste-soft"
               >
                 Más antiguas →
               </Link>

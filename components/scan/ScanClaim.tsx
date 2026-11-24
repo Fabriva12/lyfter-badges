@@ -282,31 +282,31 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
           event.preventDefault();
           retryNow();
         }}
-        className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-7"
+        className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-7"
       >
         {done?.status === "collected" ? (
           <div
             role="status"
-            className="rounded-lg border border-[#a8d889]/40 bg-[#a8d889]/10 px-4 py-4 text-center"
+            className="rounded-lg border border-sage/40 bg-sage/10 px-4 py-4 text-center"
           >
-            <p className="text-base font-bold text-[#a8d889]">
+            <p className="text-base font-bold text-sage">
               {done.badge.name}
             </p>
-            <p className="mt-1 text-sm font-semibold text-[#a8d889]">
+            <p className="mt-1 text-sm font-semibold text-sage">
               {done.alreadyCollected
                 ? `${done.badge.xpAwarded} XP awarded`
                 : `+${done.badge.xpAwarded} XP`}
             </p>
-            <p className="mt-2 text-sm text-[#d7dce3]">
+            <p className="mt-2 text-sm text-subtle">
               Badge collected at {done.eventName}.
             </p>
             {done.levelUp ? (
-              <p className="mt-2 text-sm font-bold text-[#36bde9]">
+              <p className="mt-2 text-sm font-bold text-celeste">
                 Level up! You are now {done.levelUp.name}
               </p>
             ) : null}
             {done.alreadyCollected ? (
-              <p className="mt-1 text-sm text-[#9ca3af]">
+              <p className="mt-1 text-sm text-muted">
                 You already collected this badge.
               </p>
             ) : null}
@@ -323,7 +323,7 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
             </div>
             <Link
               href="/scan"
-              className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-[#394351] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Scan another QR
             </Link>
@@ -333,19 +333,19 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
         {done?.status === "checked-in" ? (
           <div
             role="status"
-            className="rounded-lg border border-[#a8d889]/40 bg-[#a8d889]/10 px-4 py-4 text-center"
+            className="rounded-lg border border-sage/40 bg-sage/10 px-4 py-4 text-center"
           >
-            <p className="text-base font-bold text-[#a8d889]">
+            <p className="text-base font-bold text-sage">
               You&apos;re checked in at {done.eventName}.
             </p>
             {done.alreadyCheckedIn ? (
-              <p className="mt-2 text-sm text-[#9ca3af]">
+              <p className="mt-2 text-sm text-muted">
                 You were already checked in.
               </p>
             ) : null}
             <Link
               href="/scan"
-              className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-[#394351] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Scan a badge QR
             </Link>
@@ -356,21 +356,21 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
           <div className="space-y-4 text-center">
             <p
               role="alert"
-              className="rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+              className="rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
             >
               {error.message}
             </p>
             {error.reason === "unexpected" ? (
               <button
                 type="submit"
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-[#a8d889] px-6 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
               >
                 Try again
               </button>
             ) : null}
             <Link
               href="/scan"
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#394351] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Scan another QR
             </Link>
@@ -389,7 +389,7 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
             />
             <p
               aria-hidden="true"
-              className="text-sm font-semibold text-[#9ca3af]"
+              className="text-sm font-semibold text-muted"
             >
               {state.phase === "retrying"
                 ? "Could not confirm. Retrying…"
@@ -400,19 +400,19 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
 
         {state.phase === "waiting" ? (
           <div className="space-y-3 text-center">
-            <p className="text-sm font-medium text-[#ffdca8]">
+            <p className="text-sm font-medium text-peach/70">
               We could not confirm this scan. Retrying is safe: a badge is never
               awarded twice.
             </p>
             <button
               type="submit"
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-[#a8d889] px-6 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
             >
               Try again
             </button>
             <Link
               href="/scan"
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#394351] px-6 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Scan another QR
             </Link>

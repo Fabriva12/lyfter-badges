@@ -33,7 +33,7 @@ export default function UserRoleForm({
         defaultValue={role}
         disabled={disabled || isPending}
         aria-label="Rol"
-        className="rounded-lg border border-[#39424f] bg-[#171b21] px-2 py-1.5 text-xs font-semibold text-[#f1f1ed] transition focus:border-[#36bde9] focus:outline-none focus:ring-2 focus:ring-[#36bde9]/30 disabled:opacity-60"
+        className="rounded-lg border border-stroke bg-background px-2 py-1.5 text-xs font-semibold text-foreground transition focus:border-celeste focus:outline-none focus:ring-2 focus:ring-celeste/30 disabled:opacity-60"
       >
         {ROLE_OPTIONS.map((option) => (
           <option key={option} value={option}>
@@ -45,7 +45,7 @@ export default function UserRoleForm({
       <button
         type="submit"
         disabled={disabled || isPending}
-        className="rounded-lg border border-[#394351] px-3 py-1.5 text-xs font-semibold text-[#d7dce3] transition hover:bg-[#272d36] disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-semibold text-subtle transition hover:bg-ink disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? "Guardando…" : "Guardar"}
       </button>
@@ -54,7 +54,7 @@ export default function UserRoleForm({
         <span
           role={state.status === "error" ? "alert" : "status"}
           className={`text-xs ${
-            state.status === "error" ? "text-[#ffb3ba]" : "text-[#a8d889]"
+            state.status === "error" ? "text-coral-soft" : "text-sage"
           }`}
         >
           {state.message}

@@ -66,11 +66,11 @@ function PrizeProgress({
       aria-valuemax={100}
       aria-valuenow={percent}
       aria-label={label}
-      className="mt-4 h-2 w-full overflow-hidden rounded-full bg-[#39424f]"
+      className="mt-4 h-2 w-full overflow-hidden rounded-full bg-stroke"
     >
       <div
         className={`h-full rounded-full transition-all ${
-          tone === "info" ? "bg-[#36bde9]" : "bg-[#89919e]"
+          tone === "info" ? "bg-celeste" : "bg-muted"
         }`}
         style={{ width: `${percent}%` }}
       />
@@ -93,15 +93,15 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
 
   if (!details) {
     return (
-      <div className="mt-5 rounded-lg border border-[#39424f] bg-[#1f252d] p-5">
-        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#89919e]">
+      <div className="mt-5 rounded-lg border border-stroke bg-surface-low p-5">
+        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted">
           <LockIcon className="h-4 w-4" />
           Prize locked
         </p>
-        <p className="mt-3 text-sm font-semibold text-[#89919e]">
+        <p className="mt-3 text-sm font-semibold text-muted">
           Hidden until you complete the badge set.
         </p>
-        <p className="mt-1 text-sm text-[#9ca3af]">
+        <p className="mt-1 text-sm text-muted">
           Collect {badgesToGo} more {pluralizeBadges(badgesToGo)} to reveal it.
         </p>
 
@@ -116,18 +116,18 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
 
   if (earned) {
     return (
-      <div className="mt-5 rounded-lg border border-[#a8d889]/50 bg-[#a8d889]/10 p-5">
+      <div className="mt-5 rounded-lg border border-sage/50 bg-sage/10 p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#a8d889]">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-sage">
               <TrophyIcon className="h-4 w-4" />
               Prize unlocked
             </p>
-            <p className="mt-2 text-lg font-bold text-[#f1f1ed]">
+            <p className="mt-2 text-lg font-bold text-foreground">
               {details.name}
             </p>
             {details.description ? (
-              <p className="mt-1 text-sm text-[#d7dce3]">{details.description}</p>
+              <p className="mt-1 text-sm text-subtle">{details.description}</p>
             ) : null}
           </div>
 
@@ -143,7 +143,7 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
           ) : null}
         </div>
 
-        <p className="mt-4 text-sm font-semibold text-[#a8d889]">
+        <p className="mt-4 text-sm font-semibold text-sage">
           You completed the badge set. This prize is yours.
         </p>
       </div>
@@ -151,21 +151,21 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
   }
 
   return (
-    <div className="mt-5 rounded-lg border border-[#36bde9]/40 bg-[#36bde9]/10 p-5">
+    <div className="mt-5 rounded-lg border border-celeste/40 bg-celeste/10 p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-celeste">
             <TrophyIcon className="h-4 w-4" />
             Prize announced
           </p>
-          <p className="mt-2 text-lg font-bold text-[#f1f1ed]">
+          <p className="mt-2 text-lg font-bold text-foreground">
             {details.name}
           </p>
           {details.description ? (
-            <p className="mt-1 text-sm text-[#d7dce3]">{details.description}</p>
+            <p className="mt-1 text-sm text-subtle">{details.description}</p>
           ) : null}
           {announced && details.revealedAt ? (
-            <p className="mt-1 text-xs text-[#9ca3af]">
+            <p className="mt-1 text-xs text-muted">
               Announced on {formatDate(details.revealedAt)}
             </p>
           ) : null}
@@ -183,7 +183,7 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
         ) : null}
       </div>
 
-      <p className="mt-4 text-sm text-[#d7dce3]">
+      <p className="mt-4 text-sm text-subtle">
         {badgesToGo} more {pluralizeBadges(badgesToGo)} to earn it.
       </p>
 

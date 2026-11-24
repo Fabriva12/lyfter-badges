@@ -24,7 +24,7 @@ export default async function TokenCard({
   const qr = await qrDataUrl(scanUrl);
 
   return (
-    <div className="rounded-lg border border-[#39424f] bg-[#1f252d] p-4">
+    <div className="rounded-lg border border-stroke bg-surface-low p-4">
       <div className="flex flex-wrap items-start gap-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -40,14 +40,14 @@ export default async function TokenCard({
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                 token.active
-                  ? "bg-[#a8d889]/15 text-[#b8e39a]"
-                  : "bg-[#f47f8a]/15 text-[#ffb3ba]"
+                  ? "bg-sage/15 text-sage-soft"
+                  : "bg-coral/15 text-coral-soft"
               }`}
             >
               {token.active ? "Activo" : "Inactivo"}
             </span>
 
-            <span className="text-xs text-[#9ca3af]">
+            <span className="text-xs text-muted">
               {token.scans} {token.scans === 1 ? "escaneo" : "escaneos"} ·{" "}
               {token.maxScans === null
                 ? "sin límite"
@@ -58,7 +58,7 @@ export default async function TokenCard({
           <Link
             href={`/s/${token.token}`}
             target="_blank"
-            className="block break-all font-mono text-xs text-[#7fd8f5] hover:underline"
+            className="block break-all font-mono text-xs text-celeste-soft hover:underline"
           >
             {scanUrl}
           </Link>

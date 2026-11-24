@@ -27,10 +27,10 @@ function getServerShare() {
 }
 
 const secondaryButton =
-  "inline-flex items-center gap-2 rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]";
+  "inline-flex items-center gap-2 rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink";
 
 const primaryButton =
-  "inline-flex items-center gap-2 rounded-lg bg-[#a8d889] px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]";
+  "inline-flex items-center gap-2 rounded-lg bg-sage px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-sage-soft";
 
 function XIcon() {
   return (
@@ -274,7 +274,7 @@ export default function ShareButtons({
         <div className="w-full">
           <label
             htmlFor="share-url-fallback"
-            className="block text-xs font-semibold uppercase tracking-widest text-[#9ca3af]"
+            className="block text-xs font-semibold uppercase tracking-widest text-muted"
           >
             Copy this link
           </label>
@@ -283,7 +283,7 @@ export default function ShareButtons({
             readOnly
             value={url}
             onFocus={(event) => event.currentTarget.select()}
-            className="mt-2 w-full rounded-lg border border-[#394351] bg-[#1f252d] px-3 py-2 text-sm text-[#d7dce3]"
+            className="mt-2 w-full rounded-lg border border-stroke bg-surface-low px-3 py-2 text-sm text-subtle"
           />
         </div>
       ) : null}

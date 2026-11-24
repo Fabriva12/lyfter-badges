@@ -14,7 +14,7 @@ export default function FeatureCard({
   iconClassName,
 }: FeatureCardProps) {
   return (
-    <article className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 transition hover:border-[#4a5563] sm:p-7">
+    <article className="rounded-xl border border-stroke bg-surface p-5 transition hover:border-[#4a5563] sm:p-7">
       <div className="mb-5 flex items-center justify-between">
         <div
           className={`flex h-12 w-12 items-center justify-center rounded-lg text-xl font-bold ${iconClassName}`}

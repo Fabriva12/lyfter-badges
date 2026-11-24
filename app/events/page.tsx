@@ -30,34 +30,34 @@ export default async function EventsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
             Lyfter events
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Events</h1>
-          <p className="mt-2 text-sm text-[#9ca3af]">
+          <p className="mt-2 text-sm text-muted">
             Browse the Lyfter events and jump into the leaderboard of each one.
           </p>
         </header>
 
         {loadFailed ? (
-          <section className="rounded-xl border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-6 py-8 text-center">
-            <h2 className="text-lg font-bold text-[#ffb3ba]">
+          <section className="rounded-xl border border-coral/40 bg-coral/10 px-6 py-8 text-center">
+            <h2 className="text-lg font-bold text-coral-soft">
               Events are unavailable right now.
             </h2>
-            <p className="mt-2 text-sm text-[#d7dce3]">
+            <p className="mt-2 text-sm text-subtle">
               We could not reach the event database. Please try again in a few
               minutes.
             </p>
           </section>
         ) : events.length === 0 ? (
-          <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 text-center sm:p-8">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <section className="rounded-xl border border-stroke bg-surface p-5 text-center sm:p-8">
+            <h2 className="text-lg font-bold text-foreground">
               There are no events yet.
             </h2>
-            <p className="mt-2 text-sm text-[#9ca3af]">
+            <p className="mt-2 text-sm text-muted">
               As soon as an organizer publishes an event, it shows up here.
             </p>
           </section>

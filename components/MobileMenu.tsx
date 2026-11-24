@@ -58,7 +58,7 @@ export default function MobileMenu({
         aria-controls="mobile-menu"
         aria-label={open ? "Cerrar menú" : "Abrir menú"}
         onClick={() => setOpen((value) => !value)}
-        className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#39424f] text-[#f1f1ed] transition hover:bg-[#272d36]"
+        className="flex h-11 w-11 items-center justify-center rounded-lg border border-stroke text-foreground transition hover:bg-ink"
       >
         {open ? (
           <svg
@@ -90,7 +90,7 @@ export default function MobileMenu({
       {open ? (
         <div
           id="mobile-menu"
-          className="fixed inset-x-0 top-16 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[#303743] bg-[#171b21] px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl shadow-black/40"
+          className="fixed inset-x-0 top-16 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-stroke bg-background px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl shadow-black/40"
         >
           <nav aria-label="Navegación principal" className="flex flex-col">
             {LINKS.map((link) => (
@@ -98,7 +98,7 @@ export default function MobileMenu({
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center rounded-lg px-3 text-base font-semibold text-[#d7dce3] transition hover:bg-[#272d36] hover:text-[#f1f1ed]"
+                className="flex min-h-12 items-center rounded-lg px-3 text-base font-semibold text-subtle transition hover:bg-ink hover:text-foreground"
               >
                 {link.label}
               </Link>
@@ -108,14 +108,14 @@ export default function MobileMenu({
               <Link
                 href={panelEntry.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center rounded-lg px-3 text-base font-semibold text-[#d7dce3] transition hover:bg-[#272d36] hover:text-[#f1f1ed]"
+                className="flex min-h-12 items-center rounded-lg px-3 text-base font-semibold text-subtle transition hover:bg-ink hover:text-foreground"
               >
                 {panelEntry.label}
               </Link>
             ) : null}
           </nav>
 
-          <div className="mt-3 border-t border-[#303743] pt-4">
+          <div className="mt-3 border-t border-stroke pt-4">
             {isAuthenticated ? (
               <div className="px-3" onClick={() => setOpen(false)}>
                 <SignOutButton />
@@ -124,7 +124,7 @@ export default function MobileMenu({
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center rounded-lg border border-[#36bde9] px-5 text-sm font-semibold text-[#7fd8f5] transition hover:bg-[#36bde9]/10"
+                className="flex min-h-12 items-center justify-center rounded-lg border border-celeste px-5 text-sm font-semibold text-celeste-soft transition hover:bg-celeste/10"
               >
                 Login
               </Link>

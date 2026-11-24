@@ -41,7 +41,7 @@ export default async function AdminEventPage({
       <div>
         <Link
           href="/admin"
-          className="text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+          className="text-sm font-semibold text-muted transition hover:text-foreground"
         >
           ← Todos los eventos
         </Link>
@@ -49,34 +49,34 @@ export default async function AdminEventPage({
         <header className="mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
           <div className="min-w-0">
             <h1 className="text-2xl font-bold sm:text-3xl">{event.name}</h1>
-            <p className="mt-2 text-sm text-[#9ca3af]">
+            <p className="mt-2 text-sm text-muted">
               Inicio: {formatDateTime(event.startsAt)}
             </p>
-            <p className="mt-1 text-sm text-[#9ca3af]">
+            <p className="mt-1 text-sm text-muted">
               Fin: {formatDateTime(event.endsAt)}
             </p>
             {event.location ? (
-              <p className="mt-1 text-sm text-[#9ca3af]">
+              <p className="mt-1 text-sm text-muted">
                 {event.location}
                 {event.country ? `, ${event.country}` : ""}
               </p>
             ) : null}
             <p className="mt-2 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
-              <span className="rounded-full border border-[#39424f] px-3 py-1 text-[#9ca3af]">
+              <span className="rounded-full border border-stroke px-3 py-1 text-muted">
                 {EVENT_MODE_LABELS[event.mode] ?? event.mode}
               </span>
-              <span className="rounded-full bg-[#36bde9]/15 px-3 py-1 text-[#7fd8f5]">
+              <span className="rounded-full bg-celeste/15 px-3 py-1 text-celeste-soft">
                 {EVENT_STATUS_LABELS[event.status] ?? event.status}
               </span>
             </p>
-            <p className="mt-1 font-mono text-xs text-[#6b7280]">
+            <p className="mt-1 font-mono text-xs text-muted">
               {event.slug}
             </p>
           </div>
 
           <Link
             href={`/leaderboard?event=${event.slug}`}
-            className="rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+            className="rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
           >
             Clasificación pública
           </Link>
@@ -109,10 +109,10 @@ export default async function AdminEventPage({
 
         <section className={cardClassName}>
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">Escaneos recientes</h2>
+            <h2 className="text-lg font-bold text-foreground">Escaneos recientes</h2>
             <Link
               href={`/admin/events/${event.id}/scans`}
-              className="text-sm font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+              className="text-sm font-semibold text-celeste hover:text-celeste-soft"
             >
               Ver todos
             </Link>

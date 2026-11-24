@@ -12,10 +12,10 @@ interface ShareCollectionActionsProps {
 }
 
 const secondaryButton =
-  "inline-flex items-center gap-2 rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]";
+  "inline-flex items-center gap-2 rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink";
 
 const primaryButton =
-  "inline-flex items-center gap-2 rounded-lg bg-[#a8d889] px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a] disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center gap-2 rounded-lg bg-sage px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-sage-soft disabled:cursor-not-allowed disabled:opacity-60";
 
 function subscribeToNavigatorShare() {
   return () => {};
@@ -252,7 +252,7 @@ export default function ShareCollectionActions({
       </div>
 
       {status === "image-error" ? (
-        <p className="text-center text-sm text-[#f0a5a5]">
+        <p className="text-center text-sm text-coral/80">
           Could not prepare the image. Use Download and post it manually.
         </p>
       ) : null}
@@ -261,7 +261,7 @@ export default function ShareCollectionActions({
         <div className="w-full">
           <label
             htmlFor="collection-caption"
-            className="block text-xs font-semibold uppercase tracking-widest text-[#9ca3af]"
+            className="block text-xs font-semibold uppercase tracking-widest text-muted"
           >
             Copy this caption
           </label>
@@ -271,7 +271,7 @@ export default function ShareCollectionActions({
             rows={4}
             value={caption}
             onFocus={(event) => event.currentTarget.select()}
-            className="mt-2 w-full rounded-lg border border-[#394351] bg-[#1f252d] px-3 py-2 text-sm text-[#d7dce3]"
+            className="mt-2 w-full rounded-lg border border-stroke bg-surface-low px-3 py-2 text-sm text-subtle"
           />
         </div>
       ) : null}

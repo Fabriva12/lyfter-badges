@@ -14,9 +14,9 @@ type Mode = "signin" | "signup";
 const initialState: LoginFormState = { error: null };
 
 const inputClassName =
-  "w-full rounded-lg border border-[#39424f] bg-[#171b21] px-4 py-3 text-sm text-[#f1f1ed] placeholder:text-[#6b7280] transition focus:border-[#36bde9] focus:outline-none focus:ring-2 focus:ring-[#36bde9]/30";
+  "w-full rounded-lg border border-stroke bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted transition focus:border-celeste focus:outline-none focus:ring-2 focus:ring-celeste/30";
 
-const labelClassName = "mb-2 block text-sm font-semibold text-[#d7dce3]";
+const labelClassName = "mb-2 block text-sm font-semibold text-subtle";
 
 export default function LoginForm({ next }: LoginFormProps) {
   const [mode, setMode] = useState<Mode>("signin");
@@ -34,7 +34,7 @@ export default function LoginForm({ next }: LoginFormProps) {
   return (
     <form
       action={formAction}
-      className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8"
+      className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8"
     >
       <input type="hidden" name="intent" value={mode} />
       <input type="hidden" name="next" value={next ?? ""} />
@@ -91,7 +91,7 @@ export default function LoginForm({ next }: LoginFormProps) {
         {state.error ? (
           <p
             role="alert"
-            className="rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+            className="rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
           >
             {state.error}
           </p>
@@ -100,7 +100,7 @@ export default function LoginForm({ next }: LoginFormProps) {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full rounded-lg bg-[#a8d889] px-6 py-3 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a] disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-lg bg-sage px-6 py-3 text-sm font-bold text-[#263021] transition hover:bg-sage-soft disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isPending ? "Please wait…" : isSignup ? "Create account" : "Sign in"}
         </button>
@@ -108,7 +108,7 @@ export default function LoginForm({ next }: LoginFormProps) {
         <button
           type="button"
           onClick={toggleMode}
-          className="w-full rounded-lg border border-[#394351] px-6 py-3 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+          className="w-full rounded-lg border border-stroke px-6 py-3 text-sm font-semibold text-subtle transition hover:bg-ink"
         >
           {isSignup
             ? "Already have an account? Sign in"

@@ -33,11 +33,11 @@ export default async function SuperAdminEventsPage() {
   return (
     <div className="space-y-8">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Super admin
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Todos los eventos</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Abre cualquier evento como super admin, sin importar su empresa.
         </p>
       </header>
@@ -53,14 +53,14 @@ export default async function SuperAdminEventsPage() {
       </div>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">Todos los eventos</h2>
+        <h2 className="text-lg font-bold text-foreground">Todos los eventos</h2>
 
         {events.length === 0 ? (
-          <p className="mt-4 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-8 text-center text-sm text-[#9ca3af]">
+          <p className="mt-4 rounded-lg border border-stroke bg-surface-low px-4 py-8 text-center text-sm text-muted">
             Todavía no hay eventos creados.
           </p>
         ) : (
-          <ul className="mt-4 divide-y divide-[#303743]">
+          <ul className="mt-4 divide-y divide-stroke">
             {events.map((event) => (
               <li
                 key={event.id}
@@ -69,22 +69,22 @@ export default async function SuperAdminEventsPage() {
                 <div>
                   <Link
                     href={`/admin/events/${event.id}`}
-                    className="font-semibold text-[#f1f1ed] transition hover:text-[#7fd8f5]"
+                    className="font-semibold text-foreground transition hover:text-celeste-soft"
                   >
                     {event.name}
                   </Link>
-                  <p className="text-sm text-[#9ca3af]">
+                  <p className="text-sm text-muted">
                     {event.companyName ?? "Sin empresa"} ·{" "}
                     {EVENT_STATUS_LABELS_ES[
                       event.status as keyof typeof EVENT_STATUS_LABELS_ES
                     ] ?? event.status}
                   </p>
-                  <p className="mt-1 text-sm text-[#9ca3af]">
+                  <p className="mt-1 text-sm text-muted">
                     Inicio: {formatDateTime(event.startsAt)} · Fin:{" "}
                     {formatDateTime(event.endsAt)}
                   </p>
                 </div>
-                <span className="text-xs text-[#9ca3af]">
+                <span className="text-xs text-muted">
                   {event.badges} badges · {event.attendees} asistentes ·{" "}
                   {event.scans} escaneos
                 </span>

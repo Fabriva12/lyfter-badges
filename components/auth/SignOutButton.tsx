@@ -35,12 +35,12 @@ export default function SignOutButton() {
     <div className="flex flex-col items-end gap-1">
       <button
         onClick={handleSignOut}
-        className="rounded-lg border border-[#f47f8a] px-5 py-2 text-sm font-semibold text-[#ffb3ba] transition hover:bg-[#f47f8a]/10"
+        className="rounded-lg border border-coral px-5 py-2 text-sm font-semibold text-coral-soft transition hover:bg-coral/10"
       >
         Cerrar sesión
       </button>
       {error ? (
-        <span role="alert" className="text-xs text-[#ffb3ba]">
+        <span role="alert" className="text-xs text-coral-soft">
           {error}
         </span>
       ) : null}

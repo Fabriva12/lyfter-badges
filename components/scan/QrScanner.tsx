@@ -17,9 +17,9 @@ interface Feedback {
 }
 
 const FEEDBACK_CLASSES: Record<Feedback["tone"], string> = {
-  info: "border-[#36bde9]/40 bg-[#36bde9]/10 text-[#bfe9f8]",
-  success: "border-[#a8d889]/40 bg-[#a8d889]/10 text-[#c9eab2]",
-  error: "border-[#f47f8a]/40 bg-[#f47f8a]/10 text-[#ffb3ba]",
+  info: "border-celeste/40 bg-celeste/10 text-celeste-soft/80",
+  success: "border-sage/40 bg-sage/10 text-sage-soft/80",
+  error: "border-coral/40 bg-coral/10 text-coral-soft",
 };
 
 function cameraErrorMessage(error: unknown) {
@@ -248,7 +248,7 @@ export default function QrScanner() {
 
   return (
     <div className="w-full">
-      <div className="overflow-hidden rounded-xl border border-[#39424f] bg-[#252c35] shadow-2xl shadow-black/30">
+      <div className="overflow-hidden rounded-xl border border-stroke bg-surface shadow-2xl shadow-black/30">
         <div className="relative aspect-[4/5] w-full overflow-hidden bg-black sm:aspect-square">
           <video
             ref={videoRef}
@@ -258,13 +258,13 @@ export default function QrScanner() {
           />
 
           {state !== "scanning" ? (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#171b21] p-6 text-center">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background p-6 text-center">
               {state === "starting" ? (
                 <>
                   <Spinner size="lg" label="Starting camera" />
                   <p
                     aria-hidden="true"
-                    className="text-sm font-semibold text-[#d7dce3]"
+                    className="text-sm font-semibold text-subtle"
                   >
                     Starting camera…
                   </p>
@@ -279,7 +279,7 @@ export default function QrScanner() {
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="h-12 w-12 text-[#7fd8f5]"
+                    className="h-12 w-12 text-celeste-soft"
                   >
                     <path d="M4 8V5a1 1 0 0 1 1-1h3" />
                     <path d="M16 4h3a1 1 0 0 1 1 1v3" />
@@ -287,14 +287,14 @@ export default function QrScanner() {
                     <path d="M8 20H5a1 1 0 0 1-1-1v-3" />
                     <path d="M7 12h10" />
                   </svg>
-                  <p className="text-sm text-[#9ca3af]">
+                  <p className="text-sm text-muted">
                     {cameraError ??
                       "Allow camera access to scan the QR codes."}
                   </p>
                   <button
                     type="button"
                     onClick={() => void startCamera()}
-                    className="min-h-11 rounded-lg bg-[#a8d889] px-6 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+                    className="min-h-11 rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
                   >
                     Start camera
                   </button>
@@ -313,7 +313,7 @@ export default function QrScanner() {
                 <button
                   type="button"
                   onClick={() => void toggleTorch()}
-                  className="min-h-11 flex-1 rounded-lg border border-[#394351] px-4 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+                  className="min-h-11 flex-1 rounded-lg border border-stroke px-4 text-sm font-semibold text-subtle transition hover:bg-ink"
                 >
                   {torchOn ? "Torch off" : "Torch on"}
                 </button>
@@ -321,14 +321,14 @@ export default function QrScanner() {
               <button
                 type="button"
                 onClick={stopScanner}
-                className="min-h-11 flex-1 rounded-lg border border-[#394351] px-4 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+                className="min-h-11 flex-1 rounded-lg border border-stroke px-4 text-sm font-semibold text-subtle transition hover:bg-ink"
               >
                 Stop camera
               </button>
             </div>
           ) : null}
 
-          <label className="flex min-h-11 cursor-pointer items-center justify-center rounded-lg border border-dashed border-[#394351] px-4 text-sm font-semibold text-[#9ca3af] transition hover:border-[#36bde9] hover:text-[#d7dce3]">
+          <label className="flex min-h-11 cursor-pointer items-center justify-center rounded-lg border border-dashed border-stroke px-4 text-sm font-semibold text-muted transition hover:border-celeste hover:text-subtle">
             <input
               type="file"
               accept="image/*"

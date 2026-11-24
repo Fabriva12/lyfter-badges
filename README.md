@@ -147,6 +147,68 @@ cámara o subir una foto del QR desde `/scan`; la cámara requiere HTTPS o local
 
 Los escaneos son idempotentes: repetir el mismo QR no vuelve a otorgar XP.
 
+## Seguridad de QR rotatorios
+
+**Decisión:** el QR impreso no es el secreto, es solo un acceso de personal a
+`/stand/[eventBadgeId]`. La pantalla del stand muestra un `randomUUID()` nuevo con un
+TTL de 90 s, rotado cada 60 s. `maxScans` es un límite global y no prueba presencia; la
+unicidad por `userId + eventBadgeId` solo evita XP duplicado. Un QR estático impreso es
+un *bearer token*: una foto que circule por WhatsApp permite a cualquier asistente
+registrado reclamar la insignia desde cualquier lugar.
+
+### Camino rápido
+
+1. Entrar a `/stand/<eventBadgeId>` con un `ADMIN` asignado al stand o un `SUPER_ADMIN`.
+2. Dejar la pantalla a la vista del público: el cliente rota cada 60 s, muestra la
+   cuenta regresiva y **Rotate now** fuerza una rotación.
+3. Verificar que un escaneo ya registrado siga siendo idempotente y que la rotación no
+   agregue ruido a la auditoría.
+
+### Decisiones
+
+| Tema | Decisión |
+| --- | --- |
+| Secreto | El QR impreso solo abre la pantalla del stand; el token vigente vive en esa pantalla. |
+| Vigencia | 90 s por token, con rotación automática cada 60 s (margen de 30 s). |
+| Idempotencia | Los tokens rotados se dejan con `active = true` y solo vence `expiresAt`. `recordScan` y `resolveScanTarget` revisan el claim existente **antes** que `expiresAt`, así un replay offline devuelve la insignia guardada. Desactivar los tokens rotados rompería ese comportamiento. |
+| Límites | Los tokens del kiosk usan `maxScans: null`: un tope global no demuestra que la persona estuvo en el stand. |
+| Autorización | `requireStandForAdmin` protege la página y el Server Action de rotación; `proxy.ts` es solo un filtro optimista. |
+| Auditoría | Las rotaciones no se registran una por una (60 s inundarían el log); los escaneos sí quedan registrados en la tabla `Scan` (usuario, token, badge, evento y XP), aunque no generan entradas en la tabla de auditoría. |
+
+### Límites
+
+- [ ] Una foto reenviada dentro de los ~90 s de vigencia todavía funciona.
+- [ ] Hace falta una pantalla o dispositivo en el stand; si no hay, usar el flujo
+      inverso: personal del stand escanea el código rotatorio del asistente.
+- [ ] La geolocalización no es una prueba: se puede falsear, dispara permisos y falla
+      en interiores.
+- [ ] Las rotaciones no se auditan individualmente para no inundar el log; los
+      escaneos sí quedan registrados en la tabla `Scan` (usuario, token, badge,
+      evento y XP), aunque no generan entradas en la tabla de auditoría.
+- [ ] Un `ADMIN` con acceso al stand puede emitir tokens: ese rol sigue siendo de
+      confianza.
+
+Los tokens `demo-*` son exclusivos de desarrollo. En Vercel, production y preview no
+definen `SEED_DEMO_DATA`; el build es `next build` (sin seed) y el último log de build de
+producción no muestra siembra. Igual conviene confirmarlo en la base con dos consultas de
+solo lectura (sin incluir ninguna credencial):
+
+```sql
+SELECT count(*) AS demo_tokens
+FROM "QrToken"
+WHERE token LIKE 'demo-%';
+```
+
+Esperado: `0`.
+
+```sql
+SELECT count(*) AS non_uuid_tokens
+FROM "QrToken"
+WHERE token !~ '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$';
+```
+
+Esperado: `0` (solo tokens UUIDv4).
+
 ## Rutas
 
 | Ruta | Descripción | Acceso |
@@ -170,6 +232,7 @@ Los escaneos son idempotentes: repetir el mismo QR no vuelve a otorgar XP.
 | `/admin/events/[id]/metrics` | Métricas del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
 | `/admin/events/[id]/audit` | Auditoría del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
 | `/admin/stands/[eventBadgeId]` | Vista de solo lectura del stand | `ADMIN` asignado al stand / `SUPER_ADMIN` |
+| `/stand/[eventBadgeId]` | Pantalla del QR rotatorio del stand | `ADMIN` asignado al stand / `SUPER_ADMIN` |
 | `/super-admin` | Panel global: empresas, eventos y administradores | `SUPER_ADMIN` |
 | `/super-admin/companies` | Empresas y administradores | `SUPER_ADMIN` |
 | `/super-admin/events` | Eventos de todas las empresas | `SUPER_ADMIN` |

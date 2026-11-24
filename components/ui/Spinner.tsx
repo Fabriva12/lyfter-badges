@@ -14,7 +14,7 @@ interface SpinnerProps {
 
 export default function Spinner({
   size = "md",
-  label = "Loading…",
+  label = "Cargando…",
   className = "",
 }: SpinnerProps) {
   return (

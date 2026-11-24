@@ -18,7 +18,7 @@ interface MobileMenuProps {
 const LINKS = [
   { href: "/events", label: "Eventos" },
   { href: "/#como-funciona", label: "Cómo funciona" },
-  { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/leaderboard", label: "Ranking" },
   { href: "/collection", label: "Colección" },
   { href: "/scan", label: "Escanear QR" },
 ];
@@ -126,7 +126,7 @@ export default function MobileMenu({
                 onClick={() => setOpen(false)}
                 className="flex min-h-12 items-center justify-center rounded-lg border border-celeste px-5 text-sm font-semibold text-celeste-soft transition hover:bg-celeste/10"
               >
-                Login
+                Iniciar sesión
               </Link>
             )}
           </div>

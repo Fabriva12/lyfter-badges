@@ -9,7 +9,7 @@ import { getOrRotateStandQr } from "@/lib/stand/kiosk";
 import StandQr from "@/components/stand/StandQr";
 
 export const metadata: Metadata = {
-  title: "Stand QR kiosk",
+  title: "QR del stand",
 };
 
 interface StandKioskPageProps {
@@ -38,7 +38,7 @@ export default async function StandKioskPage({ params }: StandKioskPageProps) {
     <div className="mx-auto max-w-xl space-y-6">
       <header className="text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-          Stand QR kiosk
+          QR del stand
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
           {detail.badge.name}
@@ -58,7 +58,7 @@ export default async function StandKioskPage({ params }: StandKioskPageProps) {
           startsAt: payload.startsAt,
           qr,
         }}
-        note="Ask attendees to scan this screen. Do not print or forward the code: it changes every 90 seconds."
+        note="Pide a los asistentes que escaneen esta pantalla. No imprimas ni reenvíes el código: cambia cada 90 segundos."
       />
     </div>
   );

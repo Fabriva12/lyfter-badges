@@ -20,7 +20,7 @@ export default function LevelCard({
       <div className="flex flex-wrap items-start justify-between gap-4 sm:gap-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-            Level {level.level}
+            Nivel {level.level}
           </p>
           <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
             {level.name}
@@ -30,11 +30,11 @@ export default function LevelCard({
         <div className="text-right">
           <p className="text-3xl font-black text-sage">{totalXp}</p>
           <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-            Total XP
+            XP total
           </p>
           {globalPosition !== null ? (
             <p className="mt-2 text-xs font-semibold text-celeste-soft">
-              #{globalPosition} of {totalPlayers} globally
+              #{globalPosition} de {totalPlayers} a nivel global
             </p>
           ) : null}
         </div>
@@ -47,7 +47,7 @@ export default function LevelCard({
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={percent}
-            aria-label={`Progress to level ${level.level + 1}`}
+            aria-label={`Progreso al nivel ${level.level + 1}`}
             className="h-2.5 w-full overflow-hidden rounded-full bg-stroke"
           >
             <div
@@ -56,12 +56,12 @@ export default function LevelCard({
             />
           </div>
           <p className="mt-2 text-sm text-muted">
-            {level.xpToNextLevel} XP to reach level {level.level + 1}
+            {level.xpToNextLevel} XP para llegar al nivel {level.level + 1}
           </p>
         </div>
       ) : (
         <p className="mt-6 text-sm font-semibold text-sage">
-          You reached the top level. Keep collecting for fun.
+          Llegaste al nivel máximo. Sigue recolectando por diversión.
         </p>
       )}
     </section>

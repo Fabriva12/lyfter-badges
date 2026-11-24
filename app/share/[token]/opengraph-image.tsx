@@ -8,7 +8,7 @@ import { BRAND_COLORS, SAGE_TINT_RGBA, UI_COLORS } from "@/lib/theme/colors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const alt = "Lyfter Badges collection";
+export const alt = "Colección de Lyfter Badges";
 export const size = { width: 1080, height: 1080 };
 export const contentType = "image/png";
 
@@ -27,7 +27,7 @@ export async function generateImageMetadata({ params }: ImageParams) {
   return [
     {
       id: "collection",
-      alt: `${collection.attendeeName}'s ${collection.eventName} badge collection`,
+      alt: `Colección de insignias de ${collection.attendeeName} en ${collection.eventName}`,
       size,
       contentType,
     },
@@ -46,7 +46,7 @@ function truncate(value: string, max: number) {
 }
 
 function badgeWord(total: number) {
-  return total === 1 ? "badge" : "badges";
+  return total === 1 ? "insignia" : "insignias";
 }
 
 function FallbackCard() {
@@ -96,7 +96,7 @@ function FallbackCard() {
             color: UI_COLORS.foreground,
           }}
         >
-          Collection not available
+          Colección no disponible
         </div>
         <div
           style={{
@@ -106,7 +106,7 @@ function FallbackCard() {
             color: UI_COLORS.muted,
           }}
         >
-          Scan. Collect. Level up.
+          Escanea. Recolecta. Sube de nivel.
         </div>
       </div>
     </div>
@@ -295,7 +295,7 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
               color: UI_COLORS.muted,
             }}
           >
-            No badges collected yet.
+            Todavía no hay insignias recolectadas.
           </div>
         )}
 
@@ -311,7 +311,7 @@ function CollectionCard({ collection }: { collection: ShareCollection }) {
             Lyfter Badges
           </div>
           <div style={{ display: "flex", fontSize: 24, color: BRAND_COLORS.sage }}>
-            Scan. Collect. Level up.
+            Escanea. Recolecta. Sube de nivel.
           </div>
         </div>
       </div>

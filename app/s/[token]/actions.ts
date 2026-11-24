@@ -18,14 +18,14 @@ import {
 } from "@/lib/scan/event-window";
 import { getSession } from "@/lib/session";
 
-const INVALID_QR = "This QR code is not valid.";
-const INACTIVE_QR = "This QR code is not valid or is no longer active.";
-const MISCONFIGURED_QR = "This QR code is not configured correctly.";
+const INVALID_QR = "Este código QR no es válido.";
+const INACTIVE_QR = "Este código QR no es válido o ya no está activo.";
+const MISCONFIGURED_QR = "Este código QR no está configurado correctamente.";
 const NEEDS_CHECK_IN =
-  "Scan the welcome QR at the entrance before collecting badges.";
-const SCAN_LIMIT = "This QR code has reached its scan limit.";
-const UNAUTHENTICATED = "Your session expired. Please sign in again.";
-const UNEXPECTED_ERROR = "Something went wrong. Please try again.";
+  "Escanea el QR de bienvenida en la entrada antes de recolectar insignias.";
+const SCAN_LIMIT = "Este código QR alcanzó el límite de escaneos.";
+const UNAUTHENTICATED = "Tu sesión venció. Inicia sesión de nuevo.";
+const UNEXPECTED_ERROR = "Ocurrió un error. Inténtalo de nuevo.";
 
 // Prisma reports unique-constraint violations as P2002 errors.
 function isUniqueViolation(error: unknown) {
@@ -182,7 +182,7 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
     if (qr.startsAt && now < qr.startsAt) {
       return {
         status: "error",
-        message: "This QR code is not available yet.",
+        message: "Este código QR todavía no está disponible.",
         retryable: false,
         reason: "not_started",
       };
@@ -191,7 +191,7 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
     if (qr.expiresAt && now > qr.expiresAt) {
       return {
         status: "error",
-        message: "This QR code has expired.",
+        message: "Este código QR venció.",
         retryable: false,
         reason: "expired",
       };
@@ -200,7 +200,7 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
     if (eventBadge.startsAt && now < eventBadge.startsAt) {
       return {
         status: "error",
-        message: "This badge is not available yet.",
+        message: "Esta insignia todavía no está disponible.",
         retryable: false,
         reason: "not_started",
       };

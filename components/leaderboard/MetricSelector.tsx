@@ -20,11 +20,11 @@ export default function MetricSelector({
 }: MetricSelectorProps) {
   return (
     <nav
-      aria-label="Ranking metric"
+      aria-label="Métrica del ranking"
       className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:gap-3 sm:px-0"
     >
       <span className="shrink-0 pr-1 text-xs font-semibold uppercase tracking-widest text-muted">
-        Metric
+        Métrica
       </span>
 
       {LEADERBOARD_METRICS.map((metric) => {

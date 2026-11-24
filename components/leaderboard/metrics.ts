@@ -15,7 +15,7 @@ export const METRIC_ACTIVE_PILL: Record<LeaderboardMetric, string> = {
 export const METRIC_NOUN: Record<LeaderboardMetric, string> = {
   xp: "XP",
   stands: "stands",
-  talks: "talks",
+  talks: "charlas",
 };
 
 function countLabel(count: number, singular: string, plural: string): string {
@@ -31,7 +31,7 @@ export function metricUnit(
     return "XP";
   }
 
-  const singular = metric === "stands" ? "stand" : "talk";
+  const singular = metric === "stands" ? "stand" : "charla";
 
   return value === 1 ? singular : `${singular}s`;
 }
@@ -44,14 +44,14 @@ export function secondaryStats(
   entry: { badges: number; stands: number; talks: number; xp: number },
   metric: LeaderboardMetric,
 ): string {
-  const parts = [countLabel(entry.badges, "badge", "badges")];
+  const parts = [countLabel(entry.badges, "insignia", "insignias")];
 
   if (metric !== "stands") {
     parts.push(countLabel(entry.stands, "stand", "stands"));
   }
 
   if (metric !== "talks") {
-    parts.push(countLabel(entry.talks, "talk", "talks"));
+    parts.push(countLabel(entry.talks, "charla", "charlas"));
   }
 
   if (metric !== "xp") {

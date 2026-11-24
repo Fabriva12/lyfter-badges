@@ -25,10 +25,10 @@ export default function PrizeSummary({ items }: PrizeSummaryProps) {
     <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Prizes</h2>
+          <h2 className="text-xl font-bold text-foreground">Premios</h2>
           <p className="mt-1 text-sm text-muted">
-            {earnedCount} of {items.length} earned. A prize stays hidden until
-            you complete the badge set for its event.
+            {earnedCount} de {items.length} obtenidos. Un premio permanece oculto
+            hasta que completes el set de insignias de su evento.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ export default function PrizeSummary({ items }: PrizeSummaryProps) {
       <ul className="mt-6 flex flex-wrap gap-3">
         {items.map((item) => {
           const { prize } = item;
-          const name = prize.details ? prize.details.name : "Locked prize";
+          const name = prize.details ? prize.details.name : "Premio bloqueado";
 
           return (
             <li
@@ -67,10 +67,10 @@ export default function PrizeSummary({ items }: PrizeSummaryProps) {
               <p className="mt-1 text-xs text-muted">{item.eventName}</p>
               <p className="mt-1 text-xs text-muted">
                 {prize.earned
-                  ? "Earned"
-                  : `${prize.badgesToGo} more ${
-                      prize.badgesToGo === 1 ? "badge" : "badges"
-                    } to go`}
+                  ? "Obtenido"
+                  : `Faltan ${prize.badgesToGo} ${
+                      prize.badgesToGo === 1 ? "insignia" : "insignias"
+                    }`}
               </p>
             </li>
           );

@@ -8,7 +8,7 @@ interface PrizePanelProps {
 }
 
 function pluralizeBadges(count: number) {
-  return count === 1 ? "badge" : "badges";
+  return count === 1 ? "insignia" : "insignias";
 }
 
 function TrophyIcon({ className }: { className?: string }) {
@@ -96,19 +96,19 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
       <div className="mt-5 rounded-lg border border-stroke bg-surface-low p-5">
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted">
           <LockIcon className="h-4 w-4" />
-          Prize locked
+          Premio bloqueado
         </p>
         <p className="mt-3 text-sm font-semibold text-muted">
-          Hidden until you complete the badge set.
+          Oculto hasta que completes el set de insignias.
         </p>
         <p className="mt-1 text-sm text-muted">
-          Collect {badgesToGo} more {pluralizeBadges(badgesToGo)} to reveal it.
+          Recolecta {badgesToGo} más {pluralizeBadges(badgesToGo)} para revelarlo.
         </p>
 
         <PrizeProgress
           percent={percent}
           tone="muted"
-          label="Progress toward the prize"
+          label="Progreso hacia el premio"
         />
       </div>
     );
@@ -121,7 +121,7 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
           <div className="min-w-0">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-sage">
               <TrophyIcon className="h-4 w-4" />
-              Prize unlocked
+              Premio desbloqueado
             </p>
             <p className="mt-2 text-lg font-bold text-foreground">
               {details.name}
@@ -144,7 +144,7 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
         </div>
 
         <p className="mt-4 text-sm font-semibold text-sage">
-          You completed the badge set. This prize is yours.
+          Completaste el set de insignias. Este premio es tuyo.
         </p>
       </div>
     );
@@ -156,7 +156,7 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
         <div className="min-w-0">
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-celeste">
             <TrophyIcon className="h-4 w-4" />
-            Prize announced
+            Premio anunciado
           </p>
           <p className="mt-2 text-lg font-bold text-foreground">
             {details.name}
@@ -166,7 +166,7 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
           ) : null}
           {announced && details.revealedAt ? (
             <p className="mt-1 text-xs text-muted">
-              Announced on {formatDate(details.revealedAt)}
+              Anunciado el {formatDate(details.revealedAt)}
             </p>
           ) : null}
         </div>
@@ -184,13 +184,13 @@ export default function PrizePanel({ prize }: PrizePanelProps) {
       </div>
 
       <p className="mt-4 text-sm text-subtle">
-        {badgesToGo} more {pluralizeBadges(badgesToGo)} to earn it.
+        {badgesToGo} {pluralizeBadges(badgesToGo)} para obtenerlo.
       </p>
 
       <PrizeProgress
         percent={percent}
         tone="info"
-        label="Progress toward the prize"
+        label="Progreso hacia el premio"
       />
     </div>
   );

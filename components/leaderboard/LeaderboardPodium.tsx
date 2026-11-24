@@ -26,19 +26,19 @@ interface Medal {
 // new color of this phase.
 const MEDALS: Record<number, Medal> = {
   1: {
-    label: "1st place",
+    label: "1.º lugar",
     text: "text-peach",
     border: "border-peach/40",
     background: "bg-peach/10",
   },
   2: {
-    label: "2nd place",
+    label: "2.º lugar",
     text: "text-subtle",
     border: "border-subtle/40",
     background: "bg-subtle/10",
   },
   3: {
-    label: "3rd place",
+    label: "3.º lugar",
     text: "text-[#c98a5b]",
     border: "border-[#c98a5b]/40",
     background: "bg-[#c98a5b]/10",
@@ -46,7 +46,7 @@ const MEDALS: Record<number, Medal> = {
 };
 
 const NO_MEDAL: Medal = {
-  label: "place",
+  label: "lugar",
   text: "text-muted",
   border: "border-stroke",
   background: "bg-surface-low",
@@ -78,10 +78,10 @@ export default function LeaderboardPodium({
   return (
     <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
       <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-        Podium
+        Podio
       </p>
       <h2 className="mt-2 text-xl font-bold text-foreground">
-        Top three by {METRIC_NOUN[metric]}
+        Los tres primeros por {METRIC_NOUN[metric]}
       </h2>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-end">

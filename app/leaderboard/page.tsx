@@ -19,15 +19,15 @@ import {
 import { requireSession } from "@/lib/session";
 
 export const metadata: Metadata = {
-  title: "Leaderboard · Lyfter Badges",
+  title: "Ranking · Lyfter Badges",
 };
 
 const TOP_ROWS = 10;
 
 const METRIC_DESCRIPTION: Record<LeaderboardMetric, string> = {
-  xp: "XP earned",
-  stands: "stand badges visited",
-  talks: "talk badges attended",
+  xp: "XP ganada",
+  stands: "insignias de stands visitadas",
+  talks: "insignias de charlas asistidas",
 };
 
 export default async function LeaderboardPage({
@@ -62,13 +62,13 @@ export default async function LeaderboardPage({
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
           <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-            {isGlobal ? "All events" : "Per-event ranking"}
+            {isGlobal ? "Todos los eventos" : "Ranking por evento"}
           </p>
-          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Leaderboard</h1>
+          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Ranking</h1>
           <p className="mt-2 text-sm text-muted">
             {isGlobal
-              ? `Ranked by ${METRIC_DESCRIPTION[metric]} across every event. Pick a scope or switch the metric below.`
-              : `Ranked by ${METRIC_DESCRIPTION[metric]} inside a single event. Only that event's badges count, so every event is a fair fight.`}
+              ? `Ordenado por ${METRIC_DESCRIPTION[metric]} en todos los eventos. Elige un alcance o cambia la métrica más abajo.`
+              : `Ordenado por ${METRIC_DESCRIPTION[metric]} dentro de un solo evento. Solo cuentan las insignias de ese evento, así que cada evento es una competencia justa.`}
           </p>
         </header>
 
@@ -87,11 +87,11 @@ export default async function LeaderboardPage({
 
           <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
             <h2 className="text-xl font-bold text-foreground">
-              {isGlobal ? "Global ranking" : (selected?.name ?? "")}
+              {isGlobal ? "Ranking global" : (selected?.name ?? "")}
             </h2>
             <p className="mt-1 text-sm text-muted">
               {isGlobal
-                ? "Every attendee with at least one badge, across every event."
+                ? "Cada asistente con al menos una insignia, en todos los eventos."
                 : `${formatEventRange(selected.startsAt, selected.endsAt)}${
                     selected.location ? ` · ${selected.location}` : ""
                   }`}
@@ -101,11 +101,11 @@ export default async function LeaderboardPage({
           {rows.length === 0 ? (
             <section className="rounded-xl border border-stroke bg-surface p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
               <h2 className="text-lg font-bold text-foreground">
-                Nobody scored yet{isGlobal ? "" : " in this event"}.
+                Nadie tiene puntos todavía{isGlobal ? "" : " en este evento"}.
               </h2>
               <p className="mt-2 text-sm text-muted">
-                The ranking appears as soon as the first attendee scans a
-                badge.
+                El ranking aparece en cuanto el primer asistente escanea una
+                insignia.
               </p>
             </section>
           ) : (
@@ -121,10 +121,10 @@ export default async function LeaderboardPage({
               {isCurrentUserOutsideTop && currentUser ? (
                 <section className="rounded-xl border border-celeste/40 bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
                   <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-                    Your position
+                    Tu posición
                   </p>
                   <h2 className="mt-2 text-xl font-bold text-foreground">
-                    You are outside the top {TOP_ROWS}
+                    Estás fuera del top {TOP_ROWS}
                   </h2>
 
                   <div className="mt-6">
@@ -136,7 +136,7 @@ export default async function LeaderboardPage({
                   </div>
 
                   <p className="mt-4 text-sm text-muted">
-                    Keep scanning badges to climb the ranking.
+                    Sigue escaneando insignias para subir en el ranking.
                   </p>
                 </section>
               ) : null}

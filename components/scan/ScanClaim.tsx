@@ -38,7 +38,7 @@ type ClaimState =
   | { phase: "done"; result: ClaimResult }
   | { phase: "error"; result: ClaimError };
 
-const UNEXPECTED_ERROR = "Something went wrong. Please try again.";
+const UNEXPECTED_ERROR = "Ocurrió un error. Inténtalo de nuevo.";
 
 export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
   const router = useRouter();
@@ -294,20 +294,20 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
             </p>
             <p className="mt-1 text-sm font-semibold text-sage">
               {done.alreadyCollected
-                ? `${done.badge.xpAwarded} XP awarded`
+                ? `${done.badge.xpAwarded} XP otorgada`
                 : `+${done.badge.xpAwarded} XP`}
             </p>
             <p className="mt-2 text-sm text-subtle">
-              Badge collected at {done.eventName}.
+              Insignia recolectada en {done.eventName}.
             </p>
             {done.levelUp ? (
               <p className="mt-2 text-sm font-bold text-celeste">
-                Level up! You are now {done.levelUp.name}
+                ¡Subiste de nivel! Ahora eres {done.levelUp.name}
               </p>
             ) : null}
             {done.alreadyCollected ? (
               <p className="mt-1 text-sm text-muted">
-                You already collected this badge.
+                Ya obtuviste esta insignia.
               </p>
             ) : null}
             <div className="mt-4">
@@ -325,7 +325,7 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
               href="/scan"
               className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
-              Scan another QR
+              Escanea otro QR
             </Link>
           </div>
         ) : null}
@@ -336,18 +336,18 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
             className="rounded-lg border border-sage/40 bg-sage/10 px-4 py-4 text-center"
           >
             <p className="text-base font-bold text-sage">
-              You&apos;re checked in at {done.eventName}.
+              Hiciste el check-in en {done.eventName}.
             </p>
             {done.alreadyCheckedIn ? (
               <p className="mt-2 text-sm text-muted">
-                You were already checked in.
+                Ya habías hecho el check-in.
               </p>
             ) : null}
             <Link
               href="/scan"
               className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
-              Scan a badge QR
+              Escanea el QR de una insignia
             </Link>
           </div>
         ) : null}
@@ -365,14 +365,14 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
                 type="submit"
                 className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
               >
-                Try again
+                Intentar de nuevo
               </button>
             ) : null}
             <Link
               href="/scan"
               className="inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
-              Scan another QR
+              Escanea otro QR
             </Link>
           </div>
         ) : null}
@@ -383,8 +383,8 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
               size="sm"
               label={
                 state.phase === "retrying"
-                  ? "Retrying your badge"
-                  : "Awarding your badge"
+                  ? "Reintentando tu insignia"
+                  : "Otorgando tu insignia"
               }
             />
             <p
@@ -392,8 +392,8 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
               className="text-sm font-semibold text-muted"
             >
               {state.phase === "retrying"
-                ? "Could not confirm. Retrying…"
-                : "Awarding your badge…"}
+                ? "No se pudo confirmar. Reintentando…"
+                : "Otorgando tu insignia…"}
             </p>
           </div>
         ) : null}
@@ -401,8 +401,8 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
         {state.phase === "waiting" ? (
           <div className="space-y-3 text-center">
             <p className="text-sm font-medium text-peach/70">
-              We could not confirm this scan. Retrying is safe: a badge is never
-              awarded twice.
+              No pudimos confirmar este escaneo. Reintentar es seguro: una insignia
+              nunca se otorga dos veces.
             </p>
             <button
               type="submit"
@@ -414,7 +414,7 @@ export default function ScanClaim({ token, userId, origin }: ScanClaimProps) {
               href="/scan"
               className="inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
-              Scan another QR
+              Escanea otro QR
             </Link>
           </div>
         ) : null}

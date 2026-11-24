@@ -15,7 +15,7 @@ import { resolveScanTarget, toScanQr, type ScanTarget } from "@/lib/scan/target"
 import { getSession } from "@/lib/session";
 
 export const metadata: Metadata = {
-  title: "Collect your badge · Lyfter Badges",
+  title: "Recolecta tu insignia · Lyfter Badges",
 };
 
 interface ScanPageProps {
@@ -23,10 +23,10 @@ interface ScanPageProps {
 }
 
 const BLOCKED_MESSAGES: Partial<Record<ScanTarget["status"], string>> = {
-  invalid: "This QR code is not valid or is no longer active.",
-  not_started: "This QR code or badge is not available yet.",
-  expired: "This QR code has expired.",
-  needs_check_in: "Scan the welcome QR at the entrance before collecting badges.",
+  invalid: "Este código QR no es válido o ya no está activo.",
+  not_started: "Este código QR o esta insignia todavía no están disponibles.",
+  expired: "Este código QR venció.",
+  needs_check_in: "Escanea el QR de bienvenida en la entrada antes de recolectar insignias.",
   ...EVENT_WINDOW_MESSAGES,
 };
 
@@ -39,7 +39,7 @@ function BlockedScan({ message }: { message: string }) {
           href="/scan"
           className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-stroke px-6 text-sm font-semibold text-subtle transition hover:bg-ink"
         >
-          Scan a QR code
+          Escanea un código QR
         </Link>
       </div>
     </main>
@@ -59,7 +59,7 @@ export default async function ScanPage({ params }: ScanPageProps) {
 
   if (!qr || !qr.active) {
     return (
-      <BlockedScan message="This QR code is not valid or is no longer active." />
+      <BlockedScan message="Este código QR no es válido o ya no está activo." />
     );
   }
 
@@ -99,13 +99,13 @@ export default async function ScanPage({ params }: ScanPageProps) {
         {isWelcome ? (
           <>
             <p className="text-sm font-semibold uppercase tracking-widest text-celeste">
-              Check in
+              Check-in
             </p>
             <h1 className="mt-3 text-2xl font-bold text-foreground">
               {qr.event.name}
             </h1>
             <p className="mt-3 text-sm text-muted">
-              Welcome! Claim your check-in below.
+              ¡Bienvenido! Confirma tu check-in abajo.
             </p>
           </>
         ) : badge ? (
@@ -146,13 +146,13 @@ export default async function ScanPage({ params }: ScanPageProps) {
         ) : (
           <>
             <h1 className="text-lg font-bold text-foreground">
-              This QR code is not configured correctly.
+              Este código QR no está configurado correctamente.
             </h1>
             <Link
               href="/"
               className="mt-6 inline-block rounded-lg border border-stroke px-6 py-3 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
-              Go to the homepage
+              Ir al inicio
             </Link>
           </>
         )}

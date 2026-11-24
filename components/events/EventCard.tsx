@@ -44,13 +44,13 @@ export default function EventCard({ event }: EventCardProps) {
           href={`/leaderboard?event=${event.slug}`}
           className="rounded-lg bg-sage px-4 py-2 text-[#263021] transition hover:bg-sage-soft"
         >
-          View leaderboard
+          Ver ranking
         </Link>
         <Link
           href="/collection"
           className="rounded-lg border border-stroke px-4 py-2 text-subtle transition hover:bg-ink"
         >
-          My collection
+          Mi colección
         </Link>
       </div>
     </article>

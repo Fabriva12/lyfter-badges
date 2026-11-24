@@ -30,8 +30,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </h1>
 
           <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-muted">
-            Sign in to keep the badges you collect tied to your account and
-            track your progress across events.
+            Inicia sesión para vincular a tu cuenta las insignias que recolectes
+            y seguir tu progreso en los eventos.
           </p>
         </div>
 

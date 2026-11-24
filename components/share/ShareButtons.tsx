@@ -196,10 +196,10 @@ export default function ShareButtons({
             type="button"
             onClick={handleNativeShare}
             className={primaryButton}
-            aria-label="Share this badge"
+            aria-label="Compartir esta insignia"
           >
             <ShareIcon />
-            Share
+            Compartir
           </button>
         ) : null}
 
@@ -208,7 +208,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on X"
+          aria-label="Compartir en X"
         >
           <XIcon />
           X
@@ -219,7 +219,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on WhatsApp"
+          aria-label="Compartir en WhatsApp"
         >
           <WhatsAppIcon />
           WhatsApp
@@ -230,7 +230,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on Facebook"
+          aria-label="Compartir en Facebook"
         >
           <FacebookIcon />
           Facebook
@@ -241,7 +241,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on LinkedIn"
+          aria-label="Compartir en LinkedIn"
         >
           <LinkedInIcon />
           LinkedIn
@@ -252,10 +252,10 @@ export default function ShareButtons({
             href={imageUrl}
             download="lyfter-badge.png"
             className={secondaryButton}
-            aria-label="Download the badge image"
+            aria-label="Descargar la imagen de la insignia"
           >
             <DownloadIcon />
-            Download
+            Descargar
           </a>
         ) : null}
 
@@ -263,10 +263,10 @@ export default function ShareButtons({
           type="button"
           onClick={handleCopy}
           className={secondaryButton}
-          aria-label="Copy the link to this badge"
+          aria-label="Copiar el enlace a esta insignia"
         >
           <CopyIcon />
-          {copied ? "Copied" : "Copy link"}
+          {copied ? "Copiado" : "Copiar enlace"}
         </button>
       </div>
 
@@ -276,7 +276,7 @@ export default function ShareButtons({
             htmlFor="share-url-fallback"
             className="block text-xs font-semibold uppercase tracking-widest text-muted"
           >
-            Copy this link
+            Copia este enlace
           </label>
           <input
             id="share-url-fallback"
@@ -289,7 +289,7 @@ export default function ShareButtons({
       ) : null}
 
       <span role="status" aria-live="polite" className="sr-only">
-        {copied ? "Link copied to the clipboard" : ""}
+        {copied ? "Enlace copiado al portapapeles" : ""}
       </span>
     </div>
   );

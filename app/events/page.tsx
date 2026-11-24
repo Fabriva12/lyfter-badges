@@ -7,7 +7,7 @@ import {
 } from "@/lib/gamification/queries";
 
 export const metadata: Metadata = {
-  title: "Events · Lyfter Badges",
+  title: "Eventos · Lyfter Badges",
 };
 
 // Read the event list at request time instead of freezing it at build time:
@@ -34,31 +34,31 @@ export default async function EventsPage() {
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
           <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-            Lyfter events
+            Eventos de Lyfter
           </p>
-          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Events</h1>
+          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Eventos</h1>
           <p className="mt-2 text-sm text-muted">
-            Browse the Lyfter events and jump into the leaderboard of each one.
+            Explora los eventos de Lyfter y entra al ranking de cada uno.
           </p>
         </header>
 
         {loadFailed ? (
           <section className="rounded-xl border border-coral/40 bg-coral/10 px-6 py-8 text-center">
             <h2 className="text-lg font-bold text-coral-soft">
-              Events are unavailable right now.
+              Los eventos no están disponibles en este momento.
             </h2>
             <p className="mt-2 text-sm text-subtle">
-              We could not reach the event database. Please try again in a few
-              minutes.
+              No pudimos acceder a la base de datos de eventos. Inténtalo de nuevo en
+              unos minutos.
             </p>
           </section>
         ) : events.length === 0 ? (
           <section className="rounded-xl border border-stroke bg-surface p-5 text-center sm:p-8">
             <h2 className="text-lg font-bold text-foreground">
-              There are no events yet.
+              Todavía no hay eventos.
             </h2>
             <p className="mt-2 text-sm text-muted">
-              As soon as an organizer publishes an event, it shows up here.
+              En cuanto un organizador publique un evento, aparecerá aquí.
             </p>
           </section>
         ) : (

@@ -32,7 +32,7 @@ interface StandQrProps {
 export default function StandQr({
   eventBadgeId,
   initial,
-  label = "stand QR",
+  label = "QR del stand",
   note,
 }: StandQrProps) {
   const [current, setCurrent] = useState(initial);
@@ -64,7 +64,7 @@ export default function StandQr({
     } catch {
       // Keep the last QR on screen: a failed poll must not blank the kiosk.
       setError(
-        "Could not refresh the QR code. Retrying automatically — you can also rotate now.",
+        "No se pudo actualizar el código QR. Se reintentará automáticamente; también puedes rotarlo ahora.",
       );
     } finally {
       inFlight.current = false;
@@ -100,14 +100,14 @@ export default function StandQr({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={current.qr}
-        alt={`QR code for ${label}`}
+        alt={`Código QR para ${label}`}
         width={240}
         height={240}
         className="mx-auto h-56 w-56 rounded bg-white p-2 sm:h-64 sm:w-64"
       />
 
       <p className="mt-5 text-sm text-muted">
-        Expires in{" "}
+        Vence en{" "}
         <span className="font-mono text-lg font-bold text-foreground">
           {secondsLeft}s
         </span>
@@ -115,7 +115,7 @@ export default function StandQr({
 
       {secondsLeft === 0 ? (
         <p className="mt-2 text-xs text-[#f6c86a]">
-          {error ? "Refresh failed — retrying." : "Refreshing…"}
+          {error ? "Falló la actualización; reintentando." : "Actualizando…"}
         </p>
       ) : null}
 
@@ -131,7 +131,7 @@ export default function StandQr({
         disabled={busy}
         className={`${primaryButtonClassName} mt-5 w-full sm:w-auto`}
       >
-        {busy ? "Rotating…" : "Rotate now"}
+        {busy ? "Rotando…" : "Rotar ahora"}
       </button>
 
       {note ? (

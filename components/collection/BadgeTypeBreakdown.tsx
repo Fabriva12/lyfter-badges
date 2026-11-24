@@ -15,9 +15,9 @@ export default function BadgeTypeBreakdown({
 
   return (
     <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
-      <h2 className="text-lg font-bold text-foreground">Badges by type</h2>
+      <h2 className="text-lg font-bold text-foreground">Insignias por tipo</h2>
       <p className="mt-1 text-sm text-muted">
-        {total} collected badge{total === 1 ? "" : "s"} across every event.
+        {total} {total === 1 ? "insignia recolectada" : "insignias recolectadas"} en todos los eventos.
       </p>
 
       <dl className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

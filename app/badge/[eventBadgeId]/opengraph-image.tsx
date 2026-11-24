@@ -31,7 +31,7 @@ export async function generateImageMetadata({ params }: ImageParams) {
     return [
       {
         id: eventBadgeId,
-        alt: `${eventBadge.badge.name} badge at ${eventBadge.event.name}, worth ${eventBadge.badge.xpValue} XP`,
+        alt: `Insignia ${eventBadge.badge.name} en ${eventBadge.event.name}, que vale ${eventBadge.badge.xpValue} XP`,
         size,
         contentType,
       },
@@ -73,7 +73,7 @@ function FallbackCard() {
           color: UI_COLORS.muted,
         }}
       >
-        Collect badges, earn XP, and level up.
+        Recolecta insignias, gana XP y sube de nivel.
       </div>
     </div>
   );

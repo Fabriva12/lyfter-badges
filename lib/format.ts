@@ -1,20 +1,20 @@
 export const EVENT_MODE_LABELS: Record<string, string> = {
-  IN_PERSON: "In person",
+  IN_PERSON: "Presencial",
   VIRTUAL: "Virtual",
-  HYBRID: "Hybrid",
+  HYBRID: "Híbrido",
 };
 
 export const EVENT_STATUS_LABELS: Record<string, string> = {
-  DRAFT: "Draft",
-  ACTIVE: "Active",
-  FINISHED: "Finished",
+  DRAFT: "Borrador",
+  ACTIVE: "Activo",
+  FINISHED: "Finalizado",
 };
 
 export const BADGE_TYPE_LABELS: Record<string, string> = {
-  WELCOME: "Welcome",
-  TALK: "Talk",
+  WELCOME: "Bienvenida",
+  TALK: "Charla",
   STAND: "Stand",
-  SPECIAL: "Special",
+  SPECIAL: "Especial",
 };
 
 export const BADGE_RARITY_LABELS: Record<string, string> = {

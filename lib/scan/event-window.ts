@@ -20,9 +20,9 @@ export type EventWindowResult =
  * use the same messages so a blocked QR reads the same in both places.
  */
 export const EVENT_WINDOW_MESSAGES: Record<EventWindowReason, string> = {
-  event_not_started: "This event has not started yet.",
-  event_ended: "This event has ended.",
-  event_not_active: "This event is not open for check-ins or badge claims.",
+  event_not_started: "Este evento todavía no comenzó.",
+  event_ended: "Este evento finalizó.",
+  event_not_active: "Este evento no está abierto para check-ins ni para reclamar insignias.",
 };
 
 /**

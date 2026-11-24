@@ -4,9 +4,9 @@ const features = [
   {
     step: "01",
     icon: "↘",
-    title: "Escaneá y coleccioná badges",
+    title: "Escaneá y coleccioná insignias",
     description:
-      "Apuntá al QR de cada charla o stand y sumá el badge a tu colección al instante.",
+      "Apuntá al QR de cada charla o stand y sumá la insignia a tu colección al instante.",
     iconClassName: "bg-[#38c6f3] text-[#17313b]",
   },
   {
@@ -14,7 +14,7 @@ const features = [
     icon: "↑",
     title: "Subí de nivel",
     description:
-      "Cada badge te da XP. Acumulá experiencia y desbloqueá nuevos niveles durante el evento.",
+      "Cada insignia te da XP. Acumulá experiencia y desbloqueá nuevos niveles durante el evento.",
     iconClassName: "bg-lilac text-[#352238]",
   },
   {
@@ -22,7 +22,7 @@ const features = [
     icon: "≡",
     title: "Compará tu posición",
     description:
-      "Mirá el leaderboard en vivo y competí con el resto de los asistentes por el podio.",
+      "Mirá el ranking en vivo y competí con el resto de los asistentes por el podio.",
     iconClassName: "bg-coral text-[#43272b]",
   },
 ];

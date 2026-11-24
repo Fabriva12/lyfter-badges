@@ -43,7 +43,7 @@ export default function LoginForm({ next }: LoginFormProps) {
         {isSignup ? (
           <div>
             <label htmlFor="name" className={labelClassName}>
-              Name
+              Nombre
             </label>
             <input
               id="name"
@@ -59,7 +59,7 @@ export default function LoginForm({ next }: LoginFormProps) {
 
         <div>
           <label htmlFor="email" className={labelClassName}>
-            Email
+            Correo electrónico
           </label>
           <input
             id="email"
@@ -74,7 +74,7 @@ export default function LoginForm({ next }: LoginFormProps) {
 
         <div>
           <label htmlFor="password" className={labelClassName}>
-            Password
+            Contraseña
           </label>
           <input
             id="password"
@@ -83,7 +83,7 @@ export default function LoginForm({ next }: LoginFormProps) {
             autoComplete={isSignup ? "new-password" : "current-password"}
             minLength={8}
             required
-            placeholder="At least 8 characters"
+            placeholder="Al menos 8 caracteres"
             className={inputClassName}
           />
         </div>
@@ -102,7 +102,7 @@ export default function LoginForm({ next }: LoginFormProps) {
           disabled={isPending}
           className="w-full rounded-lg bg-sage px-6 py-3 text-sm font-bold text-[#263021] transition hover:bg-sage-soft disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isPending ? "Please wait…" : isSignup ? "Create account" : "Sign in"}
+          {isPending ? "Espera…" : isSignup ? "Crear cuenta" : "Iniciar sesión"}
         </button>
 
         <button
@@ -111,8 +111,8 @@ export default function LoginForm({ next }: LoginFormProps) {
           className="w-full rounded-lg border border-stroke px-6 py-3 text-sm font-semibold text-subtle transition hover:bg-ink"
         >
           {isSignup
-            ? "Already have an account? Sign in"
-            : "New here? Create an account"}
+            ? "¿Ya tienes una cuenta? Inicia sesión"
+            : "¿Es tu primera vez? Crea una cuenta"}
         </button>
       </div>
     </form>

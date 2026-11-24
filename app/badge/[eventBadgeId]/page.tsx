@@ -20,11 +20,11 @@ export async function generateMetadata({
   const eventBadge = await loadPublicEventBadge(eventBadgeId);
 
   if (!eventBadge) {
-    return { title: "Badge not found" };
+    return { title: "Insignia no encontrada" };
   }
 
   const title = `${eventBadge.badge.name} · ${eventBadge.event.name}`;
-  const description = `The ${eventBadge.badge.name} badge at ${eventBadge.event.name} is worth ${eventBadge.badge.xpValue} XP. Collect it with Lyfter Badges.`;
+  const description = `La insignia ${eventBadge.badge.name} en ${eventBadge.event.name} vale ${eventBadge.badge.xpValue} XP. Recolecta la con Lyfter Badges.`;
 
   return {
     title: eventBadge.badge.name,
@@ -66,7 +66,7 @@ export default async function BadgePage({ params }: BadgePageProps) {
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
           <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
-            Badge
+            Insignia
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{badge.name}</h1>
         </header>
@@ -117,11 +117,11 @@ export default async function BadgePage({ params }: BadgePageProps) {
 
           <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
             <h2 className="text-xl font-bold text-foreground">
-              Share this badge
+              Comparte esta insignia
             </h2>
             <p className="mt-2 text-sm text-muted">
-              Show off what you collected and let the rest of the room know
-              which talks are worth attending.
+              Muestra lo que recolectaste y cuéntale al resto del público qué
+              charlas valen la pena.
             </p>
 
             <div className="mt-6">
@@ -136,17 +136,17 @@ export default async function BadgePage({ params }: BadgePageProps) {
 
           <section className="rounded-xl border border-stroke bg-surface-low p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
             <h2 className="text-lg font-bold text-foreground">
-              Not collecting badges yet?
+              ¿Todavía no recolectas insignias?
             </h2>
             <p className="mt-2 text-sm text-muted">
-              Create an account, scan the QR codes at the talks and stands, and
-              start your own collection.
+              Crea una cuenta, escanea los códigos QR de las charlas y los stands,
+              y empieza tu propia colección.
             </p>
             <Link
               href="/login"
               className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
             >
-              Create an account
+              Crear cuenta
             </Link>
           </section>
         </div>

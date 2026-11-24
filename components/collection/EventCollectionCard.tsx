@@ -39,7 +39,7 @@ export default function EventCollectionCard({
 
         <div className="flex flex-wrap items-center gap-3">
           <p className="text-sm font-semibold text-subtle">
-            {progress.collected} / {progress.total} badges
+            {progress.collected} / {progress.total} insignias
           </p>
           {shareHref ? (
             <Link
@@ -48,7 +48,7 @@ export default function EventCollectionCard({
               rel="noopener noreferrer"
               className="inline-flex min-h-9 items-center rounded-lg border border-stroke px-3 text-xs font-semibold text-subtle transition hover:bg-ink"
             >
-              Share
+              Compartir
             </Link>
           ) : null}
         </div>
@@ -59,7 +59,7 @@ export default function EventCollectionCard({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={percent}
-        aria-label={`Badge collection progress for ${collection.eventName}`}
+        aria-label={`Progreso de la colección de insignias de ${collection.eventName}`}
         className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-stroke"
       >
         <div
@@ -102,8 +102,8 @@ export default function EventCollectionCard({
                 </p>
                 <p className="truncate text-xs text-muted">
                   {badge.collected
-                    ? `+${badge.xpValue} XP · collected`
-                    : `+${badge.xpValue} XP · not collected`}
+                    ? `+${badge.xpValue} XP · recolectada`
+                    : `+${badge.xpValue} XP · sin recolectar`}
                   {badge.room ? ` · ${badge.room}` : ""}
                 </p>
               </div>

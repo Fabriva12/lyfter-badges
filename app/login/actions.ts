@@ -7,8 +7,8 @@ import { auth } from "@/lib/auth";
 import type { LoginFormState } from "@/lib/forms";
 import { sanitizeNextPath } from "@/lib/redirect";
 
-const INVALID_CREDENTIALS = "Invalid email or password.";
-const UNEXPECTED_ERROR = "Something went wrong. Please try again.";
+const INVALID_CREDENTIALS = "Correo electrónico o contraseña inválidos.";
+const UNEXPECTED_ERROR = "Ocurrió un error. Inténtalo de nuevo.";
 
 export async function authenticate(
   _prevState: LoginFormState,
@@ -21,15 +21,15 @@ export async function authenticate(
   const next = sanitizeNextPath(formData.get("next"));
 
   if (!email || !email.includes("@")) {
-    return { error: "Enter a valid email address." };
+    return { error: "Ingresa un correo electrónico válido." };
   }
 
   if (password.length < 8) {
-    return { error: "Password must be at least 8 characters." };
+    return { error: "La contraseña debe tener al menos 8 caracteres." };
   }
 
   if (intent === "signup" && !name) {
-    return { error: "Enter your name." };
+    return { error: "Ingresa tu nombre." };
   }
 
   try {

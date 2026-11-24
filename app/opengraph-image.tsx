@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { BRAND_COLORS, UI_COLORS } from "@/lib/theme/colors";
 
 export const runtime = "nodejs";
-export const alt = "Lyfter Badges — collect badges, earn XP, and level up";
+export const alt = "Lyfter Badges — recolecta insignias, gana XP y sube de nivel";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -42,9 +42,9 @@ export default async function Image() {
             color: UI_COLORS.foreground,
           }}
         >
-          Collect badges.
+          Recolecta insignias.
           <br />
-          Earn XP. Level up.
+          Gana XP. Sube de nivel.
         </div>
 
         <div
@@ -55,8 +55,8 @@ export default async function Image() {
             color: UI_COLORS.muted,
           }}
         >
-          Scan the QR codes at the talks and stands, and climb the leaderboard
-          of every Lyfter event.
+          Escanea los códigos QR de las charlas y los stands, y sube en el
+          ranking de cada evento de Lyfter.
         </div>
 
         <div
@@ -66,7 +66,7 @@ export default async function Image() {
             gap: 16,
           }}
         >
-          {["Scan", "Collect", "Climb"].map((step) => (
+          {["Escanea", "Recolecta", "Sube"].map((step) => (
             <div
               key={step}
               style={{

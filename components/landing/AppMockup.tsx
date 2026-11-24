@@ -5,8 +5,8 @@ const badges = [
   { icon: "code", name: "RSC", xp: 60, collected: true },
   { icon: "database", name: "Supabase", xp: 40, collected: true },
   { icon: "shield", name: "Auth", xp: 70, collected: false },
-  { icon: "star", name: "Speakers", xp: 30, collected: false },
-  { icon: "ticket", name: "Party", xp: 20, collected: false },
+  { icon: "star", name: "Ponentes", xp: 30, collected: false },
+  { icon: "ticket", name: "Fiesta", xp: 20, collected: false },
 ];
 
 function ScanIcon() {
@@ -77,7 +77,7 @@ export default function AppMockup() {
                     Nivel 4
                   </p>
                   <p className="mt-0.5 text-sm font-bold text-foreground">
-                    Builder
+                    Constructor
                   </p>
                 </div>
 
@@ -109,7 +109,7 @@ export default function AppMockup() {
 
             {/* Collection */}
             <div className="mt-3 flex items-center justify-between">
-              <p className="text-[11px] font-semibold text-foreground">Badges</p>
+              <p className="text-[11px] font-semibold text-foreground">Insignias</p>
               <p className="text-[9px] font-semibold text-celeste">3 de 6</p>
             </div>
 
@@ -149,7 +149,7 @@ export default function AppMockup() {
             {/* Leaderboard */}
             <div className="mt-3 flex items-center justify-between rounded-lg border border-stroke bg-surface-low px-3 py-2">
               <span className="text-[9px] font-semibold uppercase tracking-widest text-muted">
-                Leaderboard
+                Ranking
               </span>
               <span className="text-[10px] font-bold text-foreground">
                 #7 <span className="font-normal text-muted">de 42</span>
@@ -166,7 +166,7 @@ export default function AppMockup() {
       </div>
 
       <figcaption className="sr-only">
-        Vista previa de la app: nivel, XP, colección de badges y leaderboard del
+        Vista previa de la app: nivel, XP, colección de insignias y ranking del
         evento.
       </figcaption>
     </figure>

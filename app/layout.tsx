@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       default: "Lyfter Badges",
       template: "%s · Lyfter Badges",
     },
-    description: "Collect badges, earn XP, and level up at Lyfter events.",
+    description: "Recolecta insignias, gana XP y sube de nivel en los eventos de Lyfter.",
   };
 }
 

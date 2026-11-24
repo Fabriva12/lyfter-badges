@@ -18,7 +18,7 @@ export default function EventSelector({
 }: EventSelectorProps) {
   return (
     <nav
-      aria-label="Ranking scope"
+      aria-label="Alcance del ranking"
       className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:gap-3 sm:px-0"
     >
       <Link

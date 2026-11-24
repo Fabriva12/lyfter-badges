@@ -44,7 +44,7 @@ describe("buildCollectionShareText", () => {
 
     expect(result).toContain("Ada Lovelace");
     expect(result).toContain(eventName);
-    expect(result).toContain("3 of 5 badges");
+    expect(result).toContain("recolectó 3 de 5 insignias");
     expect(result).toContain("120 XP");
   });
 
@@ -57,7 +57,7 @@ describe("buildCollectionShareText", () => {
       xp: 50,
     });
 
-    expect(result).toContain("1 of 1 badge ");
+    expect(result).toContain("recolectó 1 de 1 insignia ");
   });
 });
 

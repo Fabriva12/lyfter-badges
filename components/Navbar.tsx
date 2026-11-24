@@ -57,7 +57,7 @@ export default async function Navbar() {
             href="/leaderboard"
             className="whitespace-nowrap transition hover:text-white"
           >
-            Leaderboard
+            Ranking
           </Link>
 
           <Link
@@ -90,7 +90,7 @@ export default async function Navbar() {
               href="/login"
               className="whitespace-nowrap rounded-lg border border-celeste px-5 py-2 text-sm font-semibold transition hover:bg-celeste/10"
             >
-              Login
+              Iniciar sesión
             </Link>
           )}
         </div>

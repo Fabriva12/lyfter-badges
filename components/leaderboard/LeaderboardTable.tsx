@@ -97,7 +97,7 @@ export default function LeaderboardTable({
         Ranking
       </p>
       <h2 className="mt-2 text-xl font-bold text-foreground">
-        Top 10 by {METRIC_NOUN[metric]}
+        Top 10 por {METRIC_NOUN[metric]}
       </h2>
 
       <ul className="mt-6 space-y-3 md:hidden">
@@ -117,10 +117,10 @@ export default function LeaderboardTable({
           <thead>
             <tr className="border-b border-stroke text-xs font-semibold uppercase tracking-widest text-muted">
               <th scope="col" className="pb-3 pr-4">
-                Rank
+                Puesto
               </th>
               <th scope="col" className="pb-3 pr-4">
-                Attendee
+                Asistente
               </th>
               <th
                 scope="col"
@@ -136,7 +136,7 @@ export default function LeaderboardTable({
                   metric === "talks" ? METRIC_ACCENT.talks : ""
                 }`}
               >
-                Talks
+                Charlas
               </th>
               <th
                 scope="col"
@@ -173,13 +173,13 @@ export default function LeaderboardTable({
                           {row.name}
                           {isCurrent ? (
                             <span className="ml-2 text-xs font-semibold uppercase tracking-widest text-celeste">
-                              You
+                              Tú
                             </span>
                           ) : null}
                         </p>
                         <p className="text-xs text-muted">
                           {row.badges}{" "}
-                          {row.badges === 1 ? "badge" : "badges"}
+                          {row.badges === 1 ? "insignia" : "insignias"}
                         </p>
                       </div>
                     </div>

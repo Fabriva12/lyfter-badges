@@ -1,7 +1,9 @@
 import { ImageResponse } from "next/og";
 
+import { BRAND_COLORS, UI_COLORS } from "@/lib/theme/colors";
+
 export const runtime = "nodejs";
-export const alt = "Lyfter Badges — collect badges, earn XP, and level up";
+export const alt = "Lyfter Badges — recolecta insignias, gana XP y sube de nivel";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -15,7 +17,7 @@ export default async function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          backgroundColor: "#171b21",
+          backgroundColor: UI_COLORS.background,
           padding: 88,
         }}
       >
@@ -24,7 +26,7 @@ export default async function Image() {
             display: "flex",
             fontSize: 28,
             letterSpacing: 6,
-            color: "#a8d889",
+            color: BRAND_COLORS.sage,
           }}
         >
           LYFTER BADGES
@@ -37,12 +39,12 @@ export default async function Image() {
             fontSize: 88,
             lineHeight: 1.05,
             letterSpacing: -2,
-            color: "#f1f1ed",
+            color: UI_COLORS.foreground,
           }}
         >
-          Collect badges.
+          Recolecta insignias.
           <br />
-          Earn XP. Level up.
+          Gana XP. Sube de nivel.
         </div>
 
         <div
@@ -50,11 +52,11 @@ export default async function Image() {
             display: "flex",
             marginTop: 32,
             fontSize: 32,
-            color: "#9ca3af",
+            color: UI_COLORS.muted,
           }}
         >
-          Scan the QR codes at the talks and stands, and climb the leaderboard
-          of every Lyfter event.
+          Escanea los códigos QR de las charlas y los stands, y sube en el
+          ranking de cada evento de Lyfter.
         </div>
 
         <div
@@ -64,18 +66,18 @@ export default async function Image() {
             gap: 16,
           }}
         >
-          {["Scan", "Collect", "Climb"].map((step) => (
+          {["Escanea", "Recolecta", "Sube"].map((step) => (
             <div
               key={step}
               style={{
                 display: "flex",
                 padding: "12px 30px",
                 borderRadius: 40,
-                backgroundColor: "#252c35",
+                backgroundColor: UI_COLORS.surface,
                 borderWidth: 2,
                 borderStyle: "solid",
-                borderColor: "#394351",
-                color: "#d7dce3",
+                borderColor: UI_COLORS.stroke,
+                color: UI_COLORS.subtle,
                 fontSize: 28,
               }}
             >

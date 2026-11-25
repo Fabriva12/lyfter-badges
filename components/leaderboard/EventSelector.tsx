@@ -18,7 +18,7 @@ export default function EventSelector({
 }: EventSelectorProps) {
   return (
     <nav
-      aria-label="Ranking scope"
+      aria-label="Alcance del ranking"
       className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:gap-3 sm:px-0"
     >
       <Link
@@ -26,8 +26,8 @@ export default function EventSelector({
         aria-current={activeSlug === null ? "page" : undefined}
         className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition ${
           activeSlug === null
-            ? "border-[#36bde9] bg-[#36bde9]/10 text-[#f1f1ed]"
-            : "border-[#39424f] bg-[#252c35] text-[#9ca3af] hover:bg-[#272d36] hover:text-[#d7dce3]"
+            ? "border-celeste bg-celeste/10 text-foreground"
+            : "border-stroke bg-surface text-muted hover:bg-ink hover:text-subtle"
         }`}
       >
         Global
@@ -43,8 +43,8 @@ export default function EventSelector({
             aria-current={isActive ? "page" : undefined}
             className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition ${
               isActive
-                ? "border-[#36bde9] bg-[#36bde9]/10 text-[#f1f1ed]"
-                : "border-[#39424f] bg-[#252c35] text-[#9ca3af] hover:bg-[#272d36] hover:text-[#d7dce3]"
+                ? "border-celeste bg-celeste/10 text-foreground"
+                : "border-stroke bg-surface text-muted hover:bg-ink hover:text-subtle"
             }`}
           >
             {event.name}

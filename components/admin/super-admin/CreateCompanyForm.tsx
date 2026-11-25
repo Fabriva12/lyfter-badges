@@ -19,8 +19,8 @@ export default function CreateCompanyForm() {
 
   return (
     <form action={formAction} className={cardClassName}>
-      <h2 className="text-lg font-bold text-[#f1f1ed]">Crear una empresa</h2>
-      <p className="mt-1 text-sm text-[#9ca3af]">
+      <h2 className="text-lg font-bold text-foreground">Crear una empresa</h2>
+      <p className="mt-1 text-sm text-muted">
         Las empresas agrupan eventos y los admins que los gestionan.
       </p>
 
@@ -58,7 +58,7 @@ export default function CreateCompanyForm() {
         <p
           role={state.status === "error" ? "alert" : "status"}
           className={`mt-3 text-xs ${
-            state.status === "error" ? "text-[#ffb3ba]" : "text-[#a8d889]"
+            state.status === "error" ? "text-coral-soft" : "text-sage"
           }`}
         >
           {state.message}

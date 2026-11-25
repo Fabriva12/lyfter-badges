@@ -32,13 +32,13 @@ export default function OrganizerDashboard({
     <div className="space-y-8">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
             Admin
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
             Eventos de tus empresas
           </h1>
-          <p className="mt-2 text-sm text-[#9ca3af]">
+          <p className="mt-2 text-sm text-muted">
             Administrá las insignias, los tokens QR y el premio del evento. Ves
             los eventos de todas las empresas que administrás.
           </p>
@@ -46,7 +46,7 @@ export default function OrganizerDashboard({
 
         <Link
           href="/admin/audit"
-          className="rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+          className="rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
         >
           Auditoría
         </Link>
@@ -63,10 +63,10 @@ export default function OrganizerDashboard({
       </div>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-bold text-[#f1f1ed]">Lista de eventos</h2>
+        <h2 className="text-lg font-bold text-foreground">Lista de eventos</h2>
 
         {events.length === 0 ? (
-          <p className="rounded-xl border border-[#39424f] bg-[#252c35] px-4 py-8 text-center text-sm text-[#9ca3af]">
+          <p className="rounded-xl border border-stroke bg-surface px-4 py-8 text-center text-sm text-muted">
             Todavía no tenés eventos. Creá el primero abajo.
           </p>
         ) : (
@@ -75,50 +75,50 @@ export default function OrganizerDashboard({
               <li key={event.id} className={cardClassName}>
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-lg font-bold text-[#f1f1ed]">
+                    <h3 className="text-lg font-bold text-foreground">
                       {event.name}
                     </h3>
                     {event.companyName ? (
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-[#7fd8f5]">
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-celeste-soft">
                         {event.companyName}
                       </p>
                     ) : null}
-                    <p className="mt-1 text-sm text-[#9ca3af]">
+                    <p className="mt-1 text-sm text-muted">
                       {formatEventRange(event.startsAt, event.endsAt)}
                     </p>
                     {event.location ? (
-                      <p className="mt-1 text-sm text-[#9ca3af]">
+                      <p className="mt-1 text-sm text-muted">
                         {event.location}
                         {event.country ? `, ${event.country}` : ""}
                       </p>
                     ) : null}
                     <p className="mt-2 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
-                      <span className="rounded-full border border-[#39424f] px-2.5 py-0.5 text-[#9ca3af]">
+                      <span className="rounded-full border border-stroke px-2.5 py-0.5 text-muted">
                         {EVENT_MODE_LABELS[event.mode] ?? event.mode}
                       </span>
-                      <span className="rounded-full bg-[#36bde9]/15 px-2.5 py-0.5 text-[#7fd8f5]">
+                      <span className="rounded-full bg-celeste/15 px-2.5 py-0.5 text-celeste-soft">
                         {EVENT_STATUS_LABELS[event.status] ?? event.status}
                       </span>
                     </p>
                   </div>
-                  <span className="rounded-full border border-[#394351] px-3 py-1 font-mono text-xs text-[#9ca3af]">
+                  <span className="rounded-full border border-stroke px-3 py-1 font-mono text-xs text-muted">
                     {event.slug}
                   </span>
                 </div>
 
                 <dl className="mt-5 grid grid-cols-3 gap-3 text-center">
-                  <div className="rounded-lg bg-[#1f252d] px-2 py-3">
-                    <dt className="text-xs text-[#9ca3af]">Asistentes</dt>
+                  <div className="rounded-lg bg-surface-low px-2 py-3">
+                    <dt className="text-xs text-muted">Asistentes</dt>
                     <dd className="mt-1 text-lg font-bold">
                       {event.attendees}
                     </dd>
                   </div>
-                  <div className="rounded-lg bg-[#1f252d] px-2 py-3">
-                    <dt className="text-xs text-[#9ca3af]">Escaneos</dt>
+                  <div className="rounded-lg bg-surface-low px-2 py-3">
+                    <dt className="text-xs text-muted">Escaneos</dt>
                     <dd className="mt-1 text-lg font-bold">{event.scans}</dd>
                   </div>
-                  <div className="rounded-lg bg-[#1f252d] px-2 py-3">
-                    <dt className="text-xs text-[#9ca3af]">Insignias</dt>
+                  <div className="rounded-lg bg-surface-low px-2 py-3">
+                    <dt className="text-xs text-muted">Insignias</dt>
                     <dd className="mt-1 text-lg font-bold">{event.badges}</dd>
                   </div>
                 </dl>
@@ -126,13 +126,13 @@ export default function OrganizerDashboard({
                 <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold">
                   <Link
                     href={`/admin/events/${event.id}`}
-                    className="rounded-lg bg-[#a8d889] px-4 py-2 text-[#263021] transition hover:bg-[#b8e39a]"
+                    className="rounded-lg bg-sage px-4 py-2 text-[#263021] transition hover:bg-sage-soft"
                   >
                     Administrar evento
                   </Link>
                   <Link
                     href={`/leaderboard?event=${event.slug}`}
-                    className="rounded-lg border border-[#394351] px-4 py-2 text-[#d7dce3] transition hover:bg-[#272d36]"
+                    className="rounded-lg border border-stroke px-4 py-2 text-subtle transition hover:bg-ink"
                   >
                     Clasificación pública
                   </Link>

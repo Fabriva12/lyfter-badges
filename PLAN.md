@@ -1,4 +1,4 @@
-# Lyfter Badges — Implementation Plan
+# Lyfter Badges — Plan de implementación
 
 > **Documento histórico.** Refleja el diseño original y no se actualiza. El pseudo-schema de la
 > sección 4 está desactualizado: usa los roles `ORGANIZER`/`PARTNER`, no incluye `Company` ni
@@ -6,49 +6,49 @@
 > [`prisma/schema.prisma`](./prisma/schema.prisma) y su resumen en
 > [`docs/database.md`](./docs/database.md).
 
-Status: **in progress** — Supabase connected (session pooler + `lyfter_shadow`). Phase 0 complete
-(auth + domain schema, single initial migration, `Level` seed, Better Auth route, `proxy.ts`).
-Phase 1 complete (`/login` with Server Actions and validated `next`). Phase 2 complete
-(`/s/[token]` check-in + badge claim, idempotent, demo seed behind `SEED_DEMO_DATA`). Phase 3 complete
-(`/collection` with global XP, level progression, per-event collection and prize status). Phase 4
-complete (`/leaderboard` with global and per-event scope: podium, top 10, and a competition
-rank that is not the same as the position in the list, ordered by XP, stands or talks). Phase 5 complete (public `/badge/[eventBadgeId]` page with
-dynamic OG image through `ImageResponse`, share intents for X, WhatsApp and Facebook, and a copy-link
-button). The share URL is keyed by `eventBadgeId`, never by the QR token, so sharing does not leak the
-scan secret. Phase 6 complete (the event prize stays a secret until the attendee completes the
-badge set: the collection card renders three states — locked, announced by the organizer, and
-unlocked — and a locked prize ships without its details, so the name never reaches the browser).
-Phase 7 complete (admin panel: an ORGANIZER manages only the events they own — badges, QR tokens,
-stand partners, prize and scan log — and a PARTNER sees a read-only view of the stands assigned to
-them. Ownership is per stand: `EventBadge.partnerId`, not a whole event). The badge economy is
-enforced by the schema: `Scan` is unique per `(userId, eventBadgeId)`, so a badge can have several
-printed QR tokens and still be collected only once per attendee.
+Estado: **en progreso** — Supabase conectado (session pooler + `lyfter_shadow`). Fase 0 completada
+(autenticación + esquema de dominio, migración inicial única, seed de `Level`, ruta de Better Auth, `proxy.ts`).
+Fase 1 completada (`/login` con Server Actions y `next` validado). Fase 2 completada
+(`/s/[token]` check-in + reclamo de badge, idempotente, seed de demo detrás de `SEED_DEMO_DATA`). Fase 3 completada
+(`/collection` con XP global, progresión de niveles, colección por evento y estado del premio). Fase 4
+completada (`/leaderboard` con alcance global y por evento: podio, top 10 y un
+puesto de competencia que no es lo mismo que la posición en la lista, ordenado por XP, stands o charlas). Fase 5 completada (página pública `/badge/[eventBadgeId]` con
+imagen OG dinámica mediante `ImageResponse`, intents de compartir en X, WhatsApp y Facebook y un
+botón de copiar enlace). La URL de compartir se basa en `eventBadgeId`, nunca en el token QR, de modo que compartir no filtra el
+secreto del escaneo. Fase 6 completada (el premio del evento permanece en secreto hasta que el asistente completa el
+conjunto de badges: la tarjeta de colección muestra tres estados — bloqueado, anunciado por el organizador y
+desbloqueado — y un premio bloqueado se envía sin sus detalles, de modo que el nombre nunca llega al navegador).
+Fase 7 completada (panel de administración: un ORGANIZER gestiona solo los eventos que posee — badges, tokens QR,
+partners de stand, premio y registro de escaneos — y un PARTNER ve una vista de solo lectura de los stands asignados a
+él. La propiedad es por stand: `EventBadge.partnerId`, no un evento completo). La economía de badges se
+garantiza en el esquema: `Scan` es único por `(userId, eventBadgeId)`, de modo que un badge puede tener varios
+tokens QR impresos y aun así recogerse una sola vez por asistente.
 
-## 1. Product model
+## 1. Modelo de producto
 
-An attendee scans a welcome QR to register for a Lyfter event, then scans a QR at each
-talk and stand. Each scan awards a badge (collectible proof of presence) and XP. XP raises
-the attendee's level. They can compare progress on a leaderboard, share badges on social
-media, and unlock a prize by completing every badge for an event.
+Un asistente escanea un QR de bienvenida para registrarse en un evento de Lyfter, y luego escanea un QR en cada
+charla y stand. Cada escaneo otorga un badge (prueba de presencia coleccionable) y XP. La XP eleva
+el nivel del asistente. Pueden comparar el progreso en un leaderboard, compartir badges en redes
+sociales y desbloquear un premio al completar todos los badges de un evento.
 
-Behind it sits an admin panel for the Lyfter team and for partners (companies with stands).
+Detrás se encuentra un panel de administración para el equipo de Lyfter y para los partners (empresas con stands).
 
-### Gamification axes
+### Ejes de gamificación
 
-Two distinct axes over the same `Scan` table. Mixing them up is the main design risk here.
+Dos ejes distintos sobre la misma tabla `Scan`. Confundirlos es el principal riesgo de diseño aquí.
 
-| Axis | Scope | Purpose |
+| Eje | Alcance | Propósito |
 | --- | --- | --- |
-| Level | **Global** — `SUM(Scan.xpAwarded)` across all events | Retention: attendees return to the next event already at level 5 |
-| Leaderboard | **Global or per event** — XP, stand visits or talk attendance | Fair competition within a single day, plus the platform-wide race |
+| Nivel | **Global** — `SUM(Scan.xpAwarded)` en todos los eventos | Retención: los asistentes regresan al siguiente evento ya en el nivel 5 |
+| Leaderboard | **Global o por evento** — XP, visitas a stands o asistencia a charlas | Competencia justa dentro de un solo día, más la carrera a nivel de toda la plataforma |
 
-A global level is what makes the attendee come back. A per-event leaderboard is what keeps
-the event from being a formality for veterans. The leaderboard can also be read globally,
-and each scope can be sorted by `xp`, `stands` or `talks`.
+Un nivel global es lo que hace que el asistente vuelva. Un leaderboard por evento es lo que evita
+que el evento sea un mero trámite para los veteranos. El leaderboard también puede leerse de forma global,
+y cada alcance puede ordenarse por `xp`, `stands` o `talks`.
 
-### Aggregates
+### Agregados
 
-More than three questions, three different cuts of the same table:
+Más que tres preguntas, tres cortes distintos de la misma tabla:
 
 ```
 level        SUM(Scan.xpAwarded)
@@ -58,65 +58,65 @@ leaderboard  SUM(Scan.xpAwarded)                  metric xp
 collection   COUNT(DISTINCT Scan.qrTokenId)  WHERE eventId = X
 ```
 
-The leaderboard scope is either global (no `eventId`) or one event (`WHERE eventId = X`).
-`WELCOME` and `SPECIAL` badges add XP and collection count, but they are not a stand
-visit or a talk attendance.
+El alcance del leaderboard es global (sin `eventId`) o un solo evento (`WHERE eventId = X`).
+Los badges `WELCOME` y `SPECIAL` suman XP y al recuento de colección, pero no son una visita
+a un stand ni una asistencia a una charla.
 
-`Prize.requiredBadgesCount` is always compared against the collection count **within the
-same event**. A prize belongs to one event.
+`Prize.requiredBadgesCount` siempre se compara con el recuento de colección **dentro del
+mismo evento**. Un premio pertenece a un solo evento.
 
-Do **not** cache a running `xpTotal` on `User`. Each of the three questions above needs a
-different cut, and a denormalized counter drifts without a traceable source. `Level` is the
-only cached table.
+**No** almacenes en caché un `xpTotal` acumulado en `User`. Cada una de las tres preguntas anteriores necesita
+un corte distinto, y un contador desnormalizado se desvía sin una fuente rastreable. `Level` es la
+única tabla en caché.
 
 ## 2. Stack
 
-| Layer | Choice | Rationale |
+| Capa | Elección | Justificación |
 | --- | --- | --- |
-| Framework | Next.js 16.3 + React 19.2 | Already in the repo |
-| Styling | Tailwind 4 | Already in the repo |
-| ORM | **Prisma 7.10** (not 8) | Prisma 8 is a release candidate, and `prisma dev` changes meaning in 8 |
-| Database | **Supabase Postgres**, session pooler | Hosted and IPv4-reachable; no local server to keep alive |
-| Auth | **Better Auth 1.4+** | `next-auth` v5 is still beta after 4 years and had a critical fail-open CVE in 2026 |
-| Package manager | pnpm | Already in the repo |
+| Framework | Next.js 16.3 + React 19.2 | Ya está en el repo |
+| Estilos | Tailwind 4 | Ya está en el repo |
+| ORM | **Prisma 7.10** (no 8) | Prisma 8 es una versión candidata, y `prisma dev` cambia de significado en 8 |
+| Base de datos | **Supabase Postgres**, session pooler | Alojada y accesible por IPv4; sin servidor local que mantener vivo |
+| Autenticación | **Better Auth 1.4+** | `next-auth` v5 sigue en beta después de 4 años y tuvo una CVE crítica de fail-open en 2026 |
+| Gestor de paquetes | pnpm | Ya está en el repo |
 
-### Why not the alternatives
+### ¿Por qué no las alternativas?
 
-- **Docker** — technically fine, and the `compose.yml` is a good course deliverable, but the
-  course does not cover containers and this machine has 7.86 GB of RAM. Docker Desktop + WSL2
-  costs ~2.5 GB permanently, which starves `next dev` on a 6-core i5-10400.
-- **`npx prisma dev`** (PGlite) — zero install, but its default is stateless: schema included,
-  so every restart needs a re-migrate. The CLI documents no persistence flag, and the default
-  is ambiguous between the CLI docs and the `@prisma/dev` API. Too much uncertainty to build on.
-- **`next-auth`** — v5 has never shipped stable. Do not use it for a new project.
-- **Supabase Auth** — hands the session layer to an SDK. This is a Next.js course; delegating the
-  framework's core mechanism defeats the point. Using Supabase as a *Postgres host* is a
-  different decision and is what we do: the database is hosted, the auth stays ours.
+- **Docker** — técnicamente bien, y el `compose.yml` es un buen entregable del curso, pero el
+  curso no cubre contenedores y esta máquina tiene 7.86 GB de RAM. Docker Desktop + WSL2
+  cuesta ~2.5 GB de forma permanente, lo que asfixia `next dev` en un i5-10400 de 6 núcleos.
+- **`npx prisma dev`** (PGlite) — instalación cero, pero por defecto es sin estado: incluye el esquema,
+  así que cada reinicio requiere volver a migrar. La CLI no documenta ninguna bandera de persistencia, y el
+  comportamiento por defecto es ambiguo entre la documentación de la CLI y la API de `@prisma/dev`. Demasiada incertidumbre para construir sobre eso.
+- **`next-auth`** — v5 nunca ha entregado una versión estable. No lo uses en un proyecto nuevo.
+- **Supabase Auth** — entrega la capa de sesión a un SDK. Este es un curso de Next.js; delegar el
+  mecanismo central del framework contradice el objetivo. Usar Supabase como *host de Postgres* es una
+  decisión distinta y es lo que hacemos: la base de datos está alojada, la autenticación sigue siendo nuestra.
 
-## 3. Prerequisites (manual, outside the repo)
+## 3. Requisitos previos (manuales, fuera del repo)
 
-1. Create a **Supabase** project (free tier). The region sets the latency: this project lives
-   in `aws-1-us-west-2` (Oregon), so every query pays a transatlantic hop.
-2. Take the **Session pooler** URI from the dashboard (Connect → Session pooler) and replace
-   the literal `[YOUR-PASSWORD]` placeholder yourself — the dashboard does not do it for you.
-3. Three variables, one host:
+1. Crea un proyecto en **Supabase** (nivel gratuito). La región define la latencia: este proyecto vive
+   en `aws-1-us-west-2` (Oregón), así que cada consulta paga un salto transatlántico.
+2. Toma la URI del **Session pooler** del panel (Connect → Session pooler) y reemplaza
+   tú mismo el marcador literal `[YOUR-PASSWORD]` — el panel no lo hace por ti.
+3. Tres variables, un solo host:
 
-   ```
-   DATABASE_URL         -> session pooler, database postgres   (app runtime)
-   DIRECT_URL           -> session pooler, database postgres   (migrations, introspection)
-   SHADOW_DATABASE_URL  -> session pooler, database lyfter_shadow
-   ```
+    ```
+    DATABASE_URL         -> session pooler, database postgres   (app runtime)
+    DIRECT_URL           -> session pooler, database postgres   (migrations, introspection)
+    SHADOW_DATABASE_URL  -> session pooler, database lyfter_shadow
+    ```
 
-4. Create the shadow database. The Supabase SQL editor wraps everything in a transaction, so
-   `CREATE DATABASE` fails there; run it through a `pg` script against the session pooler.
+4. Crea la base de datos shadow. El editor SQL de Supabase envuelve todo en una transacción, así que
+   `CREATE DATABASE` falla allí; ejecútalo mediante un script `pg` contra el session pooler.
 
-Port `5432` (session mode) is mandatory. The direct connection is IPv6-only on the free tier,
-and the transaction pooler (`6543`) breaks prepared statements and migrations.
+El puerto `5432` (modo sesión) es obligatorio. La conexión directa es solo IPv6 en el nivel gratuito,
+y el transaction pooler (`6543`) rompe las sentencias preparadas y las migraciones.
 
-Free-tier projects pause after ~7 days of inactivity. Wake the project from the dashboard
-before `migrate` or `dev` will reach it.
+Los proyectos del nivel gratuito se pausan después de ~7 días de inactividad. Despierta el proyecto
+desde el panel antes de que `migrate` o `dev` puedan acceder a él.
 
-## 4. Domain model
+## 4. Modelo de dominio
 
 ```prisma
 User          // generated by Better Auth + `role` via additionalFields
@@ -132,28 +132,28 @@ Level         // level, name, minXp
 Prize         // event prize: requiredBadgesCount, revealedAt
 ```
 
-A `WELCOME` token points at an event but has no `eventBadge`; scanning it creates the
-`Registration` and awards no XP. A `BADGE` token requires that registration and creates a
-`Scan`. Both scans are idempotent: a repeat returns the previous result instead of an error.
+Un token `WELCOME` apunta a un evento pero no tiene `eventBadge`; escanearlo crea el
+`Registration` y no otorga XP. Un token `BADGE` requiere ese registro y crea un
+`Scan`. Ambos escaneos son idempotentes: una repetición devuelve el resultado anterior en lugar de un error.
 
-Two uniqueness constraints are non-negotiable:
+Dos restricciones de unicidad son innegociables:
 
-- `Scan(userId, qrTokenId)` — stops someone photographing the same QR 400 times.
-- `Registration(userId, eventId)` — stops double check-in.
+- `Scan(userId, qrTokenId)` — evita que alguien fotografíe el mismo QR 400 veces.
+- `Registration(userId, eventId)` — evita el doble check-in.
 
-Both must be database constraints, not application checks. Application-level checks race.
+Ambas deben ser restricciones de base de datos, no comprobaciones de la aplicación. Las comprobaciones a nivel de aplicación tienen condiciones de carrera.
 
-## 5. QR mechanism
+## 5. Mecanismo QR
 
-Primary path: the in-app scanner at `/scan` (camera plus image upload). Fallback: the deep link
+Ruta principal: el escáner integrado en la app en `/scan` (cámara más subida de imagen). Alternativa: el deep link
 `/s/[token]`.
 
-The QR is printed and stuck on a talk wall or stand. The native camera app can still open the
-deep link, but the in-app scanner removes the hand-off: the attendee stays signed in, and the
-welcome check-in gate is resolved before the claim page loads. Camera access requires a secure
-context (HTTPS or localhost), so the deep link remains the universal fallback.
+El QR se imprime y se pega en la pared de una charla o en un stand. La app nativa de la cámara todavía puede abrir el
+deep link, pero el escáner integrado elimina la entrega: el asistente permanece con la sesión iniciada y la
+puerta del check-in de bienvenida se resuelve antes de que cargue la página de reclamo. El acceso a la cámara requiere un
+contexto seguro (HTTPS o localhost), de modo que el deep link sigue siendo la alternativa universal.
 
-### Scan flow with auth gate
+### Flujo de escaneo con puerta de autenticación
 
 ```
 /s/[token]
@@ -165,14 +165,14 @@ context (HTTPS or localhost), so the deep link remains the universal fallback.
 badge awarded + XP
 ```
 
-`next` must survive the round trip. Losing it forces the attendee to re-scan the physical QR,
-which reintroduces exactly the friction the deep link removed.
+`next` debe sobrevivir al viaje de ida y vuelta. Perderlo obliga al asistente a volver a escanear el QR físico,
+lo que reintroduce exactamente la fricción que el deep link había eliminado.
 
-`next` is user-controlled. Validate it: relative paths only, must start with `/`, must not
-start with `//`. Unvalidated `redirect(next)` is an open redirect, and this app has an admin
-panel.
+`next` está controlado por el usuario. Valídalo: solo rutas relativas, debe empezar con `/`, no debe
+empezar con `//`. Un `redirect(next)` sin validar es un open redirect, y esta app tiene un
+panel de administración.
 
-## 6. Directory layout
+## 6. Estructura de directorios
 
 ```
 app/
@@ -196,116 +196,116 @@ prisma7.config.ts     datasource url + shadowDatabaseUrl (Prisma 7.10 name, NOT 
 app/generated/prisma/ generated client — import from here, never from @prisma/client
 ```
 
-`lib/gamification/` must stay pure. `levelForXp(xp)` and `badgesNeededForPrize(event)`
-are testable with no database and survive a Prisma API change.
+`lib/gamification/` debe permanecer puro. `levelForXp(xp)` y `badgesNeededForPrize(event)`
+se pueden probar sin base de datos y sobreviven a un cambio de API de Prisma.
 
-## 7. Phase 0 execution order
+## 7. Orden de ejecución de la Fase 0
 
-The ordering matters — there is a real dependency.
+El orden importa: hay una dependencia real.
 
-1. Set `DATABASE_URL`, `DIRECT_URL`, `SHADOW_DATABASE_URL` in `.env`; create `lyfter_shadow`
-2. Prisma init — generates both `schema.prisma` and `prisma7.config.ts`
-3. **Better Auth first** — install, run the CLI `generate` to emit `User`, `Session`,
+1. Configura `DATABASE_URL`, `DIRECT_URL`, `SHADOW_DATABASE_URL` en `.env`; crea `lyfter_shadow`
+2. Inicializa Prisma — genera tanto `schema.prisma` como `prisma7.config.ts`
+3. **Primero Better Auth** — instala, ejecuta el CLI `generate` para emitir `User`, `Session`,
    `Account`, `Verification`
-4. Add the domain models by hand on top; `Role` as a Better Auth `additionalFields` entry
-5. **One** `prisma migrate dev` — a single clean initial migration
-6. Mount `app/api/auth/[...all]/route.ts`, write `proxy.ts` and `seed.ts`
+4. Añade los modelos de dominio a mano encima; `Role` como entrada `additionalFields` de Better Auth
+5. **Un** `prisma migrate dev` — una sola migración inicial limpia
+6. Monta `app/api/auth/[...all]/route.ts`, escribe `proxy.ts` y `seed.ts`
 
-Running Better Auth before the hand-written schema avoids merging a generated schema into an
-existing one.
+Ejecutar Better Auth antes que el esquema escrito a mano evita tener que fusionar un esquema generado en
+uno existente.
 
-## 8. Phases
+## 8. Fases
 
-| # | Deliverable | Core learning |
+| # | Entregable | Aprendizaje clave |
 | --- | --- | --- |
-| 0 | Prisma + schema + seed + Better Auth + `proxy.ts` | Server Components, DAL, `prisma.config.ts` |
-| 1 | `/login` with cookie session, validated `next` | Server Actions, forms, validation |
-| 2 | `/s/[token]` — records, renders badge + XP | `updateTag()`, business-rule errors |
-| 3 | Collection + global XP + level | Aggregates, pure testable functions |
-| 4 | Global and per-event leaderboard by XP, stands or talks | Ranking, scope filters, cache keys |
-| 5 | Social sharing + dynamic OG image | `ImageResponse`, dynamic metadata |
-| 6 | Prize revealed on set completion | State feedback |
-| 7 | Admin panel (organizer + partner) | Roles, per-role authorization |
+| 0 | Prisma + esquema + seed + Better Auth + `proxy.ts` | Server Components, DAL, `prisma.config.ts` |
+| 1 | `/login` con sesión en cookie, `next` validado | Server Actions, formularios, validación |
+| 2 | `/s/[token]` — registra, muestra badge + XP | `updateTag()`, errores de reglas de negocio |
+| 3 | Colección + XP global + nivel | Agregados, funciones puras testeables |
+| 4 | Leaderboard global y por evento por XP, stands o charlas | Ranking, filtros de alcance, claves de caché |
+| 5 | Compartir en redes + imagen OG dinámica | `ImageResponse`, metadatos dinámicos |
+| 6 | Premio revelado al completar el conjunto | Feedback de estado |
+| 7 | Panel de administración (organizador + partner) | Roles, autorización por rol |
 
-## 9. Gotchas
+## 9. Problemas conocidos
 
 ### Next.js 16
 
-- `await cookies()`, `await params`, `await searchParams`. Synchronous access is removed.
-- `middleware.ts` is `proxy.ts` now. Runtime is nodejs.
-- `revalidateTag(tag, 'max')` — the second argument is required and is a TypeScript error
-  without it.
-- `updateTag()` gives read-your-writes. A newly scanned badge must appear immediately, not
-  after stale-while-revalidate.
-- `npx next typegen` generates the `PageProps<'/s/[token]'>` helpers.
-- **Server Actions bypass `proxy.ts`.** They are POSTs to the same URL as the page, so matcher
-  rules do not separate them from the GET. Every mutating action validates its own session.
-- The `scroll-behavior` override during navigation is gone unless `data-scroll-behavior="smooth"` is
-  set on `<html>`.
-- **A server component's props travel to the browser inside the RSC payload.** Hiding a value in
-  the UI is not enough: the data layer must not return it. A locked prize is queried with
-  `details: null`, not with a name the component refuses to render.
-- `eslint-config-next` rejects `setState` inside an effect (`react-hooks/set-state-in-effect`).
-  Read browser-only values with `useSyncExternalStore` instead.
+- `await cookies()`, `await params`, `await searchParams`. Se eliminó el acceso síncrono.
+- `middleware.ts` es `proxy.ts` ahora. El runtime es nodejs.
+- `revalidateTag(tag, 'max')` — el segundo argumento es obligatorio y da un error de TypeScript
+  sin él.
+- `updateTag()` garantiza leer lo recién escrito. Un badge recién escaneado debe aparecer de inmediato, no
+  después de stale-while-revalidate.
+- `npx next typegen` genera los ayudantes `PageProps<'/s/[token]'>`.
+- **Las Server Actions omiten `proxy.ts`.** Son POST a la misma URL que la página, así que las reglas de matcher
+  no las separan del GET. Cada acción que muta valida su propia sesión.
+- La anulación de `scroll-behavior` durante la navegación desaparece a menos que `data-scroll-behavior="smooth"` esté
+  definido en `<html>`.
+- **Las props de un componente de servidor viajan al navegador dentro del payload RSC.** Ocultar un valor en
+  la UI no basta: la capa de datos no debe devolverlo. Un premio bloqueado se consulta con
+  `details: null`, no con un nombre que el componente se niega a mostrar.
+- `eslint-config-next` rechaza `setState` dentro de un efecto (`react-hooks/set-state-in-effect`).
+  Lee valores exclusivos del navegador con `useSyncExternalStore` en su lugar.
 
 ### Prisma 7
 
-- Connection URLs live in `prisma7.config.ts` — 7.10 no longer generates `prisma.config.ts`:
+- Las URL de conexión viven en `prisma7.config.ts` — 7.10 ya no genera `prisma.config.ts`:
   `datasource: { url, shadowDatabaseUrl }`.
-- The CLI reads `DIRECT_URL`; the app adapter reads `DATABASE_URL`. Same host, two roles.
-- Supabase TLS under `pg` 8: `sslmode=require` behaves as `verify-full` and dies with
-  `SELF_SIGNED_CERT_IN_CHAIN` against the pooler. `sslmode=no-verify` keeps TLS but skips
-  chain validation.
-- `pnpm-workspace.yaml`'s `allowBuilds` needs real booleans. Placeholder text there makes
-  every `pnpm` command die with `ERR_PNPM_IGNORED_BUILDS` before Prisma even starts.
-- The generator's `output` field is required, and `PrismaClient` is imported from the
-  generated path — not from `@prisma/client`.
-- `shadowDatabaseUrl` is not optional. Without it the first `migrate dev` succeeds and later
-  ones fail with `relation "..." already exists`.
-- Known bug on a fresh instance: the first `migrate dev` can fail with
-  `P1017 Server has closed the connection` (prisma/orm#29366). Create `_prisma_migrations`
-  manually and re-run.
-- `migrate dev` refuses to run non-interactively when the datasource emits a warning (for
-  example a new unique constraint). Generate the SQL with
+- La CLI lee `DIRECT_URL`; el adaptador de la app lee `DATABASE_URL`. Mismo host, dos roles.
+- TLS de Supabase bajo `pg` 8: `sslmode=require` se comporta como `verify-full` y falla con
+  `SELF_SIGNED_CERT_IN_CHAIN` contra el pooler. `sslmode=no-verify` mantiene TLS pero omite
+  la validación de la cadena.
+- El `allowBuilds` de `pnpm-workspace.yaml` necesita booleanos reales. Un texto de marcador allí hace
+  que cada comando `pnpm` muera con `ERR_PNPM_IGNORED_BUILDS` antes de que Prisma siquiera arranque.
+- El campo `output` del generador es obligatorio, y `PrismaClient` se importa desde la ruta generada
+  — no desde `@prisma/client`.
+- `shadowDatabaseUrl` no es opcional. Sin él, el primer `migrate dev` funciona y los siguientes
+  fallan con `relation "..." already exists`.
+- Bug conocido en una instancia nueva: el primer `migrate dev` puede fallar con
+  `P1017 Server has closed the connection` (prisma/orm#29366). Crea `_prisma_migrations`
+  manualmente y vuelve a ejecutar.
+- `migrate dev` se niega a ejecutarse de forma no interactiva cuando el datasource emite una advertencia
+  (por ejemplo una nueva restricción única). Genera el SQL con
   `prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script`,
-  write it into `prisma/migrations/<timestamp>_<name>/migration.sql`, then run
+  escríbelo en `prisma/migrations/<timestamp>_<name>/migration.sql` y luego ejecuta
   `prisma migrate deploy`.
-- The diff only knows the schema, not the data. A new `NOT NULL` column needs the backfill and the
-  dedupe hand-written **between** `ADD COLUMN` and `SET NOT NULL`, inside one `BEGIN; … COMMIT;`:
-  the unique index cannot be created before the duplicate rows are gone. `Scan.eventBadgeId` is the
-  example — backfill it from `QrToken.eventBadgeId`, keep the oldest scan per `(userId,
-  eventBadgeId)` and delete the rest.
+- El diff solo conoce el esquema, no los datos. Una columna `NOT NULL` nueva necesita el backfill y la
+  deduplicación escritos a mano **entre** `ADD COLUMN` y `SET NOT NULL`, dentro de un solo `BEGIN; … COMMIT;`:
+  el índice único no puede crearse antes de que desaparezcan las filas duplicadas. `Scan.eventBadgeId` es el
+  ejemplo — rellénalo desde `QrToken.eventBadgeId`, conserva el escaneo más antiguo por `(userId,
+  eventBadgeId)` y elimina el resto.
 
 ### Better Auth
 
-- `nextCookies()` must be **last** in the plugins array.
-- In `proxy.ts` use `getSessionCookie` — a cheap cookie existence check with no database hit.
-  Full validation belongs in pages, route handlers, and Server Actions. A crafted cookie must
-  not grant access.
-- The schema CLI moved to the `auth` package: `npx auth generate`. The old
-  `@better-auth/cli` is deprecated and its latest version (1.4.x) does not match `better-auth`
+- `nextCookies()` debe ir **al final** del array de plugins.
+- En `proxy.ts` usa `getSessionCookie` — una comprobación barata de existencia de cookie sin acceso
+  a la base de datos. La validación completa corresponde a las páginas, los route handlers y las Server Actions.
+  Una cookie falsificada no debe conceder acceso.
+- El CLI del esquema se movió al paquete `auth`: `npx auth generate`. El antiguo
+  `@better-auth/cli` está obsoleto y su última versión (1.4.x) no coincide con `better-auth`
   1.7.
-- The CLI loads `lib/auth.ts` through `jiti`, which does not resolve the `@/` alias. Keep
-  `lib/db.ts` importing the generated client with a relative path, or the CLI dies with
+- El CLI carga `lib/auth.ts` mediante `jiti`, que no resuelve el alias `@/`. Mantén `lib/db.ts` importando
+  el cliente generado con una ruta relativa, o el CLI morirá con
   `Cannot find module '@/app/generated/prisma/client'`.
-- In Prisma 7 the seed command lives in `prisma7.config.ts` under `migrations.seed`
+- En Prisma 7 el comando seed vive en `prisma7.config.ts` bajo `migrations.seed`
   (`"tsx prisma/seed.ts"`).
-- A seeded demo user needs an `Account` row with `providerId: "credential"` and a password hashed
-  with `hashPassword` from `better-auth/crypto`; the `User` row alone cannot sign in.
+- Un usuario demo sembrado necesita una fila `Account` con `providerId: "credential"` y una contraseña
+  hasheada con `hashPassword` de `better-auth/crypto`; la fila `User` por sí sola no puede iniciar sesión.
 
-### Admin panel
+### Panel de administración
 
-- Authorization lives in pure functions (`lib/admin/access.ts`) so the rules are testable without a
-  database: `ORGANIZER` owns an event by `organizerId`, `PARTNER` owns one `EventBadge` by
-  `partnerId`. Ownership of an `EventBadge` is a property of the relation, not of the event.
-- A foreign object returns `notFound()`, never `403`. A 403 confirms that the object exists and
-  leaks the id space; a 404 says nothing.
-- Server Actions re-check the session and the object scope themselves, because they bypass
-  `proxy.ts` — the cookie check in `proxy.ts` is only a redirect for humans.
-- Admin queries must not use `unstable_cache`: a dashboard has to show the scan that just happened.
-  Public read models keep their tags, and any admin mutation that changes what attendees see calls
-  `revalidateTag(configTag(), "max")` (badge count, prize state).
-- `datetime-local` has no timezone. The whole app uses `America/Costa_Rica` (UTC−6, no DST):
-  `parseLocalDateTime` and `toLocalInputValue` in `lib/date.ts` own the form round-trip, and every
-  date is displayed with `es-CR` and a 24-hour clock. Existing events located in Costa Rica were
-  shifted +6 h once with `scripts/migrate-costa-rica-times.ts` so their configured wall time stays.
+- La autorización vive en funciones puras (`lib/admin/access.ts`) para que las reglas se puedan probar sin
+  base de datos: `ORGANIZER` posee un evento por `organizerId`, `PARTNER` posee un `EventBadge` por
+  `partnerId`. La propiedad de un `EventBadge` es una propiedad de la relación, no del evento.
+- Un objeto ajeno devuelve `notFound()`, nunca `403`. Un 403 confirma que el objeto existe y filtra
+  el espacio de ids; un 404 no dice nada.
+- Las Server Actions vuelven a comprobar por sí mismas la sesión y el alcance del objeto, porque omiten
+  `proxy.ts` — la comprobación de cookie en `proxy.ts` es solo una redirección para humanos.
+- Las consultas de administración no deben usar `unstable_cache`: un panel debe mostrar el escaneo que
+  acaba de ocurrir. Los modelos de lectura públicos conservan sus tags, y cualquier mutación de administración
+  que cambie lo que ven los asistentes llama a `revalidateTag(configTag(), "max")` (recuento de badges, estado del premio).
+- `datetime-local` no tiene zona horaria. Toda la app usa `America/Costa_Rica` (UTC−6, sin horario de verano):
+  `parseLocalDateTime` y `toLocalInputValue` en `lib/date.ts` gestionan el ciclo del formulario, y cada
+  fecha se muestra con `es-CR` y un reloj de 24 horas. Los eventos existentes ubicados en Costa Rica se
+  desplazaron +6 h una vez con `scripts/migrate-costa-rica-times.ts` para conservar la hora local configurada.

@@ -26,8 +26,8 @@ export default function CreateEventForm({ companies }: CreateEventFormProps) {
 
   return (
     <form action={formAction} className={cardClassName}>
-      <h2 className="text-lg font-bold text-[#f1f1ed]">Crear un evento</h2>
-      <p className="mt-1 text-sm text-[#9ca3af]">
+      <h2 className="text-lg font-bold text-foreground">Crear un evento</h2>
+      <p className="mt-1 text-sm text-muted">
         La URL del evento se genera a partir del nombre y no se puede cambiar
         después.
       </p>
@@ -199,7 +199,7 @@ export default function CreateEventForm({ companies }: CreateEventFormProps) {
       {state.status === "error" ? (
         <p
           role="alert"
-          className="mt-4 rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+          className="mt-4 rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
         >
           {state.message}
         </p>

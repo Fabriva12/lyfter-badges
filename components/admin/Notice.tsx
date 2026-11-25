@@ -6,9 +6,9 @@ interface NoticeProps {
 }
 
 const tones = {
-  success: "border-[#a8d889]/40 bg-[#a8d889]/10 text-[#d8f0c4]",
-  error: "border-[#f47f8a]/40 bg-[#f47f8a]/10 text-[#ffb3ba]",
-  info: "border-[#36bde9]/40 bg-[#36bde9]/10 text-[#c9effb]",
+  success: "border-sage/40 bg-sage/10 text-sage/60",
+  error: "border-coral/40 bg-coral/10 text-coral-soft",
+  info: "border-celeste/40 bg-celeste/10 text-celeste/60",
 } as const;
 
 export default function Notice({ tone = "info", children }: NoticeProps) {

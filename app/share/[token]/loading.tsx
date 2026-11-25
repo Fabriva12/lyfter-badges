@@ -1,5 +1,5 @@
 import ScreenLoader from "@/components/ui/ScreenLoader";
 
 export default function Loading() {
-  return <ScreenLoader label="Loading the shared collection…" />;
+  return <ScreenLoader label="Cargando la colección compartida…" />;
 }

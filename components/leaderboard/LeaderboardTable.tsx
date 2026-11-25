@@ -41,7 +41,7 @@ function Avatar({ name, image }: { name: string; image: string | null }) {
   return (
     <div
       aria-hidden="true"
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#39424f] text-sm font-black text-[#9ca3af]"
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-stroke text-sm font-black text-muted"
     >
       {name.charAt(0).toUpperCase()}
     </div>
@@ -57,28 +57,28 @@ export function AttendeeRow({ row, isCurrent, metric }: AttendeeRowProps) {
     <div
       className={`flex items-center gap-3 rounded-lg border px-3 py-3 sm:gap-4 sm:px-4 ${
         isCurrent
-          ? "border-[#36bde9]/50 bg-[#36bde9]/10"
-          : "border-[#39424f] bg-[#1f252d]"
+          ? "border-celeste/50 bg-celeste/10"
+          : "border-stroke bg-surface-low"
       }`}
     >
-      <span className="w-10 shrink-0 text-sm font-bold text-[#9ca3af]">
+      <span className="w-10 shrink-0 text-sm font-bold text-muted">
         #{row.rank}
       </span>
 
       <Avatar name={row.name} image={row.image} />
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-[#f1f1ed]">
+        <p className="truncate text-sm font-semibold text-foreground">
           {row.name}
         </p>
-        <p className="text-xs text-[#9ca3af]">{secondaryStats(row, metric)}</p>
+        <p className="text-xs text-muted">{secondaryStats(row, metric)}</p>
       </div>
 
       <div className="shrink-0 text-right">
         <p className={`text-2xl font-black ${METRIC_ACCENT[metric]}`}>
           {row[metric]}
         </p>
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-[#9ca3af]">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">
           {metricUnit(metric, row[metric])}
         </p>
       </div>
@@ -92,12 +92,12 @@ export default function LeaderboardTable({
   metric,
 }: LeaderboardTableProps) {
   return (
-    <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 shadow-2xl shadow-black/30 sm:p-8">
-      <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+    <section className="rounded-xl border border-stroke bg-surface p-5 shadow-2xl shadow-black/30 sm:p-8">
+      <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
         Ranking
       </p>
-      <h2 className="mt-2 text-xl font-bold text-[#f1f1ed]">
-        Top 10 by {METRIC_NOUN[metric]}
+      <h2 className="mt-2 text-xl font-bold text-foreground">
+        Top 10 por {METRIC_NOUN[metric]}
       </h2>
 
       <ul className="mt-6 space-y-3 md:hidden">
@@ -115,12 +115,12 @@ export default function LeaderboardTable({
       <div className="mt-6 hidden md:block">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-[#39424f] text-xs font-semibold uppercase tracking-widest text-[#9ca3af]">
+            <tr className="border-b border-stroke text-xs font-semibold uppercase tracking-widest text-muted">
               <th scope="col" className="pb-3 pr-4">
-                Rank
+                Puesto
               </th>
               <th scope="col" className="pb-3 pr-4">
-                Attendee
+                Asistente
               </th>
               <th
                 scope="col"
@@ -136,7 +136,7 @@ export default function LeaderboardTable({
                   metric === "talks" ? METRIC_ACCENT.talks : ""
                 }`}
               >
-                Talks
+                Charlas
               </th>
               <th
                 scope="col"
@@ -156,11 +156,11 @@ export default function LeaderboardTable({
               return (
                 <tr
                   key={row.userId}
-                  className={`border-b border-[#39424f] ${
-                    isCurrent ? "bg-[#36bde9]/10" : ""
+                  className={`border-b border-stroke ${
+                    isCurrent ? "bg-celeste/10" : ""
                   }`}
                 >
-                  <td className="py-4 pr-4 text-3xl font-black text-[#f1f1ed]">
+                  <td className="py-4 pr-4 text-3xl font-black text-foreground">
                     {row.rank}
                   </td>
 
@@ -169,17 +169,17 @@ export default function LeaderboardTable({
                       <Avatar name={row.name} image={row.image} />
 
                       <div className="min-w-0">
-                        <p className="truncate font-semibold text-[#f1f1ed]">
+                        <p className="truncate font-semibold text-foreground">
                           {row.name}
                           {isCurrent ? (
-                            <span className="ml-2 text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
-                              You
+                            <span className="ml-2 text-xs font-semibold uppercase tracking-widest text-celeste">
+                              Tú
                             </span>
                           ) : null}
                         </p>
-                        <p className="text-xs text-[#9ca3af]">
+                        <p className="text-xs text-muted">
                           {row.badges}{" "}
-                          {row.badges === 1 ? "badge" : "badges"}
+                          {row.badges === 1 ? "insignia" : "insignias"}
                         </p>
                       </div>
                     </div>
@@ -189,7 +189,7 @@ export default function LeaderboardTable({
                     className={`py-4 pr-4 text-right ${
                       metric === "stands"
                         ? `font-bold ${METRIC_ACCENT.stands}`
-                        : "text-[#9ca3af]"
+                        : "text-muted"
                     }`}
                   >
                     {row.stands}
@@ -199,7 +199,7 @@ export default function LeaderboardTable({
                     className={`py-4 pr-4 text-right ${
                       metric === "talks"
                         ? `font-bold ${METRIC_ACCENT.talks}`
-                        : "text-[#9ca3af]"
+                        : "text-muted"
                     }`}
                   >
                     {row.talks}
@@ -209,7 +209,7 @@ export default function LeaderboardTable({
                     className={`py-4 text-right ${
                       metric === "xp"
                         ? `font-bold ${METRIC_ACCENT.xp}`
-                        : "text-[#9ca3af]"
+                        : "text-muted"
                     }`}
                   >
                     {row.xp}

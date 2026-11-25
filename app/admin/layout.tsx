@@ -13,22 +13,22 @@ export default async function AdminLayout({
   const isSuperAdmin = session.user.role === "SUPER_ADMIN";
 
   return (
-    <div className="min-h-dvh bg-[#171b21] text-[#f1f1ed]">
-      <header className="sticky top-0 z-40 border-b border-[#303743] bg-[#1c222a]/95 backdrop-blur">
+    <div className="min-h-dvh bg-background text-foreground">
+      <header className="sticky top-0 z-40 border-b border-stroke bg-[#1c222a]/95 backdrop-blur">
         <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-10">
           <Link
             href="/admin"
             aria-label="Ir al panel de administración"
             className="flex min-w-0 items-center gap-3"
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#a8d889] text-sm font-black text-[#243020]">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sage text-sm font-black text-[#243020]">
               {isSuperAdmin ? "S" : "A"}
             </span>
             <span className="min-w-0">
               <span className="block truncate text-sm font-bold">
                 {isSuperAdmin ? "Consola de super admin" : "Consola de admin"}
               </span>
-              <span className="hidden truncate text-xs text-[#9ca3af] sm:block">
+              <span className="hidden truncate text-xs text-muted sm:block">
                 {session.user.email}
               </span>
             </span>
@@ -38,14 +38,14 @@ export default async function AdminLayout({
             {isSuperAdmin ? (
               <Link
                 href="/super-admin"
-                className="text-xs font-semibold text-[#7fd8f5] transition hover:text-[#f1f1ed] sm:text-sm"
+                className="text-xs font-semibold text-celeste-soft transition hover:text-foreground sm:text-sm"
               >
                 Plataforma
               </Link>
             ) : null}
             <Link
               href="/"
-              className="text-xs font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed] sm:text-sm"
+              className="text-xs font-semibold text-muted transition hover:text-foreground sm:text-sm"
             >
               Ver sitio
             </Link>

@@ -21,11 +21,11 @@ export default function PartnerDashboard({ stands }: PartnerDashboardProps) {
   return (
     <div className="space-y-8">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Consola de stand
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Tus stands</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Tráfico de las insignias asignadas a vos. Un admin de stand solo ve su
           stand, nunca el resto del evento.
         </p>
@@ -41,7 +41,7 @@ export default function PartnerDashboard({ stands }: PartnerDashboardProps) {
       </div>
 
       {stands.length === 0 ? (
-        <p className="rounded-xl border border-[#39424f] bg-[#252c35] px-4 py-8 text-center text-sm text-[#9ca3af]">
+        <p className="rounded-xl border border-stroke bg-surface px-4 py-8 text-center text-sm text-muted">
           Todavía no se asignó ningún stand a tu cuenta. Pedí al admin del evento
           que vincule tu cuenta a un stand.
         </p>
@@ -51,36 +51,36 @@ export default function PartnerDashboard({ stands }: PartnerDashboardProps) {
             <li key={stand.id} className={cardClassName}>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-bold text-[#f1f1ed]">
+                  <h2 className="text-lg font-bold text-foreground">
                     {stand.badgeName}
                   </h2>
-                  <p className="mt-1 text-sm text-[#9ca3af]">
+                  <p className="mt-1 text-sm text-muted">
                     {stand.eventName}
                     {stand.room ? ` · ${stand.room}` : ""}
                   </p>
-                  <p className="mt-1 text-sm text-[#9ca3af]">
+                  <p className="mt-1 text-sm text-muted">
                     {formatEventRange(stand.startsAt, stand.endsAt)}
                   </p>
                 </div>
-                <span className="rounded-full bg-[#36bde9]/10 px-3 py-1 text-xs font-semibold text-[#7fd8f5]">
+                <span className="rounded-full bg-celeste/10 px-3 py-1 text-xs font-semibold text-celeste-soft">
                   +{stand.xpValue} XP
                 </span>
               </div>
 
               <dl className="mt-5 grid grid-cols-2 gap-3 text-center">
-                <div className="rounded-lg bg-[#1f252d] px-2 py-3">
-                  <dt className="text-xs text-[#9ca3af]">Escaneos</dt>
+                <div className="rounded-lg bg-surface-low px-2 py-3">
+                  <dt className="text-xs text-muted">Escaneos</dt>
                   <dd className="mt-1 text-lg font-bold">{stand.scans}</dd>
                 </div>
-                <div className="rounded-lg bg-[#1f252d] px-2 py-3">
-                  <dt className="text-xs text-[#9ca3af]">Visitantes</dt>
+                <div className="rounded-lg bg-surface-low px-2 py-3">
+                  <dt className="text-xs text-muted">Visitantes</dt>
                   <dd className="mt-1 text-lg font-bold">{stand.visitors}</dd>
                 </div>
               </dl>
 
               <Link
                 href={`/admin/stands/${stand.id}`}
-                className="mt-5 inline-block rounded-lg bg-[#a8d889] px-4 py-2 text-sm font-semibold text-[#263021] transition hover:bg-[#b8e39a]"
+                className="mt-5 inline-block rounded-lg bg-sage px-4 py-2 text-sm font-semibold text-[#263021] transition hover:bg-sage-soft"
               >
                 Abrir stand
               </Link>

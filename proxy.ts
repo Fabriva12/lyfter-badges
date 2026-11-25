@@ -10,6 +10,7 @@ const PROTECTED_PREFIXES = [
   "/collection",
   "/leaderboard",
   "/admin",
+  "/stand",
   "/super-admin",
 ];
 

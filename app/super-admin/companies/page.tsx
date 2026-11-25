@@ -19,11 +19,11 @@ export default async function SuperAdminCompaniesPage() {
   return (
     <div className="space-y-8">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Super admin
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Empresas</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Cada empresa de la plataforma y los admins que gestionan sus eventos.
         </p>
       </header>
@@ -32,14 +32,14 @@ export default async function SuperAdminCompaniesPage() {
         <CreateCompanyForm />
 
         <div className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">Empresas</h2>
-          <p className="mt-1 text-sm text-[#9ca3af]">
+          <h2 className="text-lg font-bold text-foreground">Empresas</h2>
+          <p className="mt-1 text-sm text-muted">
             Agrega una cuenta existente por email. Los asistentes se promueven
             a admin automáticamente.
           </p>
 
           {companies.length === 0 ? (
-            <p className="mt-4 rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-8 text-center text-sm text-[#9ca3af]">
+            <p className="mt-4 rounded-lg border border-stroke bg-surface-low px-4 py-8 text-center text-sm text-muted">
               Todavía no hay empresas creadas.
             </p>
           ) : (
@@ -47,14 +47,14 @@ export default async function SuperAdminCompaniesPage() {
               {companies.map((company) => (
                 <li
                   key={company.id}
-                  className="rounded-lg border border-[#39424f] bg-[#1f252d] p-4"
+                  className="rounded-lg border border-stroke bg-surface-low p-4"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
-                      <h3 className="font-bold text-[#f1f1ed]">
+                      <h3 className="font-bold text-foreground">
                         {company.name}
                       </h3>
-                      <p className="text-xs text-[#9ca3af]">
+                      <p className="text-xs text-muted">
                         /{company.slug} · {company.events}{" "}
                         {company.events === 1 ? "evento" : "eventos"}
                       </p>
@@ -62,22 +62,22 @@ export default async function SuperAdminCompaniesPage() {
                   </div>
 
                   {company.members.length > 0 ? (
-                    <ul className="mt-3 divide-y divide-[#303743] text-sm">
+                    <ul className="mt-3 divide-y divide-stroke text-sm">
                       {company.members.map((member) => (
                         <li
                           key={member.id}
                           className="flex flex-wrap items-center justify-between gap-2 py-2"
                         >
                           <div>
-                            <span className="text-[#f1f1ed]">
+                            <span className="text-foreground">
                               {member.name}
                             </span>
-                            <span className="ml-2 text-xs text-[#9ca3af]">
+                            <span className="ml-2 text-xs text-muted">
                               {member.email}
                             </span>
                           </div>
                           <div className="flex items-center gap-3">
-                            <span className="text-xs font-semibold text-[#7fd8f5]">
+                            <span className="text-xs font-semibold text-celeste-soft">
                               {ROLE_LABELS[member.role] ?? member.role}
                             </span>
                             <RemoveCompanyAdminButton
@@ -90,7 +90,7 @@ export default async function SuperAdminCompaniesPage() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-2 text-xs text-[#9ca3af]">
+                    <p className="mt-2 text-xs text-muted">
                       Todavía no hay admins.
                     </p>
                   )}

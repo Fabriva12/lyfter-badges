@@ -47,7 +47,7 @@ export default function AddCompanyAdminForm({
         <p
           role={state.status === "error" ? "alert" : "status"}
           className={`text-xs ${
-            state.status === "error" ? "text-[#ffb3ba]" : "text-[#a8d889]"
+            state.status === "error" ? "text-coral-soft" : "text-sage"
           }`}
         >
           {state.message}

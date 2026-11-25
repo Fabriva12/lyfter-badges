@@ -3,7 +3,7 @@ import Features from "@/components/landing/Features";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px]">
         <Hero />
 

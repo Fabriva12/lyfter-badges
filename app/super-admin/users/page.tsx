@@ -58,11 +58,11 @@ export default async function SuperAdminUsersPage({
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Super admin
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Usuarios</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Todas las cuentas de la plataforma. Los super admins pueden ajustar
           roles; las asignaciones a empresas y stands se gestionan desde la
           sección Empresas.
@@ -72,8 +72,8 @@ export default async function SuperAdminUsersPage({
       <section className={cardClassName}>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-[#f1f1ed]">Cuentas</h2>
-            <p className="mt-1 text-sm text-[#9ca3af]">
+            <h2 className="text-lg font-bold text-foreground">Cuentas</h2>
+            <p className="mt-1 text-sm text-muted">
               {users.total} {users.total === 1 ? "cuenta" : "cuentas"}
               {users.query ? ` que coinciden con «${users.query}»` : ""}
               {users.role
@@ -107,7 +107,7 @@ export default async function SuperAdminUsersPage({
             </select>
             <button
               type="submit"
-              className="rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Filtrar
             </button>
@@ -116,12 +116,12 @@ export default async function SuperAdminUsersPage({
 
         <div className="mt-5 overflow-x-auto">
           {users.rows.length === 0 ? (
-            <p className="rounded-lg border border-[#39424f] bg-[#1f252d] px-4 py-8 text-center text-sm text-[#9ca3af]">
+            <p className="rounded-lg border border-stroke bg-surface-low px-4 py-8 text-center text-sm text-muted">
               Ninguna cuenta coincide con este filtro.
             </p>
           ) : (
             <table className="w-full min-w-[720px] text-left text-sm">
-              <thead className="text-xs uppercase tracking-widest text-[#9ca3af]">
+              <thead className="text-xs uppercase tracking-widest text-muted">
                 <tr>
                   <th className="py-2 pr-4 font-semibold">Cuenta</th>
                   <th className="py-2 pr-4 font-semibold">Rol</th>
@@ -130,12 +130,12 @@ export default async function SuperAdminUsersPage({
                   <th className="py-2 font-semibold">Alta</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#303743]">
+              <tbody className="divide-y divide-stroke">
                 {users.rows.map((user) => (
                   <tr key={user.id}>
-                    <td className="py-3 pr-4 align-top text-[#f1f1ed]">
+                    <td className="py-3 pr-4 align-top text-foreground">
                       {user.name}
-                      <span className="block text-xs text-[#6b7280]">
+                      <span className="block text-xs text-muted">
                         {user.email}
                       </span>
                     </td>
@@ -146,16 +146,16 @@ export default async function SuperAdminUsersPage({
                         disabled={user.id === session.user.id}
                       />
                     </td>
-                    <td className="py-3 pr-4 align-top text-[#d7dce3]">
+                    <td className="py-3 pr-4 align-top text-subtle">
                       {user.companies.length > 0
                         ? user.companies.join(", ")
                         : "—"}
                     </td>
-                    <td className="py-3 pr-4 align-top text-xs text-[#9ca3af]">
+                    <td className="py-3 pr-4 align-top text-xs text-muted">
                       {user.registrations} registros · {user.scans} escaneos
                       {user.events > 0 ? ` · ${user.events} organizados` : ""}
                     </td>
-                    <td className="whitespace-nowrap py-3 align-top text-xs text-[#9ca3af]">
+                    <td className="whitespace-nowrap py-3 align-top text-xs text-muted">
                       {formatDateTime(user.createdAt)}
                     </td>
                   </tr>
@@ -173,7 +173,7 @@ export default async function SuperAdminUsersPage({
             {users.page > 1 ? (
               <Link
                 href={usersHref(users.page - 1, users.query, users.role)}
-                className="font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+                className="font-semibold text-celeste hover:text-celeste-soft"
               >
                 ← Anterior
               </Link>
@@ -181,14 +181,14 @@ export default async function SuperAdminUsersPage({
               <span />
             )}
 
-            <span className="text-[#9ca3af]">
+            <span className="text-muted">
               Página {users.page} de {totalPages}
             </span>
 
             {users.page < totalPages ? (
               <Link
                 href={usersHref(users.page + 1, users.query, users.role)}
-                className="font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+                className="font-semibold text-celeste hover:text-celeste-soft"
               >
                 Siguiente →
               </Link>

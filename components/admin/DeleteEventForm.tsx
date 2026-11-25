@@ -32,13 +32,13 @@ export default function DeleteEventForm({
   const matches = confirmation.trim() === eventName;
 
   return (
-    <section className="rounded-xl border border-[#f47f8a]/40 bg-[#2a2228] p-5 shadow-2xl shadow-black/30 sm:p-7">
-      <h2 className="text-lg font-bold text-[#ffb3ba]">Zona de peligro</h2>
+    <section className="rounded-xl border border-coral/40 bg-[#2a2228] p-5 shadow-2xl shadow-black/30 sm:p-7">
+      <h2 className="text-lg font-bold text-coral-soft">Zona de peligro</h2>
       <p className="mt-1 text-sm text-[#d7c3c6]">
         Eliminar el evento también borra sus insignias, premio, galería, tokens
         QR e historial de asistencia. No se puede deshacer.
       </p>
-      <p className="mt-2 text-sm text-[#9ca3af]">
+      <p className="mt-2 text-sm text-muted">
         Este evento tiene {attendees}{" "}
         {attendees === 1 ? "asistente" : "asistentes"}, {scans}{" "}
         {scans === 1 ? "escaneo" : "escaneos"} y {badges}{" "}
@@ -64,7 +64,7 @@ export default function DeleteEventForm({
         {state.status === "error" ? (
           <p
             role="alert"
-            className="mt-3 rounded-lg border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-4 py-3 text-sm font-medium text-[#ffb3ba]"
+            className="mt-3 rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-medium text-coral-soft"
           >
             {state.message}
           </p>
@@ -73,7 +73,7 @@ export default function DeleteEventForm({
         <button
           type="submit"
           disabled={!matches || isPending}
-          className="mt-4 rounded-lg bg-[#f47f8a] px-6 py-3 text-sm font-bold text-[#2a1417] transition hover:bg-[#ff9aa3] disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-4 rounded-lg bg-coral px-6 py-3 text-sm font-bold text-[#2a1417] transition hover:bg-coral-soft/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Eliminando…" : "Eliminar evento permanentemente"}
         </button>

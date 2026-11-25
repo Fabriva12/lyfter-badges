@@ -22,40 +22,40 @@ export default async function BadgeAdminCard({
   partners,
 }: BadgeAdminCardProps) {
   return (
-    <li className="rounded-xl border border-[#39424f] bg-[#252c35] p-6">
+    <li className="rounded-xl border border-stroke bg-surface p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span
             className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border ${
               badge.rarity === "LIMITED"
-                ? "border-[#ffc875]/50 bg-[#ffc875]/10 text-[#ffc875]"
+                ? "border-peach/50 bg-peach/10 text-peach"
                 : badge.rarity === "RARE"
-                  ? "border-[#36bde9]/50 bg-[#36bde9]/10 text-[#7fd8f5]"
-                  : "border-[#39424f] bg-[#1f252d] text-[#9ca3af]"
+                  ? "border-celeste/50 bg-celeste/10 text-celeste-soft"
+                  : "border-stroke bg-surface-low text-muted"
             }`}
           >
             <BadgeIcon name={badge.iconKey} className="h-5 w-5" />
           </span>
 
           <div>
-            <h3 className="text-lg font-bold text-[#f1f1ed]">{badge.name}</h3>
+            <h3 className="text-lg font-bold text-foreground">{badge.name}</h3>
             <p className="mt-1 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
-              <span className="rounded-full border border-[#39424f] px-2.5 py-0.5 text-[#9ca3af]">
+              <span className="rounded-full border border-stroke px-2.5 py-0.5 text-muted">
                 {BADGE_TYPE_LABELS[badge.type] ?? badge.type}
               </span>
               <span
                 className={`rounded-full px-2.5 py-0.5 ${
                   badge.rarity === "LIMITED"
-                    ? "bg-[#ffc875]/15 text-[#ffe0b2]"
+                    ? "bg-peach/15 text-peach/70"
                     : badge.rarity === "RARE"
-                      ? "bg-[#36bde9]/15 text-[#7fd8f5]"
-                      : "bg-[#39424f]/60 text-[#d7dce3]"
+                      ? "bg-celeste/15 text-celeste-soft"
+                      : "bg-stroke/60 text-subtle"
                 }`}
               >
                 {BADGE_RARITY_LABELS[badge.rarity] ?? badge.rarity}
               </span>
             </p>
-            <p className="mt-1 text-sm text-[#9ca3af]">
+            <p className="mt-1 text-sm text-muted">
               +{badge.xpValue} XP
               {badge.room ? ` · ${badge.room}` : ""}
               {badge.startsAt
@@ -63,14 +63,14 @@ export default async function BadgeAdminCard({
                 : ""}
             </p>
             {badge.description ? (
-              <p className="mt-1 text-sm text-[#9ca3af]">{badge.description}</p>
+              <p className="mt-1 text-sm text-muted">{badge.description}</p>
             ) : null}
           </div>
         </div>
 
         <div className="text-right">
-          <p className="text-2xl font-bold text-[#a8d889]">{badge.scans}</p>
-          <p className="text-xs text-[#9ca3af]">
+          <p className="text-2xl font-bold text-sage">{badge.scans}</p>
+          <p className="text-xs text-muted">
             {badge.scans === 1 ? "escaneo" : "escaneos"}
           </p>
         </div>
@@ -100,12 +100,12 @@ export default async function BadgeAdminCard({
         scans={badge.scans}
       />
 
-      <div className="mt-6 border-t border-[#303743] pt-5">
-        <h4 className="text-sm font-bold text-[#f1f1ed]">Tokens QR</h4>
+      <div className="mt-6 border-t border-stroke pt-5">
+        <h4 className="text-sm font-bold text-foreground">Tokens QR</h4>
 
         <ul className="mt-3 space-y-3">
           {badge.tokens.length === 0 ? (
-            <li className="text-sm text-[#9ca3af]">
+            <li className="text-sm text-muted">
               Todavía no hay tokens QR. Creá uno para ponerlo en la pared o en
               el stand.
             </li>

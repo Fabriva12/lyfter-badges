@@ -37,7 +37,7 @@ export default function TokenToggle({
       </button>
 
       {state.status === "error" ? (
-        <span role="alert" className="text-xs text-[#ffb3ba]">
+        <span role="alert" className="text-xs text-coral-soft">
           {state.message}
         </span>
       ) : null}

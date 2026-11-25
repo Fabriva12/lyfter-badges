@@ -20,7 +20,7 @@ export default async function Navbar() {
         : null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#303743] bg-[#171b21]/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-stroke bg-background/95 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-3 px-4 sm:px-6 md:h-20 lg:px-10">
         {/* Logo */}
         <Link
@@ -28,7 +28,7 @@ export default async function Navbar() {
           aria-label="Lyfter Badge App — inicio"
           className="flex min-w-0 items-center gap-3"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#a8d889] font-bold text-[#243020]">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sage font-bold text-[#243020]">
             L
           </div>
 
@@ -57,7 +57,7 @@ export default async function Navbar() {
             href="/leaderboard"
             className="whitespace-nowrap transition hover:text-white"
           >
-            Leaderboard
+            Ranking
           </Link>
 
           <Link
@@ -88,9 +88,9 @@ export default async function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="whitespace-nowrap rounded-lg border border-[#36bde9] px-5 py-2 text-sm font-semibold transition hover:bg-[#36bde9]/10"
+              className="whitespace-nowrap rounded-lg border border-celeste px-5 py-2 text-sm font-semibold transition hover:bg-celeste/10"
             >
-              Login
+              Iniciar sesión
             </Link>
           )}
         </div>

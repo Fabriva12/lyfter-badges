@@ -240,8 +240,14 @@ async function main() {
     },
   });
 
-  // Dates are stored in UTC. With America/Costa_Rica (UTC-6) they render at
-  // the local times documented for the demo.
+  // Keep the demo events inside their scan window: fixed dates eventually
+  // fall outside the event gate and block every seeded QR.
+  const seededAt = Date.now();
+  const demoEventStartsAt = new Date(seededAt - 60 * 60 * 1000);
+  const demoEventEndsAt = new Date(seededAt + 6 * 60 * 60 * 1000);
+  const meetupStartsAt = new Date(seededAt - 30 * 60 * 1000);
+  const meetupEndsAt = new Date(seededAt + 5 * 60 * 60 * 1000);
+
   const event = await prisma.event.upsert({
     where: { slug: "demo-2026" },
     update: {
@@ -251,8 +257,8 @@ async function main() {
       country: "Costa Rica",
       mode: "IN_PERSON",
       status: "ACTIVE",
-      startsAt: new Date("2026-11-20T16:00:00.000Z"),
-      endsAt: new Date("2026-11-20T22:00:00.000Z"),
+      startsAt: demoEventStartsAt,
+      endsAt: demoEventEndsAt,
       organizerId: "demo-organizer",
       companyId: company.id,
     },
@@ -263,8 +269,8 @@ async function main() {
       country: "Costa Rica",
       mode: "IN_PERSON",
       status: "ACTIVE",
-      startsAt: new Date("2026-11-20T16:00:00.000Z"),
-      endsAt: new Date("2026-11-20T22:00:00.000Z"),
+      startsAt: demoEventStartsAt,
+      endsAt: demoEventEndsAt,
       organizerId: "demo-organizer",
       companyId: company.id,
       slug: "demo-2026",
@@ -527,8 +533,8 @@ async function main() {
       country: "Costa Rica",
       mode: "HYBRID",
       status: "ACTIVE",
-      startsAt: new Date("2026-12-04T17:00:00.000Z"),
-      endsAt: new Date("2026-12-04T23:00:00.000Z"),
+      startsAt: meetupStartsAt,
+      endsAt: meetupEndsAt,
       organizerId: "demo-organizer",
     },
     create: {
@@ -538,8 +544,8 @@ async function main() {
       country: "Costa Rica",
       mode: "HYBRID",
       status: "ACTIVE",
-      startsAt: new Date("2026-12-04T17:00:00.000Z"),
-      endsAt: new Date("2026-12-04T23:00:00.000Z"),
+      startsAt: meetupStartsAt,
+      endsAt: meetupEndsAt,
       organizerId: "demo-organizer",
       slug: "meetup-2026",
     },

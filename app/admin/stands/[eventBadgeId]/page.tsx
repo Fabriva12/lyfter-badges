@@ -40,23 +40,23 @@ export default async function AdminStandPage({ params }: StandPageProps) {
       <div>
         <Link
           href="/admin"
-          className="text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+          className="text-sm font-semibold text-muted transition hover:text-foreground"
         >
           ← Tus stands
         </Link>
 
         <header className="mt-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
             Stand del socio
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{stand.badge.name}</h1>
-          <p className="mt-2 text-sm text-[#9ca3af]">
+          <p className="mt-2 text-sm text-muted">
             {stand.event.name}
             {stand.room ? ` · ${stand.room}` : ""} ·{" "}
             {formatEventRange(stand.event.startsAt, stand.event.endsAt)}
           </p>
           {stand.badge.description ? (
-            <p className="mt-2 max-w-2xl text-sm text-[#9ca3af]">
+            <p className="mt-2 max-w-2xl text-sm text-muted">
               {stand.badge.description}
             </p>
           ) : null}
@@ -80,15 +80,15 @@ export default async function AdminStandPage({ params }: StandPageProps) {
       </div>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">Tokens QR</h2>
-        <p className="mt-1 text-sm text-[#9ca3af]">
+        <h2 className="text-lg font-bold text-foreground">Tokens QR</h2>
+        <p className="mt-1 text-sm text-muted">
           Imprimí estos códigos para el stand. Cada escaneo otorga la insignia
           una vez por asistente.
         </p>
 
         <ul className="mt-5 space-y-3">
           {stand.tokens.length === 0 ? (
-            <li className="text-sm text-[#9ca3af]">
+            <li className="text-sm text-muted">
               El organizador todavía no creó un token QR para este stand.
             </li>
           ) : (
@@ -108,10 +108,10 @@ export default async function AdminStandPage({ params }: StandPageProps) {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">
+          <h2 className="text-lg font-bold text-foreground">
             Visitas recientes
           </h2>
-          <p className="mt-1 text-sm text-[#9ca3af]">
+          <p className="mt-1 text-sm text-muted">
             Asistentes que escanearon este stand, del más reciente al más
             antiguo.
           </p>
@@ -121,23 +121,23 @@ export default async function AdminStandPage({ params }: StandPageProps) {
         </section>
 
         <section className={cardClassName}>
-          <h2 className="text-lg font-bold text-[#f1f1ed]">Event</h2>
+          <h2 className="text-lg font-bold text-foreground">Event</h2>
           <dl className="mt-4 space-y-3 text-sm">
             <div className="flex items-center justify-between gap-4">
-              <dt className="text-[#9ca3af]">Nombre</dt>
-              <dd className="font-semibold text-[#f1f1ed]">
+              <dt className="text-muted">Nombre</dt>
+              <dd className="font-semibold text-foreground">
                 {stand.event.name}
               </dd>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <dt className="text-[#9ca3af]">Ubicación</dt>
-              <dd className="font-semibold text-[#f1f1ed]">
+              <dt className="text-muted">Ubicación</dt>
+              <dd className="font-semibold text-foreground">
                 {stand.event.location ?? "—"}
               </dd>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <dt className="text-[#9ca3af]">Último escaneo</dt>
-              <dd className="font-semibold text-[#f1f1ed]">
+              <dt className="text-muted">Último escaneo</dt>
+              <dd className="font-semibold text-foreground">
                 {stand.lastScanAt
                   ? formatDateTime(stand.lastScanAt)
                   : "Todavía no hay escaneos"}
@@ -147,7 +147,7 @@ export default async function AdminStandPage({ params }: StandPageProps) {
 
           <Link
             href={`/leaderboard?event=${stand.event.slug}`}
-            className="mt-5 inline-block rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+            className="mt-5 inline-block rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
           >
             Clasificación pública
           </Link>

@@ -7,7 +7,7 @@ import {
 } from "@/lib/gamification/queries";
 
 export const metadata: Metadata = {
-  title: "Events · Lyfter Badges",
+  title: "Eventos · Lyfter Badges",
 };
 
 // Read the event list at request time instead of freezing it at build time:
@@ -30,35 +30,35 @@ export default async function EventsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 sm:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
-            Lyfter events
+          <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
+            Eventos de Lyfter
           </p>
-          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Events</h1>
-          <p className="mt-2 text-sm text-[#9ca3af]">
-            Browse the Lyfter events and jump into the leaderboard of each one.
+          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Eventos</h1>
+          <p className="mt-2 text-sm text-muted">
+            Explora los eventos de Lyfter y entra al ranking de cada uno.
           </p>
         </header>
 
         {loadFailed ? (
-          <section className="rounded-xl border border-[#f47f8a]/40 bg-[#f47f8a]/10 px-6 py-8 text-center">
-            <h2 className="text-lg font-bold text-[#ffb3ba]">
-              Events are unavailable right now.
+          <section className="rounded-xl border border-coral/40 bg-coral/10 px-6 py-8 text-center">
+            <h2 className="text-lg font-bold text-coral-soft">
+              Los eventos no están disponibles en este momento.
             </h2>
-            <p className="mt-2 text-sm text-[#d7dce3]">
-              We could not reach the event database. Please try again in a few
-              minutes.
+            <p className="mt-2 text-sm text-subtle">
+              No pudimos acceder a la base de datos de eventos. Inténtalo de nuevo en
+              unos minutos.
             </p>
           </section>
         ) : events.length === 0 ? (
-          <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 text-center sm:p-8">
-            <h2 className="text-lg font-bold text-[#f1f1ed]">
-              There are no events yet.
+          <section className="rounded-xl border border-stroke bg-surface p-5 text-center sm:p-8">
+            <h2 className="text-lg font-bold text-foreground">
+              Todavía no hay eventos.
             </h2>
-            <p className="mt-2 text-sm text-[#9ca3af]">
-              As soon as an organizer publishes an event, it shows up here.
+            <p className="mt-2 text-sm text-muted">
+              En cuanto un organizador publique un evento, aparecerá aquí.
             </p>
           </section>
         ) : (

@@ -27,10 +27,10 @@ function getServerShare() {
 }
 
 const secondaryButton =
-  "inline-flex items-center gap-2 rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]";
+  "inline-flex items-center gap-2 rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink";
 
 const primaryButton =
-  "inline-flex items-center gap-2 rounded-lg bg-[#a8d889] px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]";
+  "inline-flex items-center gap-2 rounded-lg bg-sage px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-sage-soft";
 
 function XIcon() {
   return (
@@ -196,10 +196,10 @@ export default function ShareButtons({
             type="button"
             onClick={handleNativeShare}
             className={primaryButton}
-            aria-label="Share this badge"
+            aria-label="Compartir esta insignia"
           >
             <ShareIcon />
-            Share
+            Compartir
           </button>
         ) : null}
 
@@ -208,7 +208,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on X"
+          aria-label="Compartir en X"
         >
           <XIcon />
           X
@@ -219,7 +219,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on WhatsApp"
+          aria-label="Compartir en WhatsApp"
         >
           <WhatsAppIcon />
           WhatsApp
@@ -230,7 +230,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on Facebook"
+          aria-label="Compartir en Facebook"
         >
           <FacebookIcon />
           Facebook
@@ -241,7 +241,7 @@ export default function ShareButtons({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on LinkedIn"
+          aria-label="Compartir en LinkedIn"
         >
           <LinkedInIcon />
           LinkedIn
@@ -252,10 +252,10 @@ export default function ShareButtons({
             href={imageUrl}
             download="lyfter-badge.png"
             className={secondaryButton}
-            aria-label="Download the badge image"
+            aria-label="Descargar la imagen de la insignia"
           >
             <DownloadIcon />
-            Download
+            Descargar
           </a>
         ) : null}
 
@@ -263,10 +263,10 @@ export default function ShareButtons({
           type="button"
           onClick={handleCopy}
           className={secondaryButton}
-          aria-label="Copy the link to this badge"
+          aria-label="Copiar el enlace a esta insignia"
         >
           <CopyIcon />
-          {copied ? "Copied" : "Copy link"}
+          {copied ? "Copiado" : "Copiar enlace"}
         </button>
       </div>
 
@@ -274,22 +274,22 @@ export default function ShareButtons({
         <div className="w-full">
           <label
             htmlFor="share-url-fallback"
-            className="block text-xs font-semibold uppercase tracking-widest text-[#9ca3af]"
+            className="block text-xs font-semibold uppercase tracking-widest text-muted"
           >
-            Copy this link
+            Copia este enlace
           </label>
           <input
             id="share-url-fallback"
             readOnly
             value={url}
             onFocus={(event) => event.currentTarget.select()}
-            className="mt-2 w-full rounded-lg border border-[#394351] bg-[#1f252d] px-3 py-2 text-sm text-[#d7dce3]"
+            className="mt-2 w-full rounded-lg border border-stroke bg-surface-low px-3 py-2 text-sm text-subtle"
           />
         </div>
       ) : null}
 
       <span role="status" aria-live="polite" className="sr-only">
-        {copied ? "Link copied to the clipboard" : ""}
+        {copied ? "Enlace copiado al portapapeles" : ""}
       </span>
     </div>
   );

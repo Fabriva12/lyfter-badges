@@ -1,5 +1,5 @@
 import ScreenLoader from "@/components/ui/ScreenLoader";
 
 export default function Loading() {
-  return <ScreenLoader label="Loading the scanner…" />;
+  return <ScreenLoader label="Cargando el escáner…" />;
 }

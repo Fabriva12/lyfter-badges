@@ -59,12 +59,12 @@ export default async function AdminScansPage({
       <div>
         <Link
           href={`/admin/events/${event.id}`}
-          className="text-sm font-semibold text-[#9ca3af] transition hover:text-[#f1f1ed]"
+          className="text-sm font-semibold text-muted transition hover:text-foreground"
         >
           ← {event.name}
         </Link>
         <h1 className="mt-3 text-2xl font-bold sm:text-3xl">Escaneos</h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Todos los canjes de insignias de este evento, de los más recientes a
           los más antiguos.
         </p>
@@ -75,8 +75,8 @@ export default async function AdminScansPage({
       <section className={cardClassName}>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-[#f1f1ed]">Registro de escaneos</h2>
-            <p className="mt-1 text-sm text-[#9ca3af]">
+            <h2 className="text-lg font-bold text-foreground">Registro de escaneos</h2>
+            <p className="mt-1 text-sm text-muted">
               {scans.total} {scans.total === 1 ? "canje" : "canjes"}
               {scans.query ? ` que coinciden con “${scans.query}”` : ""}.
             </p>
@@ -92,7 +92,7 @@ export default async function AdminScansPage({
             />
             <button
               type="submit"
-              className="rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]"
+              className="rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
             >
               Buscar
             </button>
@@ -114,7 +114,7 @@ export default async function AdminScansPage({
             {scans.page > 1 ? (
               <Link
                 href={pageHref(event.id, scans.page - 1, scans.query)}
-                className="font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+                className="font-semibold text-celeste hover:text-celeste-soft"
               >
                 ← Newer
               </Link>
@@ -122,14 +122,14 @@ export default async function AdminScansPage({
               <span />
             )}
 
-            <span className="text-[#9ca3af]">
+            <span className="text-muted">
               Page {scans.page} of {totalPages}
             </span>
 
             {scans.page < totalPages ? (
               <Link
                 href={pageHref(event.id, scans.page + 1, scans.query)}
-                className="font-semibold text-[#36bde9] hover:text-[#7fd8f5]"
+                className="font-semibold text-celeste hover:text-celeste-soft"
               >
                 Older →
               </Link>
@@ -147,7 +147,7 @@ export default async function AdminScansPage({
           metric="xp"
         />
       ) : (
-        <p className="rounded-xl border border-[#39424f] bg-[#252c35] px-4 py-8 text-center text-sm text-[#9ca3af]">
+        <p className="rounded-xl border border-stroke bg-surface px-4 py-8 text-center text-sm text-muted">
           The ranking appears as soon as the first badge is scanned.
         </p>
       )}

@@ -34,7 +34,7 @@ export default async function AdminDashboardPage({
 
   if (companies.length === 0 && stands.length === 0) {
     return (
-      <p className="rounded-xl border border-[#39424f] bg-[#252c35] px-4 py-8 text-center text-sm text-[#9ca3af]">
+      <p className="rounded-xl border border-stroke bg-surface px-4 py-8 text-center text-sm text-muted">
         Tu cuenta todavía no tiene una empresa ni un stand asignados. Pide a un
         super admin que te otorgue acceso.
       </p>

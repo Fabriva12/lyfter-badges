@@ -13,6 +13,28 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  /* Official Lyfter palette */
+  --color-sage: #add195;
+  --color-celeste: #71ceff;
+  --color-coral: #e88f95;
+  --color-lilac: #d798e7;
+  --color-peach: #ffcc8b;
+  --color-ink: #2d323d;
+
+  /* Derived UI states */
+  --color-celeste-soft: #7fd8f5;
+  --color-coral-soft: #ffb3ba;
+  --color-sage-soft: #b8e39a;
+
+  /* Utility neutrals */
+  --color-muted: #9ca3af;
+  --color-subtle: #d7dce3;
+  --color-stroke: #39424f;
+  --color-surface: #252c35;
+  --color-surface-low: #1f252d;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;

@@ -48,13 +48,13 @@ export default async function SuperAdminPage() {
   return (
     <div className="space-y-10">
       <header>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#36bde9]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-celeste">
           Super admin
         </p>
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
           Resumen de la plataforma
         </h1>
-        <p className="mt-2 text-sm text-[#9ca3af]">
+        <p className="mt-2 text-sm text-muted">
           Visibilidad total sobre cada empresa, evento, cuenta y escaneo de la
           plataforma.
         </p>
@@ -84,7 +84,7 @@ export default async function SuperAdminPage() {
       </div>
 
       <section>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">
+        <h2 className="text-lg font-bold text-foreground">
           Gestionar la plataforma
         </h2>
         <ul className="mt-4 grid gap-4 lg:grid-cols-2">
@@ -92,15 +92,15 @@ export default async function SuperAdminPage() {
             <li key={section.href}>
               <Link
                 href={section.href}
-                className={`${cardClassName} block transition hover:border-[#36bde9]/60 hover:bg-[#2a323c]`}
+                className={`${cardClassName} block transition hover:border-celeste/60 hover:bg-[#2a323c]`}
               >
-                <h3 className="text-base font-bold text-[#f1f1ed]">
+                <h3 className="text-base font-bold text-foreground">
                   {section.title}
                 </h3>
-                <p className="mt-1 text-sm text-[#9ca3af]">
+                <p className="mt-1 text-sm text-muted">
                   {section.description}
                 </p>
-                <span className="mt-3 inline-block text-sm font-semibold text-[#7fd8f5]">
+                <span className="mt-3 inline-block text-sm font-semibold text-celeste-soft">
                   Abrir →
                 </span>
               </Link>
@@ -110,10 +110,10 @@ export default async function SuperAdminPage() {
       </section>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-[#f1f1ed]">Gamificación</h2>
-        <p className="mt-1 text-sm text-[#9ca3af]">
+        <h2 className="text-lg font-bold text-foreground">Gamificación</h2>
+        <p className="mt-1 text-sm text-muted">
           Los asistentes acumularon{" "}
-          <span className="font-semibold text-[#a8d889]">
+          <span className="font-semibold text-sage">
             {overview.xpAwarded} XP
           </span>{" "}
           en todos los eventos.

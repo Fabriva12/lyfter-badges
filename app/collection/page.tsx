@@ -12,7 +12,7 @@ import {
 import { requireSession } from "@/lib/session";
 
 export const metadata: Metadata = {
-  title: "My collection · Lyfter Badges",
+  title: "Mi colección · Lyfter Badges",
 };
 
 export default async function CollectionPage() {
@@ -52,22 +52,22 @@ export default async function CollectionPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#171b21] text-[#f1f1ed]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-4 py-10 sm:py-16">
         <header className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold sm:text-3xl">My collection</h1>
-            <p className="mt-2 max-w-2xl text-sm text-[#9ca3af]">
-              Level up across every Lyfter event. XP is global; badges belong to
-              the event where you collected them.
+            <h1 className="text-2xl font-bold sm:text-3xl">Mi colección</h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted">
+              Sube de nivel en todos los eventos de Lyfter. La XP es global; las
+              insignias pertenecen al evento donde las recolectaste.
             </p>
           </div>
 
           <Link
             href="/scan"
-            className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#a8d889] px-5 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+            className="inline-flex min-h-11 items-center justify-center rounded-lg bg-sage px-5 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
           >
-            Scan a QR
+            Escanea un QR
           </Link>
         </header>
 
@@ -92,19 +92,19 @@ export default async function CollectionPage() {
               />
             ))
           ) : (
-            <section className="rounded-xl border border-[#39424f] bg-[#252c35] p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
-              <h2 className="text-lg font-bold text-[#f1f1ed]">
-                You have not checked in to any event yet.
+            <section className="rounded-xl border border-stroke bg-surface p-5 text-center shadow-2xl shadow-black/30 sm:p-8">
+              <h2 className="text-lg font-bold text-foreground">
+                Todavía no hiciste check-in en ningún evento.
               </h2>
-              <p className="mt-2 text-sm text-[#9ca3af]">
-                Scan the welcome QR at a Lyfter event entrance to start
-                collecting badges.
+              <p className="mt-2 text-sm text-muted">
+                Escanea el QR de bienvenida en la entrada de un evento de Lyfter para
+                empezar a recolectar insignias.
               </p>
               <Link
                 href="/scan"
-                className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#a8d889] px-6 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a]"
+                className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-sage px-6 text-sm font-bold text-[#263021] transition hover:bg-sage-soft"
               >
-                Scan the welcome QR
+                Escanea el QR de bienvenida
               </Link>
             </section>
           )}

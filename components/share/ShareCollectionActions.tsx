@@ -12,10 +12,10 @@ interface ShareCollectionActionsProps {
 }
 
 const secondaryButton =
-  "inline-flex items-center gap-2 rounded-lg border border-[#394351] px-4 py-2 text-sm font-semibold text-[#d7dce3] transition hover:bg-[#272d36]";
+  "inline-flex items-center gap-2 rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink";
 
 const primaryButton =
-  "inline-flex items-center gap-2 rounded-lg bg-[#a8d889] px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-[#b8e39a] disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center gap-2 rounded-lg bg-sage px-4 py-2 text-sm font-bold text-[#263021] transition hover:bg-sage-soft disabled:cursor-not-allowed disabled:opacity-60";
 
 function subscribeToNavigatorShare() {
   return () => {};
@@ -200,7 +200,7 @@ export default function ShareCollectionActions({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on LinkedIn"
+          aria-label="Compartir en LinkedIn"
         >
           <LinkedInIcon />
           LinkedIn
@@ -211,7 +211,7 @@ export default function ShareCollectionActions({
           target="_blank"
           rel="noopener noreferrer"
           className={secondaryButton}
-          aria-label="Share on Facebook"
+          aria-label="Compartir en Facebook"
         >
           <FacebookIcon />
           Facebook
@@ -223,10 +223,10 @@ export default function ShareCollectionActions({
             onClick={handleShareImage}
             disabled={busy}
             className={primaryButton}
-            aria-label="Share the collection image on Instagram"
+            aria-label="Compartir la imagen de la colección en Instagram"
           >
             <InstagramIcon />
-            {busy ? "Preparing..." : "Instagram"}
+            {busy ? "Preparando…" : "Instagram"}
           </button>
         ) : null}
 
@@ -234,26 +234,26 @@ export default function ShareCollectionActions({
           href={imageUrl}
           download="lyfter-collection.png"
           className={secondaryButton}
-          aria-label="Download the collection image"
+          aria-label="Descargar la imagen de la colección"
         >
           <DownloadIcon />
-          Download
+          Descargar
         </a>
 
         <button
           type="button"
           onClick={handleCopy}
           className={secondaryButton}
-          aria-label="Copy the collection caption"
+          aria-label="Copiar el texto de la colección"
         >
           <CopyIcon />
-          {status === "copied" ? "Copied" : "Copy caption"}
+          {status === "copied" ? "Copiado" : "Copiar texto"}
         </button>
       </div>
 
       {status === "image-error" ? (
-        <p className="text-center text-sm text-[#f0a5a5]">
-          Could not prepare the image. Use Download and post it manually.
+        <p className="text-center text-sm text-coral/80">
+          No se pudo preparar la imagen. Usa Descargar y publicala manualmente.
         </p>
       ) : null}
 
@@ -261,9 +261,9 @@ export default function ShareCollectionActions({
         <div className="w-full">
           <label
             htmlFor="collection-caption"
-            className="block text-xs font-semibold uppercase tracking-widest text-[#9ca3af]"
+            className="block text-xs font-semibold uppercase tracking-widest text-muted"
           >
-            Copy this caption
+            Copia este texto
           </label>
           <textarea
             id="collection-caption"
@@ -271,13 +271,13 @@ export default function ShareCollectionActions({
             rows={4}
             value={caption}
             onFocus={(event) => event.currentTarget.select()}
-            className="mt-2 w-full rounded-lg border border-[#394351] bg-[#1f252d] px-3 py-2 text-sm text-[#d7dce3]"
+            className="mt-2 w-full rounded-lg border border-stroke bg-surface-low px-3 py-2 text-sm text-subtle"
           />
         </div>
       ) : null}
 
       <span role="status" aria-live="polite" className="sr-only">
-        {status === "copied" ? "Caption copied to the clipboard" : ""}
+        {status === "copied" ? "Texto copiado al portapapeles" : ""}
       </span>
     </div>
   );

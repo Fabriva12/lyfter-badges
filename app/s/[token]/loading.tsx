@@ -1,5 +1,5 @@
 import ScreenLoader from "@/components/ui/ScreenLoader";
 
 export default function Loading() {
-  return <ScreenLoader label="Loading your badge…" />;
+  return <ScreenLoader label="Cargando tu insignia…" />;
 }

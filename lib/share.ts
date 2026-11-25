@@ -6,7 +6,7 @@ export interface ShareTarget {
 }
 
 function badgeWord(total: number): string {
-  return total === 1 ? "badge" : "badges";
+  return total === 1 ? "insignia" : "insignias";
 }
 
 export function buildShareText(input: {
@@ -14,7 +14,7 @@ export function buildShareText(input: {
   eventName: string;
   xp: number;
 }): string {
-  return `I collected the ${input.badgeName} badge at ${input.eventName} (+${input.xp} XP) with Lyfter Badges.`;
+  return `Recolecté la insignia ${input.badgeName} en ${input.eventName} (+${input.xp} XP) con Lyfter Badges.`;
 }
 
 export function buildCollectionShareText(input: {
@@ -24,7 +24,7 @@ export function buildCollectionShareText(input: {
   total: number;
   xp: number;
 }): string {
-  return `${input.attendeeName} collected ${input.collected} of ${input.total} ${badgeWord(input.total)} at ${input.eventName} (${input.xp} XP) with Lyfter Badges.`;
+  return `${input.attendeeName} recolectó ${input.collected} de ${input.total} ${badgeWord(input.total)} en ${input.eventName} (${input.xp} XP) con Lyfter Badges.`;
 }
 
 export function buildShareUrls(input: {

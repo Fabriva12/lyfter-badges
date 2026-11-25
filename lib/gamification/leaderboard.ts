@@ -8,7 +8,7 @@ export type LeaderboardMetric = (typeof LEADERBOARD_METRICS)[number];
 export const LEADERBOARD_METRIC_LABELS: Record<LeaderboardMetric, string> = {
   xp: "XP",
   stands: "Stands",
-  talks: "Talks",
+  talks: "Charlas",
 };
 
 export function isLeaderboardMetric(

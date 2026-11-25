@@ -13,9 +13,26 @@ administrador de la plataforma (`SUPER_ADMIN`) en `/super-admin`.
 El diseño técnico completo, las decisiones de arquitectura y los detalles del modelo de
 dominio están en [`PLAN.md`](./PLAN.md).
 
+## Aplicación desplegada
+
+[https://lyfter-badges-app.vercel.app](https://lyfter-badges-app.vercel.app)
+
+| Entorno | URL | Notas |
+| --- | --- | --- |
+| Producción | https://lyfter-badges-app.vercel.app | Alias estable; apunta al último deployment de producción (work unit unificado) |
+| Preview | https://lyfter-badges-app-git-docs-deploy-and-footer-pages-fabriva12.vercel.app | Preview de la rama `docs/deploy-and-footer-pages`; cada rama genera su propio `*.vercel.app` |
+
+El proyecto de Vercel sigue vinculado al repo eliminado `Fabriva12/Lyfter-Badges-App`, así
+que los pushes a `main` no crean deployments automáticos; los previews de los work units se
+crean pasando un `gitSource` explícito a la API de Vercel.
+
+El proyecto tiene Vercel Authentication (SSO) habilitado para todos los deployments salvo
+dominios propios, así que hace falta acceso al equipo de Vercel para abrir el enlace.
+
 ## Documentación
 
 - [`docs/architecture.md`](./docs/architecture.md) — capas, regla de dependencias y flujos.
+- [`docs/design-tokens.md`](./docs/design-tokens.md) — paleta oficial, tokens y reglas de contraste.
 - [`docs/database.md`](./docs/database.md) — entidades, relaciones e invariantes.
 - [`docs/schema.sql`](./docs/schema.sql) — SQL generado desde `prisma/schema.prisma`.
 
@@ -33,7 +50,7 @@ dominio están en [`PLAN.md`](./PLAN.md).
 
 ## Requisitos
 
-- Node.js 20+
+- Node.js 24.x
 - pnpm
 - Un proyecto de Supabase accesible
 
@@ -47,6 +64,29 @@ Variables en `.env`:
 | `BETTER_AUTH_SECRET` | Secreto de Better Auth |
 | `BETTER_AUTH_URL` | URL base de la app (por ejemplo `http://localhost:3000`) |
 | `SEED_DEMO_DATA` | Habilita los datos de demo en el seed (`false` por defecto en `.env.example`) |
+
+### Variables en producción
+
+Producción y preview toman sus variables de Vercel → Project Settings → Environment
+Variables; los valores nunca se guardan en el repositorio.
+
+| Variable | Target en Vercel | Uso |
+| --- | --- | --- |
+| `DATABASE_URL` | `production`, `preview` | Conexión de la app en runtime (pooler de Supabase) |
+| `DIRECT_URL` | `production`, `preview` | CLI de Prisma: migraciones e introspección |
+| `SHADOW_DATABASE_URL` | `production`, `preview` | Base shadow para `migrate dev` |
+| `BETTER_AUTH_SECRET` | `production`, `preview` | Secreto de Better Auth y de los tokens de compartir |
+| `BETTER_AUTH_URL` | `production`, `preview` | URL base declarada para la app |
+
+`SEED_DEMO_DATA` no está definida en producción ni en preview: los badges y tokens de demo
+solo existen cuando el seed corre en local con esa flag, y el build es `next build` (sin seed).
+
+### Cómo se separan los entornos
+
+- [ ] `.env` local está en `.gitignore`; `.env.example` solo tiene placeholders.
+- [ ] Vercel inyecta sus propios valores por target en build y runtime.
+- [ ] `lib/db.ts` lee `DATABASE_URL` en runtime; `DIRECT_URL` y `SHADOW_DATABASE_URL` solo los usa `prisma7.config.ts`.
+- [ ] Nunca copiar valores de producción a `.env` ni commitearlos.
 
 Las URLs de conexión viven en `prisma7.config.ts` (Prisma 7.10 no genera
 `prisma.config.ts`). Si el proyecto de Supabase está pausado, despertalo desde el panel
@@ -147,6 +187,68 @@ cámara o subir una foto del QR desde `/scan`; la cámara requiere HTTPS o local
 
 Los escaneos son idempotentes: repetir el mismo QR no vuelve a otorgar XP.
 
+## Seguridad de QR rotatorios
+
+**Decisión:** el QR impreso no es el secreto, es solo un acceso de personal a
+`/stand/[eventBadgeId]`. La pantalla del stand muestra un `randomUUID()` nuevo con un
+TTL de 90 s, rotado cada 60 s. `maxScans` es un límite global y no prueba presencia; la
+unicidad por `userId + eventBadgeId` solo evita XP duplicado. Un QR estático impreso es
+un *bearer token*: una foto que circule por WhatsApp permite a cualquier asistente
+registrado reclamar la insignia desde cualquier lugar.
+
+### Camino rápido
+
+1. Entrar a `/stand/<eventBadgeId>` con un `ADMIN` asignado al stand o un `SUPER_ADMIN`.
+2. Dejar la pantalla a la vista del público: el cliente rota cada 60 s, muestra la
+   cuenta regresiva y **Rotate now** fuerza una rotación.
+3. Verificar que un escaneo ya registrado siga siendo idempotente y que la rotación no
+   agregue ruido a la auditoría.
+
+### Decisiones
+
+| Tema | Decisión |
+| --- | --- |
+| Secreto | El QR impreso solo abre la pantalla del stand; el token vigente vive en esa pantalla. |
+| Vigencia | 90 s por token, con rotación automática cada 60 s (margen de 30 s). |
+| Idempotencia | Los tokens rotados se dejan con `active = true` y solo vence `expiresAt`. `recordScan` y `resolveScanTarget` revisan el claim existente **antes** que `expiresAt`, así un replay offline devuelve la insignia guardada. Desactivar los tokens rotados rompería ese comportamiento. |
+| Límites | Los tokens del kiosk usan `maxScans: null`: un tope global no demuestra que la persona estuvo en el stand. |
+| Autorización | `requireStandForAdmin` protege la página y el Server Action de rotación; `proxy.ts` es solo un filtro optimista. |
+| Auditoría | Las rotaciones no se registran una por una (60 s inundarían el log); los escaneos sí quedan registrados en la tabla `Scan` (usuario, token, badge, evento y XP), aunque no generan entradas en la tabla de auditoría. |
+
+### Límites
+
+- [ ] Una foto reenviada dentro de los ~90 s de vigencia todavía funciona.
+- [ ] Hace falta una pantalla o dispositivo en el stand; si no hay, usar el flujo
+      inverso: personal del stand escanea el código rotatorio del asistente.
+- [ ] La geolocalización no es una prueba: se puede falsear, dispara permisos y falla
+      en interiores.
+- [ ] Las rotaciones no se auditan individualmente para no inundar el log; los
+      escaneos sí quedan registrados en la tabla `Scan` (usuario, token, badge,
+      evento y XP), aunque no generan entradas en la tabla de auditoría.
+- [ ] Un `ADMIN` con acceso al stand puede emitir tokens: ese rol sigue siendo de
+      confianza.
+
+Los tokens `demo-*` son exclusivos de desarrollo. En Vercel, production y preview no
+definen `SEED_DEMO_DATA`; el build es `next build` (sin seed) y el último log de build de
+producción no muestra siembra. Igual conviene confirmarlo en la base con dos consultas de
+solo lectura (sin incluir ninguna credencial):
+
+```sql
+SELECT count(*) AS demo_tokens
+FROM "QrToken"
+WHERE token LIKE 'demo-%';
+```
+
+Esperado: `0`.
+
+```sql
+SELECT count(*) AS non_uuid_tokens
+FROM "QrToken"
+WHERE token !~ '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$';
+```
+
+Esperado: `0` (solo tokens UUIDv4).
+
 ## Rutas
 
 | Ruta | Descripción | Acceso |
@@ -154,6 +256,9 @@ Los escaneos son idempotentes: repetir el mismo QR no vuelve a otorgar XP.
 | `/` | Landing pública | Público |
 | `/login` | Inicio de sesión y registro | Público |
 | `/events` | Catálogo público de eventos | Público |
+| `/terminos` | Términos de uso (borrador a revisar) | Público |
+| `/privacidad` | Política de privacidad (borrador a revisar) | Público |
+| `/contacto` | Datos de contacto (dirección de ejemplo a reemplazar) | Público |
 | `/s/[token]` | Landing del QR: registra el escaneo o reclama el badge | Requiere sesión |
 | `/scan` | Escáner de QR con cámara o imagen | Requiere sesión |
 | `/collection` | Colección, XP global y nivel | Requiere sesión |
@@ -170,6 +275,7 @@ Los escaneos son idempotentes: repetir el mismo QR no vuelve a otorgar XP.
 | `/admin/events/[id]/metrics` | Métricas del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
 | `/admin/events/[id]/audit` | Auditoría del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
 | `/admin/stands/[eventBadgeId]` | Vista de solo lectura del stand | `ADMIN` asignado al stand / `SUPER_ADMIN` |
+| `/stand/[eventBadgeId]` | Pantalla del QR rotatorio del stand | `ADMIN` asignado al stand / `SUPER_ADMIN` |
 | `/super-admin` | Panel global: empresas, eventos y administradores | `SUPER_ADMIN` |
 | `/super-admin/companies` | Empresas y administradores | `SUPER_ADMIN` |
 | `/super-admin/events` | Eventos de todas las empresas | `SUPER_ADMIN` |
@@ -194,7 +300,8 @@ existencia de ids ajenos.
 | `pnpm tsx scripts/migrate-costa-rica-times.ts --apply` | Aplica el corrimiento de +6 h (no re-seeding después) |
 | `pnpm tsx scripts/verify-leaderboard.ts` | Verifica ranking, podium y conteos |
 | `pnpm tsx scripts/verify-collection.ts` | Verifica XP global vs. por evento |
-| `pnpm tsx scripts/verify-partner.ts` | Verifica roles y stands del partner de demo |
+| `pnpm tsx scripts/verify-partner.ts` | Verifica roles y stands del partner de demo (requiere el seed de demo) |
+| `pnpm tsx scripts/verify-badge-invariant.ts` | Verifica que un segundo QR del mismo badge no duplique el scan (crea y limpia datos temporales) |
 
 ## Estructura
 

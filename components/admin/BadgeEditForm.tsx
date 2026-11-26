@@ -4,8 +4,8 @@ import { useActionState } from "react";
 
 import {
   removeEventBadge,
-  updateCatalogBadge,
   updateEventBadge,
+  updateEventBadgeConfig,
 } from "@/app/admin/events/[id]/badges/actions";
 import {
   inputClassName,
@@ -67,8 +67,8 @@ export default function BadgeEditForm({
     updateEventBadge,
     initialAdminFormState,
   );
-  const [catalogState, catalogAction, catalogPending] = useActionState(
-    updateCatalogBadge,
+  const [configState, configAction, configPending] = useActionState(
+    updateEventBadgeConfig,
     initialAdminFormState,
   );
   const [removeState, removeAction, removePending] = useActionState(
@@ -147,158 +147,158 @@ export default function BadgeEditForm({
         <div className="border-t border-stroke pt-5">
           {shared ? (
             <p className="rounded-lg border border-peach/40 bg-peach/10 px-4 py-3 text-xs text-peach/70">
-              Esta insignia se usa en {catalogUsage} eventos. Editar la entrada
-              del catálogo cambiaría el nombre, el XP y el ícono en todos
-              lados, por eso acá es de solo lectura. Agregá una insignia con
-              otro nombre si necesitás una variante.
+              Este nombre se usa en {catalogUsage} eventos, así que queda de
+              solo lectura. El XP, el tipo, la rareza, el ícono y la descripción
+              son propios de este evento y sí se pueden editar.
             </p>
-          ) : (
-            <form action={catalogAction}>
-              <input type="hidden" name="eventId" value={eventId} />
-              <input type="hidden" name="eventBadgeId" value={eventBadgeId} />
+          ) : null}
 
-              <h4 className="text-sm font-bold text-foreground">
-                Catálogo de insignias
-              </h4>
-              <p className="mt-1 text-xs text-muted">
-                Solo este evento usa esta insignia, así que todavía se pueden
-                cambiar su nombre, XP e ícono.
-              </p>
+          <form action={configAction}>
+            <input type="hidden" name="eventId" value={eventId} />
+            <input type="hidden" name="eventBadgeId" value={eventBadgeId} />
 
-              <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <div>
-                  <label
-                    htmlFor={`badge-name-${eventBadgeId}`}
-                    className={labelClassName}
-                  >
-                    Nombre de la insignia
-                  </label>
-                  <input
-                    id={`badge-name-${eventBadgeId}`}
-                    name="name"
-                    required
-                    maxLength={120}
-                    defaultValue={name}
-                    className={inputClassName}
-                  />
-                </div>
+            <h4 className="text-sm font-bold text-foreground">
+              Configuración de la insignia
+            </h4>
+            <p className="mt-1 text-xs text-muted">
+              Estos valores son exclusivos de este evento. Cambiar la XP afecta
+              solo a los próximos escaneos.
+            </p>
 
-                <div>
-                  <label
-                    htmlFor={`badge-xp-${eventBadgeId}`}
-                    className={labelClassName}
-                  >
-                    XP
-                  </label>
-                  <input
-                    id={`badge-xp-${eventBadgeId}`}
-                    name="xpValue"
-                    type="number"
-                    min={1}
-                    step={1}
-                    required
-                    defaultValue={xpValue}
-                    className={inputClassName}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor={`badge-type-${eventBadgeId}`}
-                    className={labelClassName}
-                  >
-                    Tipo
-                  </label>
-                  <select
-                    id={`badge-type-${eventBadgeId}`}
-                    name="type"
-                    defaultValue={type}
-                    className={inputClassName}
-                  >
-                    {BADGE_TYPES.map((option) => (
-                      <option key={option} value={option}>
-                        {BADGE_TYPE_LABELS[option]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor={`badge-rarity-${eventBadgeId}`}
-                    className={labelClassName}
-                  >
-                    Rareza
-                  </label>
-                  <select
-                    id={`badge-rarity-${eventBadgeId}`}
-                    name="rarity"
-                    defaultValue={rarity}
-                    className={inputClassName}
-                  >
-                    {BADGE_RARITIES.map((option) => (
-                      <option key={option} value={option}>
-                        {BADGE_RARITY_LABELS[option]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="sm:col-span-2 lg:col-span-4">
-                  <label
-                    htmlFor={`badge-description-${eventBadgeId}`}
-                    className={labelClassName}
-                  >
-                    Descripción
-                  </label>
-                  <textarea
-                    id={`badge-description-${eventBadgeId}`}
-                    name="description"
-                    rows={2}
-                    maxLength={1000}
-                    defaultValue={description ?? ""}
-                    className={inputClassName}
-                  />
-                </div>
-
-                <fieldset className="sm:col-span-2 lg:col-span-4">
-                  <legend className={labelClassName}>Ícono</legend>
-                  <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-10">
-                    {BADGE_ICON_KEYS.map((key) => (
-                      <label
-                        key={key}
-                        className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-stroke bg-background px-2 py-3 text-center text-[11px] font-semibold text-muted transition has-[:checked]:border-celeste has-[:checked]:bg-celeste/15 has-[:checked]:text-celeste-soft"
-                      >
-                        <input
-                          type="radio"
-                          name="iconKey"
-                          value={key}
-                          defaultChecked={key === iconKey}
-                          className="sr-only"
-                        />
-                        <BadgeIcon name={key} className="h-5 w-5" />
-                        {BADGE_ICON_LABELS[key]}
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div>
+                <label
+                  htmlFor={`badge-name-${eventBadgeId}`}
+                  className={labelClassName}
+                >
+                  Nombre de la insignia
+                </label>
+                <input
+                  id={`badge-name-${eventBadgeId}`}
+                  name="name"
+                  required
+                  maxLength={120}
+                  defaultValue={name}
+                  readOnly={shared}
+                  className={inputClassName}
+                />
               </div>
 
-              <ErrorMessage
-                message={
-                  catalogState.status === "error" ? catalogState.message : ""
-                }
-              />
+              <div>
+                <label
+                  htmlFor={`badge-xp-${eventBadgeId}`}
+                  className={labelClassName}
+                >
+                  XP
+                </label>
+                <input
+                  id={`badge-xp-${eventBadgeId}`}
+                  name="xpValue"
+                  type="number"
+                  min={1}
+                  step={1}
+                  required
+                  defaultValue={xpValue}
+                  className={inputClassName}
+                />
+              </div>
 
-              <button
-                type="submit"
-                disabled={catalogPending}
-                className={`mt-3 ${secondaryButtonClassName} px-4 py-2 text-xs`}
-              >
-                {catalogPending ? "Guardando…" : "Guardar cambios del catálogo"}
-              </button>
+              <div>
+                <label
+                  htmlFor={`badge-type-${eventBadgeId}`}
+                  className={labelClassName}
+                >
+                  Tipo
+                </label>
+                <select
+                  id={`badge-type-${eventBadgeId}`}
+                  name="type"
+                  defaultValue={type}
+                  className={inputClassName}
+                >
+                  {BADGE_TYPES.map((option) => (
+                    <option key={option} value={option}>
+                      {BADGE_TYPE_LABELS[option]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor={`badge-rarity-${eventBadgeId}`}
+                  className={labelClassName}
+                >
+                  Rareza
+                </label>
+                <select
+                  id={`badge-rarity-${eventBadgeId}`}
+                  name="rarity"
+                  defaultValue={rarity}
+                  className={inputClassName}
+                >
+                  {BADGE_RARITIES.map((option) => (
+                    <option key={option} value={option}>
+                      {BADGE_RARITY_LABELS[option]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="sm:col-span-2 lg:col-span-4">
+                <label
+                  htmlFor={`badge-description-${eventBadgeId}`}
+                  className={labelClassName}
+                >
+                  Descripción
+                </label>
+                <textarea
+                  id={`badge-description-${eventBadgeId}`}
+                  name="description"
+                  rows={2}
+                  maxLength={1000}
+                  defaultValue={description ?? ""}
+                  className={inputClassName}
+                />
+              </div>
+
+              <fieldset className="sm:col-span-2 lg:col-span-4">
+                <legend className={labelClassName}>Ícono</legend>
+                <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-10">
+                  {BADGE_ICON_KEYS.map((key) => (
+                    <label
+                      key={key}
+                      className="flex cursor-pointer flex-col items-center gap-1 rounded-lg border border-stroke bg-background px-2 py-3 text-center text-[11px] font-semibold text-muted transition has-[:checked]:border-celeste has-[:checked]:bg-celeste/15 has-[:checked]:text-celeste-soft"
+                    >
+                      <input
+                        type="radio"
+                        name="iconKey"
+                        value={key}
+                        defaultChecked={key === iconKey}
+                        className="sr-only"
+                      />
+                      <BadgeIcon name={key} className="h-5 w-5" />
+                      {BADGE_ICON_LABELS[key]}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            </div>
+
+            <ErrorMessage
+              message={
+                configState.status === "error" ? configState.message : ""
+              }
+            />
+
+            <button
+              type="submit"
+              disabled={configPending}
+              className={`mt-3 ${secondaryButtonClassName} px-4 py-2 text-xs`}
+            >
+              {configPending ? "Guardando…" : "Guardar configuración"}
+            </button>
             </form>
-          )}
         </div>
 
         <form

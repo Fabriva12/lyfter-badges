@@ -78,12 +78,20 @@ export default function PartnerDashboard({ stands }: PartnerDashboardProps) {
                 </div>
               </dl>
 
-              <Link
-                href={`/admin/stands/${stand.id}`}
-                className="mt-5 inline-block rounded-lg bg-sage px-4 py-2 text-sm font-semibold text-[#263021] transition hover:bg-sage-soft"
-              >
-                Abrir stand
-              </Link>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <Link
+                  href={`/admin/stands/${stand.id}`}
+                  className="rounded-lg bg-sage px-4 py-2 text-sm font-semibold text-[#263021] transition hover:bg-sage-soft"
+                >
+                  Abrir stand
+                </Link>
+                <Link
+                  href={`/stand/${stand.id}`}
+                  className="rounded-lg border border-stroke px-4 py-2 text-sm font-semibold text-subtle transition hover:bg-ink"
+                >
+                  Abrir QR rotativo
+                </Link>
+              </div>
             </li>
           ))}
         </ul>

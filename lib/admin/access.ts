@@ -18,6 +18,7 @@ export interface EventOwnership {
 
 export interface StandOwnership {
   partnerId: string | null;
+  event: EventOwnership;
 }
 
 /** Admins and super admins can open the admin area. */
@@ -50,8 +51,9 @@ export function canManageEvent(
 }
 
 /**
- * Object-level check for a stand. A stand partner sees only the stand assigned
- * to their account. A super admin can inspect any stand.
+ * Object-level check for a stand. A super admin, the partner assigned to the
+ * stand, or an admin who manages the stand's event may open the kiosk. Talk
+ * badges have no partner, so the event check is what lets company admins in.
  */
 export function canAccessStand(
   actor: AdminActor,
@@ -61,9 +63,12 @@ export function canAccessStand(
     return true;
   }
 
+  if (actor.role !== "ADMIN") {
+    return false;
+  }
+
   return (
-    actor.role === "ADMIN" &&
-    stand.partnerId !== null &&
-    actor.id === stand.partnerId
+    (stand.partnerId !== null && actor.id === stand.partnerId) ||
+    canManageEvent(actor, stand.event)
   );
 }

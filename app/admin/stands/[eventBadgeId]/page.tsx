@@ -33,7 +33,12 @@ export default async function AdminStandPage({ params }: StandPageProps) {
     notFound();
   }
 
-  const activeTokens = stand.tokens.filter((token) => token.active).length;
+  // Only static tokens with no expiry are inherited. Rotating kiosk secrets
+  // stay on the kiosk screen and must not be rendered here.
+  const inheritedTokens = stand.tokens.filter(
+    (token) => token.expiresAt === null,
+  );
+  const activeTokens = inheritedTokens.filter((token) => token.active).length;
 
   return (
     <div className="space-y-6">
@@ -72,33 +77,53 @@ export default async function AdminStandPage({ params }: StandPageProps) {
         <StatCard label="Escaneos" value={stand.scans} />
         <StatCard label="Visitantes" value={stand.visitors} />
         <StatCard
-          label="Tokens QR activos"
+          label="Códigos heredados activos"
           value={activeTokens}
-          hint={`${stand.tokens.length} en total`}
+          hint={`${inheritedTokens.length} en total`}
         />
         <StatCard label="XP por escaneo" value={`+${stand.badge.xpValue}`} />
       </div>
 
       <section className={cardClassName}>
-        <h2 className="text-lg font-bold text-foreground">Tokens QR</h2>
+        <h2 className="text-lg font-bold text-foreground">QR rotatorio</h2>
         <p className="mt-1 text-sm text-muted">
-          Imprimí estos códigos para el stand. Cada escaneo otorga la insignia
-          una vez por asistente.
+          El código vigente se genera en la pantalla del stand, cambia cada 60 s y
+          tiene vigencia de 90 s. Abrí el kiosk para mostrarlo; cada escaneo otorga
+          la insignia una vez por asistente.
+        </p>
+        <Link
+          href={`/stand/${eventBadgeId}`}
+          className="mt-4 inline-block rounded-lg bg-sage px-4 py-2 text-sm font-semibold text-[#263021] transition hover:bg-sage-soft"
+        >
+          Abrir QR rotativo
+        </Link>
+
+        <h3 className="mt-6 text-xs font-bold uppercase tracking-wide text-subtle">
+          Códigos fijos heredados
+        </h3>
+        <p className="mt-1 text-xs text-muted">
+          Son códigos fijos heredados: se muestran sin QR ni enlace y se mantienen
+          activos para que los escaneos previos puedan repetirse de forma
+          idempotente. No los imprimas ni los compartas. Esta vista es de solo
+          lectura; para desactivar un código nunca usado, hacelo desde el panel
+          del organizador. No desactives los que ya tienen escaneos: rompería la
+          idempotencia.
         </p>
 
-        <ul className="mt-5 space-y-3">
-          {stand.tokens.length === 0 ? (
+        <ul className="mt-3 space-y-3">
+          {inheritedTokens.length === 0 ? (
             <li className="text-sm text-muted">
-              El organizador todavía no creó un token QR para este stand.
+              No hay códigos fijos heredados para este stand.
             </li>
           ) : (
-            stand.tokens.map((token) => (
+            inheritedTokens.map((token) => (
               <li key={token.id}>
                 <TokenCard
                   token={token}
                   origin={origin}
                   label={stand.badge.name}
                   canToggle={false}
+                  showQr={false}
                 />
               </li>
             ))

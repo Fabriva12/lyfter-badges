@@ -82,28 +82,48 @@ describe("canManageEvent", () => {
 });
 
 describe("canAccessStand", () => {
-  it("lets an admin access the stand assigned to them", () => {
-    expect(canAccessStand(admin, { partnerId: "admin-1" })).toBe(true);
+  const event = { organizerId: "organizer-1", companyId: "company-1" };
+
+  it("lets an admin of the owning company access any stand of that event", () => {
+    expect(canAccessStand(admin, { partnerId: null, event })).toBe(true);
+    expect(canAccessStand(admin, { partnerId: "admin-2", event })).toBe(true);
   });
 
-  it("blocks an admin from another admin's stand", () => {
-    expect(canAccessStand(admin, { partnerId: "admin-2" })).toBe(false);
+  it("lets the legacy organizer access a stand without a company", () => {
+    expect(
+      canAccessStand(
+        { ...admin, id: "organizer-1", companyIds: [] },
+        {
+          partnerId: null,
+          event: { organizerId: "organizer-1", companyId: null },
+        },
+      ),
+    ).toBe(true);
+  });
+
+  it("blocks an admin from another company's stand", () => {
+    expect(canAccessStand(otherAdmin, { partnerId: null, event })).toBe(false);
+  });
+
+  it("lets the assigned partner in without company membership", () => {
+    expect(
+      canAccessStand(
+        { ...admin, companyIds: [] },
+        { partnerId: "admin-1", event },
+      ),
+    ).toBe(true);
   });
 
   it("lets a super admin inspect any stand", () => {
-    expect(canAccessStand(superAdmin, { partnerId: "admin-1" })).toBe(true);
-    expect(canAccessStand(superAdmin, { partnerId: null })).toBe(true);
+    expect(canAccessStand(superAdmin, { partnerId: "admin-1", event })).toBe(
+      true,
+    );
+    expect(canAccessStand(superAdmin, { partnerId: null, event })).toBe(true);
   });
 
-  it("blocks access to an unassigned stand", () => {
-    expect(canAccessStand(admin, { partnerId: null })).toBe(false);
-  });
-
-  it("blocks attendees from the stand view", () => {
-    expect(canAccessStand(attendee, { partnerId: "attendee-1" })).toBe(false);
-  });
-
-  it("keeps unrelated admins out even if they share company access", () => {
-    expect(canAccessStand(otherAdmin, { partnerId: "admin-1" })).toBe(false);
+  it("blocks attendees even when the id matches the partner", () => {
+    expect(canAccessStand(attendee, { partnerId: "attendee-1", event })).toBe(
+      false,
+    );
   });
 });

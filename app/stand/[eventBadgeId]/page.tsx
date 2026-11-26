@@ -58,7 +58,7 @@ export default async function StandKioskPage({ params }: StandKioskPageProps) {
           startsAt: payload.startsAt,
           qr,
         }}
-        note="Pide a los asistentes que escaneen esta pantalla. No imprimas ni reenvíes el código: cambia cada 90 segundos."
+        note="Pide a los asistentes que escaneen esta pantalla. No imprimas ni reenvíes el código: cambia cada 60 s y tiene vigencia de 90 s."
       />
     </div>
   );

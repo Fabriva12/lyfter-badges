@@ -22,7 +22,7 @@ import { BADGE_RARITY_LABELS, BADGE_TYPE_LABELS } from "@/lib/format";
 
 interface AddBadgeFormProps {
   eventId: string;
-  catalog: Array<{ name: string; xpValue: number }>;
+  catalog: string[];
 }
 
 export default function AddBadgeForm({
@@ -53,17 +53,15 @@ export default function AddBadgeForm({
             className={inputClassName}
           />
           <datalist id="badge-catalog">
-            {catalog.map((item) => (
-              <option key={item.name} value={item.name}>
-                {item.xpValue} XP
-              </option>
+            {catalog.map((name) => (
+              <option key={name} value={name} />
             ))}
           </datalist>
         </div>
 
         <div>
           <label htmlFor="badge-xp" className={labelClassName}>
-            XP (solo para insignias nuevas)
+            XP de esta insignia
           </label>
           <input
             id="badge-xp"

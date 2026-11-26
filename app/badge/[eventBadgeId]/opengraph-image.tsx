@@ -31,7 +31,7 @@ export async function generateImageMetadata({ params }: ImageParams) {
     return [
       {
         id: eventBadgeId,
-        alt: `Insignia ${eventBadge.badge.name} en ${eventBadge.event.name}, que vale ${eventBadge.badge.xpValue} XP`,
+        alt: `Insignia ${eventBadge.badge.name} en ${eventBadge.event.name}, que vale ${eventBadge.xpValue} XP`,
         size,
         contentType,
       },
@@ -160,7 +160,7 @@ export default async function Image({ params }: ImageParams) {
             {badge.name}
           </div>
 
-          {badge.description ? (
+          {eventBadge.description ? (
             <div
               style={{
                 display: "flex",
@@ -170,7 +170,7 @@ export default async function Image({ params }: ImageParams) {
                 color: UI_COLORS.muted,
               }}
             >
-              {badge.description}
+              {eventBadge.description}
             </div>
           ) : null}
         </div>
@@ -193,7 +193,7 @@ export default async function Image({ params }: ImageParams) {
               fontSize: 30,
             }}
           >
-            +{badge.xpValue} XP
+            +{eventBadge.xpValue} XP
           </div>
 
           {eventBadge.room ? (

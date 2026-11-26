@@ -146,10 +146,10 @@ export async function recordScan(rawToken: string): Promise<ScanFormState> {
     const badgePayload = {
       eventBadgeId: eventBadge.id,
       name: qr.eventBadge.badge.name,
-      description: qr.eventBadge.badge.description,
+      description: qr.eventBadge.description,
       imageUrl: qr.eventBadge.badge.imageUrl,
       room: qr.eventBadge.room,
-      xpAwarded: qr.eventBadge.badge.xpValue,
+      xpAwarded: qr.eventBadge.xpValue,
     };
 
     const existingByBadge = await prisma.scan.findUnique({

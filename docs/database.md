@@ -2,7 +2,7 @@
 
 `prisma/schema.prisma` es la única fuente de verdad del modelo. Este documento resume las
 relaciones y las invariantes; [`docs/schema.sql`](./schema.sql) es el SQL generado desde ese
-mismo schema. Las 8 migraciones en `prisma/migrations/` son el historial autorizado.
+mismo schema. Las 9 migraciones en `prisma/migrations/` son el historial autorizado.
 
 ## Correspondencia de conceptos
 
@@ -11,7 +11,7 @@ mismo schema. Las 8 migraciones en `prisma/migrations/` son el historial autoriz
 | usuarios | `User` | Persona autenticada (asistente, `ADMIN` o `SUPER_ADMIN`); origen de XP, niveles y auditoría |
 | empresas | `Company` + `CompanyMember` | `Company` agrupa eventos; `CompanyMember` es la pertenencia N:M con `User` |
 | eventos | `Event` | Charlas/stands, horario, sede, estado y organizador |
-| badges | `Badge` + `EventBadge` | `Badge` es el catálogo global; `EventBadge` habilita ese badge en un evento (sala, inicio y socio opcional) |
+| badges | `Badge` + `EventBadge` | `Badge` es el catálogo global (nombre e imagen); `EventBadge` habilita ese badge en un evento con su XP, descripción, tipo, rareza, ícono, sala, inicio y socio opcional |
 | badges canjeados | `Scan` | Prueba de colección por asistente y badge; `xpAwarded` alimenta nivel y ranking |
 
 Modelos de soporte: `QrToken` (QR físico), `Registration` (check-in), `Prize` (premio por
@@ -102,15 +102,18 @@ erDiagram
     BADGE {
         String id PK
         String name UK
-        Int xpValue
-        BadgeType type
-        BadgeRarity rarity
+        String imageUrl
     }
     EVENT_BADGE {
         String id PK
         String eventId FK
         String badgeId FK
         String partnerId FK
+        String description
+        Int xpValue
+        String iconKey
+        BadgeType type
+        BadgeRarity rarity
         String room
         DateTime startsAt
     }

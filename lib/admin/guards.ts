@@ -1,7 +1,7 @@
 // Server-side admin guards. Role checks are not enough: every page and every
 // Server Action must also verify that the actor belongs to the company that
-// owns the object, or that the stand is assigned to them. A foreign id answers
-// 404 on purpose — it must not reveal that the row exists.
+// owns the object, manages its event, or owns the assigned stand. A foreign id
+// answers 404 on purpose — it must not reveal that the row exists.
 
 import { notFound } from "next/navigation";
 
@@ -80,12 +80,22 @@ export async function requireEventForAdmin(eventId: string) {
 export async function requireStandForAdmin(eventBadgeId: string) {
   const session = await requireAdmin();
 
-  const stand = await prisma.eventBadge.findUnique({
-    where: { id: eventBadgeId },
-    select: { id: true, eventId: true, partnerId: true },
-  });
+  const [stand, companyIds] = await Promise.all([
+    prisma.eventBadge.findUnique({
+      where: { id: eventBadgeId },
+      select: {
+        id: true,
+        eventId: true,
+        partnerId: true,
+        event: {
+          select: { organizerId: true, companyId: true },
+        },
+      },
+    }),
+    readCompanyIds(session.user.id),
+  ]);
 
-  if (!stand || !canAccessStand(toActor(session), stand)) {
+  if (!stand || !canAccessStand(toActor(session, companyIds), stand)) {
     notFound();
   }
 

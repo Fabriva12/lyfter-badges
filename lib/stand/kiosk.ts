@@ -1,7 +1,7 @@
-// Server-only kiosk service. The printed QR is only a staff entry point; the
-// secret is the short-lived token shown on the stand screen. Rotation never
-// deactivates a token and never sets maxScans: both would break idempotent
-// replays of an already claimed badge.
+// Server-only kiosk service. The stand screen is the only source of badge QR
+// secrets; no printed badge QR is pasted on a wall. Rotation never deactivates a
+// token and never sets maxScans: both would break idempotent replays of an
+// already claimed badge.
 import { randomUUID } from "node:crypto";
 
 import { prisma } from "@/lib/db";
@@ -83,10 +83,12 @@ export async function getOrRotateStandQr(
       return toPayload(latest, eventBadgeId);
     }
 
-    // A token with scans must be kept as its own row: `recordScan` checks the
-    // existing claim before the expiry, so offline replays stay idempotent.
-    // An unused token can be rewritten in place to bound database growth.
-    if (latest && latest._count.scans === 0) {
+    // A token with scans keeps its own row: `recordScan` checks the existing
+    // claim before the expiry, so offline replays stay idempotent. Only an
+    // unused rotating token can be rewritten in place to bound DB growth.
+    // Inherited static tokens have no expiry and may be printed or belong to a
+    // demo, so leave them untouched and create a new rotating row instead.
+    if (latest && latest.expiresAt !== null && latest._count.scans === 0) {
       return toPayload(
         await tx.qrToken.update({
           where: { id: latest.id },

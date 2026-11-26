@@ -11,6 +11,8 @@ interface TokenCardProps {
   origin: string;
   label: string;
   canToggle?: boolean;
+  /** Legacy tokens are listed for reference only: never expose their secret. */
+  showQr?: boolean;
 }
 
 export default async function TokenCard({
@@ -19,21 +21,24 @@ export default async function TokenCard({
   origin,
   label,
   canToggle = true,
+  showQr = true,
 }: TokenCardProps) {
   const scanUrl = `${origin}/s/${token.token}`;
-  const qr = await qrDataUrl(scanUrl);
+  const qr = showQr ? await qrDataUrl(scanUrl) : null;
 
   return (
     <div className="rounded-lg border border-stroke bg-surface-low p-4">
       <div className="flex flex-wrap items-start gap-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={qr}
-          alt={`Código QR de ${label}`}
-          width={120}
-          height={120}
-          className="h-24 w-24 shrink-0 rounded bg-white p-1 sm:h-[120px] sm:w-[120px]"
-        />
+        {qr ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={qr}
+            alt={`Código QR de ${label}`}
+            width={120}
+            height={120}
+            className="h-24 w-24 shrink-0 rounded bg-white p-1 sm:h-[120px] sm:w-[120px]"
+          />
+        ) : null}
 
         <div className="min-w-0 flex-1 space-y-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -55,16 +60,18 @@ export default async function TokenCard({
             </span>
           </div>
 
-          <Link
-            href={`/s/${token.token}`}
-            target="_blank"
-            className="block break-all font-mono text-xs text-celeste-soft hover:underline"
-          >
-            {scanUrl}
-          </Link>
+          {showQr ? (
+            <Link
+              href={`/s/${token.token}`}
+              target="_blank"
+              className="block break-all font-mono text-xs text-celeste-soft hover:underline"
+            >
+              {scanUrl}
+            </Link>
+          ) : null}
 
           <div className="flex flex-wrap items-start gap-2">
-            <CopyButton value={scanUrl} />
+            {showQr ? <CopyButton value={scanUrl} /> : null}
             {canToggle && eventId ? (
               <TokenToggle
                 eventId={eventId}

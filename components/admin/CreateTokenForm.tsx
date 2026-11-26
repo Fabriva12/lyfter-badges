@@ -12,14 +12,12 @@ import { initialAdminFormState } from "@/lib/admin/forms";
 
 interface CreateTokenFormProps {
   eventId: string;
-  kind: "BADGE" | "WELCOME";
-  eventBadgeId?: string;
+  kind: "WELCOME";
 }
 
 export default function CreateTokenForm({
   eventId,
   kind,
-  eventBadgeId,
 }: CreateTokenFormProps) {
   const [state, formAction, isPending] = useActionState(
     createQrToken,
@@ -33,16 +31,13 @@ export default function CreateTokenForm({
     >
       <input type="hidden" name="eventId" value={eventId} />
       <input type="hidden" name="kind" value={kind} />
-      {eventBadgeId ? (
-        <input type="hidden" name="eventBadgeId" value={eventBadgeId} />
-      ) : null}
 
       <div>
-        <label htmlFor={`max-scans-${eventBadgeId ?? kind}`} className={labelClassName}>
+        <label htmlFor={`max-scans-${kind}`} className={labelClassName}>
           Límite de escaneos
         </label>
         <input
-          id={`max-scans-${eventBadgeId ?? kind}`}
+          id={`max-scans-${kind}`}
           name="maxScans"
           type="number"
           min={1}

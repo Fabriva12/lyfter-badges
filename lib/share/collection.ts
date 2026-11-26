@@ -60,9 +60,9 @@ export async function loadShareCollection(
         xpAwarded: true,
         eventBadge: {
           select: {
-            badge: {
-              select: { name: true, type: true, xpValue: true },
-            },
+            type: true,
+            xpValue: true,
+            badge: { select: { name: true } },
           },
         },
       },
@@ -72,8 +72,8 @@ export async function loadShareCollection(
 
   const badges = scans.map((scan) => ({
     name: scan.eventBadge.badge.name,
-    type: scan.eventBadge.badge.type,
-    xpValue: scan.eventBadge.badge.xpValue,
+    type: scan.eventBadge.type,
+    xpValue: scan.eventBadge.xpValue,
   }));
 
   return {

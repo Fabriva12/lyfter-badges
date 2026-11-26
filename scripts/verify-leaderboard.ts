@@ -50,7 +50,7 @@ async function main() {
         by: ["userId"],
         where: {
           eventId: event.id,
-          eventBadge: { badge: { type: "STAND" } },
+          eventBadge: { type: "STAND" },
         },
         _count: { eventBadgeId: true },
       }),
@@ -58,7 +58,7 @@ async function main() {
         by: ["userId"],
         where: {
           eventId: event.id,
-          eventBadge: { badge: { type: "TALK" } },
+          eventBadge: { type: "TALK" },
         },
         _count: { eventBadgeId: true },
       }),

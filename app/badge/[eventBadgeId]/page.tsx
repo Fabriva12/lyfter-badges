@@ -24,7 +24,7 @@ export async function generateMetadata({
   }
 
   const title = `${eventBadge.badge.name} · ${eventBadge.event.name}`;
-  const description = `La insignia ${eventBadge.badge.name} en ${eventBadge.event.name} vale ${eventBadge.badge.xpValue} XP. Recolecta la con Lyfter Badges.`;
+  const description = `La insignia ${eventBadge.badge.name} en ${eventBadge.event.name} vale ${eventBadge.xpValue} XP. Recolecta la con Lyfter Badges.`;
 
   return {
     title: eventBadge.badge.name,
@@ -57,7 +57,7 @@ export default async function BadgePage({ params }: BadgePageProps) {
   const text = buildShareText({
     badgeName: badge.name,
     eventName: event.name,
-    xp: badge.xpValue,
+    xp: eventBadge.xpValue,
   });
   const eventDate = formatDate(event.startsAt);
 
@@ -96,13 +96,13 @@ export default async function BadgePage({ params }: BadgePageProps) {
                 <h2 className="text-xl font-bold text-foreground">
                   {badge.name}
                 </h2>
-                {badge.description ? (
+                {eventBadge.description ? (
                   <p className="mt-2 text-sm text-subtle">
-                    {badge.description}
+                    {eventBadge.description}
                   </p>
                 ) : null}
                 <p className="mt-3 text-sm font-semibold text-sage">
-                  +{badge.xpValue} XP
+                  +{eventBadge.xpValue} XP
                 </p>
                 {eventBadge.room ? (
                   <p className="mt-1 text-sm text-muted">

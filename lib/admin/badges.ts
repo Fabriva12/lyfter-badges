@@ -2,7 +2,7 @@
 // uses the same name shares one catalog entry. These predicates live here so
 // the Server Actions and the UI cannot disagree about what is safe.
 
-/** A catalog entry used by more than one event must not be edited. */
+/** A catalog name used by more than one event must not be renamed. */
 export function isCatalogBadgeShared(usageCount: number): boolean {
   return usageCount > 1;
 }

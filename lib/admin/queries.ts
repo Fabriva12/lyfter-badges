@@ -205,7 +205,8 @@ export async function getStandSummaries(
     select: {
       id: true,
       room: true,
-      badge: { select: { name: true, xpValue: true } },
+      badge: { select: { name: true } },
+      xpValue: true,
       event: {
         select: { name: true, slug: true, startsAt: true, endsAt: true },
       },
@@ -227,7 +228,7 @@ export async function getStandSummaries(
         id: stand.id,
         room: stand.room,
         badgeName: stand.badge.name,
-        xpValue: stand.badge.xpValue,
+        xpValue: stand.xpValue,
         eventName: stand.event.name,
         eventSlug: stand.event.slug,
         startsAt: stand.event.startsAt,
@@ -310,9 +311,10 @@ export async function getEventMetricsDetail(
         select: {
           id: true,
           room: true,
-          badge: {
-            select: { name: true, type: true, rarity: true, iconKey: true },
-          },
+          type: true,
+          rarity: true,
+          iconKey: true,
+          badge: { select: { name: true } },
         },
       }),
       prisma.scan.findMany({
@@ -336,9 +338,9 @@ export async function getEventMetricsDetail(
     .map((eventBadge) => ({
       eventBadgeId: eventBadge.id,
       name: eventBadge.badge.name,
-      type: eventBadge.badge.type,
-      rarity: eventBadge.badge.rarity,
-      iconKey: eventBadge.badge.iconKey,
+      type: eventBadge.type,
+      rarity: eventBadge.rarity,
+      iconKey: eventBadge.iconKey,
       room: eventBadge.room,
       scans: scanCountByBadge.get(eventBadge.id) ?? 0,
     }))
@@ -546,7 +548,10 @@ export async function getEventAttendees(
         xpAwarded: true,
         scannedAt: true,
         eventBadge: {
-          select: { badge: { select: { name: true, xpValue: true } } },
+          select: {
+            xpValue: true,
+            badge: { select: { name: true } },
+          },
         },
       },
     }),
@@ -560,7 +565,7 @@ export async function getEventAttendees(
     list.push({
       eventBadgeId: scan.eventBadgeId,
       name: scan.eventBadge.badge.name,
-      xpValue: scan.eventBadge.badge.xpValue,
+      xpValue: scan.eventBadge.xpValue,
       scannedAt: scan.scannedAt,
     });
 
@@ -587,6 +592,8 @@ export interface AdminToken {
   kind: "WELCOME" | "BADGE";
   active: boolean;
   maxScans: number | null;
+  /** Rotating kiosk tokens have an expiry; inherited static tokens do not. */
+  expiresAt: Date | null;
   scans: number;
 }
 
@@ -616,6 +623,7 @@ function toAdminTokens(
     kind: "WELCOME" | "BADGE";
     active: boolean;
     maxScans: number | null;
+    expiresAt: Date | null;
     _count: { scans: number };
   }>,
 ): AdminToken[] {
@@ -625,6 +633,7 @@ function toAdminTokens(
     kind: token.kind,
     active: token.active,
     maxScans: token.maxScans,
+    expiresAt: token.expiresAt,
     scans: token._count.scans,
   }));
 }
@@ -641,15 +650,15 @@ export async function getEventBadgesAdmin(
       badgeId: true,
       room: true,
       startsAt: true,
+      description: true,
+      iconKey: true,
+      type: true,
+      rarity: true,
+      xpValue: true,
       badge: {
         select: {
           name: true,
-          description: true,
           imageUrl: true,
-          iconKey: true,
-          type: true,
-          rarity: true,
-          xpValue: true,
           _count: { select: { eventBadges: true } },
         },
       },
@@ -662,6 +671,7 @@ export async function getEventBadgesAdmin(
           kind: true,
           active: true,
           maxScans: true,
+          expiresAt: true,
           _count: { select: { scans: true } },
         },
       },
@@ -676,12 +686,12 @@ export async function getEventBadgesAdmin(
       badgeId: eventBadge.badgeId,
       catalogUsage: eventBadge.badge._count.eventBadges,
       name: eventBadge.badge.name,
-      description: eventBadge.badge.description,
+      description: eventBadge.description,
       imageUrl: eventBadge.badge.imageUrl,
-      iconKey: eventBadge.badge.iconKey,
-      type: eventBadge.badge.type,
-      rarity: eventBadge.badge.rarity,
-      xpValue: eventBadge.badge.xpValue,
+      iconKey: eventBadge.iconKey,
+      type: eventBadge.type,
+      rarity: eventBadge.rarity,
+      xpValue: eventBadge.xpValue,
       room: eventBadge.room,
       startsAt: eventBadge.startsAt,
       partner: eventBadge.partner,
@@ -702,6 +712,7 @@ export async function getWelcomeTokens(eventId: string): Promise<AdminToken[]> {
       kind: true,
       active: true,
       maxScans: true,
+      expiresAt: true,
       _count: { select: { scans: true } },
     },
   });
@@ -710,11 +721,13 @@ export async function getWelcomeTokens(eventId: string): Promise<AdminToken[]> {
 }
 
 /** Names already in the badge catalog, so the organizer can reuse them. */
-export async function getBadgeCatalog() {
-  return prisma.badge.findMany({
+export async function getBadgeCatalog(): Promise<string[]> {
+  const badges = await prisma.badge.findMany({
     orderBy: { name: "asc" },
-    select: { name: true, xpValue: true },
+    select: { name: true },
   });
+
+  return badges.map((badge) => badge.name);
 }
 
 /** Admin accounts that can be assigned to a stand. */
@@ -798,12 +811,12 @@ export async function getStandDetail(
       id: true,
       room: true,
       startsAt: true,
+      description: true,
+      xpValue: true,
       badge: {
         select: {
           name: true,
-          description: true,
           imageUrl: true,
-          xpValue: true,
         },
       },
       event: {
@@ -823,6 +836,7 @@ export async function getStandDetail(
           kind: true,
           active: true,
           maxScans: true,
+          expiresAt: true,
           _count: { select: { scans: true } },
         },
       },
@@ -856,7 +870,12 @@ export async function getStandDetail(
     id: stand.id,
     room: stand.room,
     startsAt: stand.startsAt,
-    badge: stand.badge,
+    badge: {
+      name: stand.badge.name,
+      description: stand.description,
+      imageUrl: stand.badge.imageUrl,
+      xpValue: stand.xpValue,
+    },
     event: stand.event,
     tokens,
     scans,
@@ -976,9 +995,10 @@ export async function getPlatformMetricsDetail(): Promise<PlatformMetricsDetail>
         select: {
           id: true,
           room: true,
-          badge: {
-            select: { name: true, type: true, rarity: true, iconKey: true },
-          },
+          type: true,
+          rarity: true,
+          iconKey: true,
+          badge: { select: { name: true } },
           event: { select: { id: true, name: true, slug: true } },
         },
       }),
@@ -1007,9 +1027,9 @@ export async function getPlatformMetricsDetail(): Promise<PlatformMetricsDetail>
     .map((eventBadge) => ({
       eventBadgeId: eventBadge.id,
       name: eventBadge.badge.name,
-      type: eventBadge.badge.type,
-      rarity: eventBadge.badge.rarity,
-      iconKey: eventBadge.badge.iconKey,
+      type: eventBadge.type,
+      rarity: eventBadge.rarity,
+      iconKey: eventBadge.iconKey,
       room: eventBadge.room,
       eventId: eventBadge.event.id,
       eventName: eventBadge.event.name,

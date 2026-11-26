@@ -269,11 +269,11 @@ export async function getEventCollections(
       const badges: BadgeCollectionItem[] = event.badges.map((eventBadge) => ({
         eventBadgeId: eventBadge.id,
         name: eventBadge.badge.name,
-        description: eventBadge.badge.description,
+        description: eventBadge.description,
         imageUrl: eventBadge.badge.imageUrl,
         room: eventBadge.room,
-        xpValue: eventBadge.badge.xpValue,
-        type: eventBadge.badge.type,
+        xpValue: eventBadge.xpValue,
+        type: eventBadge.type,
         // A badge counts as collected when the attendee scanned any QR token
         // wired to this event badge. `Scan` is unique per (user, eventBadge),
         // so multiple printed tokens can never award it twice.
@@ -416,7 +416,7 @@ export async function getEventSummaries(): Promise<EventSummary[]> {
  * of rows per attendee is the count of distinct badges they collected. A badge
  * with several QR tokens still counts once.
  *
- * Stands and talks are the same count filtered by `Badge.type`. `WELCOME` and
+ * Stands and talks are the same count filtered by `EventBadge.type`. `WELCOME` and
  * `SPECIAL` badges add XP and badge count, but they are not a stand visit or a
  * talk attendance.
  *
@@ -437,12 +437,12 @@ async function readLeaderboard(
     }),
     prisma.scan.groupBy({
       by: ["userId"],
-      where: { ...where, eventBadge: { badge: { type: "STAND" } } },
+      where: { ...where, eventBadge: { type: "STAND" } },
       _count: { eventBadgeId: true },
     }),
     prisma.scan.groupBy({
       by: ["userId"],
-      where: { ...where, eventBadge: { badge: { type: "TALK" } } },
+      where: { ...where, eventBadge: { type: "TALK" } },
       _count: { eventBadgeId: true },
     }),
   ]);

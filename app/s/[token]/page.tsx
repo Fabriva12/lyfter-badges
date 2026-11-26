@@ -64,7 +64,14 @@ export default async function ScanPage({ params }: ScanPageProps) {
   }
 
   const isWelcome = qr.kind === "WELCOME";
-  const badge = qr.eventBadge?.badge ?? null;
+  const badge = qr.eventBadge
+    ? {
+        name: qr.eventBadge.badge.name,
+        imageUrl: qr.eventBadge.badge.imageUrl,
+        description: qr.eventBadge.description,
+        xpValue: qr.eventBadge.xpValue,
+      }
+    : null;
 
   const registration = await getRegistrationForClaim(
     session.user.id,

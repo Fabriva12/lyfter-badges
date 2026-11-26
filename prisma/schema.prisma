@@ -198,28 +198,28 @@ model EventImage {
 }
 
 model Badge {
-  id          String      @id @default(cuid())
-  name        String      @unique
-  description String?
-  xpValue     Int
-  imageUrl    String?
-  iconKey     String?
-  type        BadgeType   @default(TALK)
-  rarity      BadgeRarity @default(COMMON)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id        String   @id @default(cuid())
+  name      String   @unique
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   eventBadges EventBadge[]
 }
 
 model EventBadge {
-  id       String    @id @default(cuid())
-  eventId  String
-  event    Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  badgeId  String
-  badge    Badge     @relation(fields: [badgeId], references: [id])
-  room     String?
-  startsAt DateTime?
+  id          String      @id @default(cuid())
+  eventId     String
+  event       Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  badgeId     String
+  badge       Badge       @relation(fields: [badgeId], references: [id])
+  description String?
+  xpValue     Int
+  iconKey     String?
+  type        BadgeType   @default(TALK)
+  rarity      BadgeRarity @default(COMMON)
+  room        String?
+  startsAt    DateTime?
 
   // A partner (a company with a stand) owns the badge of that stand. The
   // relation is optional: a talk badge has no partner, and deleting the user

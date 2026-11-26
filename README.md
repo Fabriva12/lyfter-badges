@@ -189,16 +189,28 @@ Los escaneos son idempotentes: repetir el mismo QR no vuelve a otorgar XP.
 
 ## Seguridad de QR rotatorios
 
-**Decisión:** el QR impreso no es el secreto, es solo un acceso de personal a
-`/stand/[eventBadgeId]`. La pantalla del stand muestra un `randomUUID()` nuevo con un
-TTL de 90 s, rotado cada 60 s. `maxScans` es un límite global y no prueba presencia; la
-unicidad por `userId + eventBadgeId` solo evita XP duplicado. Un QR estático impreso es
-un *bearer token*: una foto que circule por WhatsApp permite a cualquier asistente
-registrado reclamar la insignia desde cualquier lugar.
+**Decisión:** el panel de administración ya no crea tokens QR estáticos de
+insignia. Desde `/admin/events/[id]/badges` solo se emiten tokens `WELCOME`, que
+siguen siendo imprimibles para el check-in de entrada. Ningún QR impreso apunta a
+`/stand/[eventBadgeId]`: ese enlace es de personal y se abre desde el panel. Cada
+insignia se reclama con el QR rotatorio que genera esa pantalla, un `randomUUID()`
+nuevo con un TTL de 90 s, rotado cada 60 s. Un QR estático es un *bearer token*: una
+foto que circule por WhatsApp permite a cualquier asistente registrado reclamar la
+insignia desde cualquier lugar.
+
+Los tokens `BADGE` fijos que ya existen son códigos heredados: se listan sin QR ni
+enlace y no deben imprimirse ni compartirse. Se conservan activos para que los
+escaneos previos puedan repetirse de forma idempotente: `resolveScanTarget` y
+`recordScan` revisan el claim existente **antes** que `expiresAt`. No hay una
+migración que los desactive, y los tokens `demo-*` siguen funcionando en desarrollo.
+Un organizador puede desactivar los que nunca se usaron, pero no debe desactivar los
+que ya tienen escaneos porque rompería la idempotencia. `maxScans` es un límite global
+y no prueba presencia; la unicidad por `userId + eventBadgeId` solo evita XP duplicado.
 
 ### Camino rápido
 
-1. Entrar a `/stand/<eventBadgeId>` con un `ADMIN` asignado al stand o un `SUPER_ADMIN`.
+1. Entrar a `/stand/<eventBadgeId>` con un `ADMIN` de la empresa dueña del evento, un
+   `ADMIN` asignado al stand o un `SUPER_ADMIN`.
 2. Dejar la pantalla a la vista del público: el cliente rota cada 60 s, muestra la
    cuenta regresiva y **Rotate now** fuerza una rotación.
 3. Verificar que un escaneo ya registrado siga siendo idempotente y que la rotación no
@@ -208,11 +220,13 @@ registrado reclamar la insignia desde cualquier lugar.
 
 | Tema | Decisión |
 | --- | --- |
-| Secreto | El QR impreso solo abre la pantalla del stand; el token vigente vive en esa pantalla. |
-| Vigencia | 90 s por token, con rotación automática cada 60 s (margen de 30 s). |
+| Secreto | El enlace al kiosk solo abre la pantalla del stand; el token vigente vive en esa pantalla y cambia solo. |
+| Creación | `CreateTokenForm` y `createQrToken` aceptan solo `kind = WELCOME`. Un `kind` ausente o distinto se rechaza; no se puede crear un token `BADGE` desde el panel. |
+| Herencia | Los códigos `BADGE` fijos preexistentes se muestran sin QR ni enlace y siguen activos para no romper replays ni los tokens de demo; el organizador puede desactivar solo los nunca usados, nunca los que ya tienen escaneos. |
+| Vigencia | 90 s por token rotado, con rotación automática cada 60 s (margen de 30 s). |
 | Idempotencia | Los tokens rotados se dejan con `active = true` y solo vence `expiresAt`. `recordScan` y `resolveScanTarget` revisan el claim existente **antes** que `expiresAt`, así un replay offline devuelve la insignia guardada. Desactivar los tokens rotados rompería ese comportamiento. |
 | Límites | Los tokens del kiosk usan `maxScans: null`: un tope global no demuestra que la persona estuvo en el stand. |
-| Autorización | `requireStandForAdmin` protege la página y el Server Action de rotación; `proxy.ts` es solo un filtro optimista. |
+| Autorización | `requireStandForAdmin` protege la página y el Server Action de rotación; admite al socio asignado, a los admins de la empresa dueña (o el organizador heredado) y a `SUPER_ADMIN`. `proxy.ts` es solo un filtro optimista. |
 | Auditoría | Las rotaciones no se registran una por una (60 s inundarían el log); los escaneos sí quedan registrados en la tabla `Scan` (usuario, token, badge, evento y XP), aunque no generan entradas en la tabla de auditoría. |
 
 ### Límites
@@ -225,8 +239,8 @@ registrado reclamar la insignia desde cualquier lugar.
 - [ ] Las rotaciones no se auditan individualmente para no inundar el log; los
       escaneos sí quedan registrados en la tabla `Scan` (usuario, token, badge,
       evento y XP), aunque no generan entradas en la tabla de auditoría.
-- [ ] Un `ADMIN` con acceso al stand puede emitir tokens: ese rol sigue siendo de
-      confianza.
+- [ ] Un `ADMIN` con acceso al kiosk puede mostrar el QR vigente; el panel no le
+      permite emitir tokens QR fijos de insignia.
 
 Los tokens `demo-*` son exclusivos de desarrollo. En Vercel, production y preview no
 definen `SEED_DEMO_DATA`; el build es `next build` (sin seed) y el último log de build de
@@ -247,7 +261,9 @@ FROM "QrToken"
 WHERE token !~ '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$';
 ```
 
-Esperado: `0` (solo tokens UUIDv4).
+Esperado: `0` (solo tokens UUIDv4). En una base heredada pueden aparecer códigos
+`BADGE` fijos no UUID: se conservan activos para el replay idempotente, pero ya no
+se crean ni se muestran con QR.
 
 ## Rutas
 
@@ -274,8 +290,8 @@ Esperado: `0` (solo tokens UUIDv4).
 | `/admin/events/[id]/scans` | Escaneos del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
 | `/admin/events/[id]/metrics` | Métricas del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
 | `/admin/events/[id]/audit` | Auditoría del evento | `ADMIN` de la empresa dueña / `SUPER_ADMIN` |
-| `/admin/stands/[eventBadgeId]` | Vista de solo lectura del stand | `ADMIN` asignado al stand / `SUPER_ADMIN` |
-| `/stand/[eventBadgeId]` | Pantalla del QR rotatorio del stand | `ADMIN` asignado al stand / `SUPER_ADMIN` |
+| `/admin/stands/[eventBadgeId]` | Vista de solo lectura del stand | `ADMIN` de la empresa dueña / `ADMIN` asignado al stand / `SUPER_ADMIN` |
+| `/stand/[eventBadgeId]` | Pantalla del QR rotatorio del stand | `ADMIN` de la empresa dueña / `ADMIN` asignado al stand / `SUPER_ADMIN` |
 | `/super-admin` | Panel global: empresas, eventos y administradores | `SUPER_ADMIN` |
 | `/super-admin/companies` | Empresas y administradores | `SUPER_ADMIN` |
 | `/super-admin/events` | Eventos de todas las empresas | `SUPER_ADMIN` |

@@ -87,19 +87,19 @@ async function upsertDemoBadge(input: DemoBadgeSeed) {
 
     await prisma.badge.update({
       where: { id: badgeId },
-      data: {
-        name: input.name,
-        description: input.description,
-        xpValue: input.xpValue,
-        type: input.type,
-        rarity: input.rarity,
-        iconKey: input.iconKey,
-      },
+      data: { name: input.name },
     });
 
     await prisma.eventBadge.update({
       where: { id: eventBadgeId },
-      data: { room: input.room },
+      data: {
+        description: input.description,
+        xpValue: input.xpValue,
+        iconKey: input.iconKey,
+        type: input.type,
+        rarity: input.rarity,
+        room: input.room,
+      },
     });
 
     return { badgeId, eventBadgeId };
@@ -107,31 +107,30 @@ async function upsertDemoBadge(input: DemoBadgeSeed) {
 
   const badge = await prisma.badge.upsert({
     where: { name: input.name },
-    update: {
-      description: input.description,
-      xpValue: input.xpValue,
-      type: input.type,
-      rarity: input.rarity,
-      iconKey: input.iconKey,
-    },
-    create: {
-      name: input.name,
-      description: input.description,
-      xpValue: input.xpValue,
-      type: input.type,
-      rarity: input.rarity,
-      iconKey: input.iconKey,
-    },
+    update: {},
+    create: { name: input.name },
   });
 
   const eventBadge = await prisma.eventBadge.upsert({
     where: {
       eventId_badgeId: { eventId: input.eventId, badgeId: badge.id },
     },
-    update: { room: input.room },
+    update: {
+      description: input.description,
+      xpValue: input.xpValue,
+      iconKey: input.iconKey,
+      type: input.type,
+      rarity: input.rarity,
+      room: input.room,
+    },
     create: {
       eventId: input.eventId,
       badgeId: badge.id,
+      description: input.description,
+      xpValue: input.xpValue,
+      iconKey: input.iconKey,
+      type: input.type,
+      rarity: input.rarity,
       room: input.room,
     },
   });

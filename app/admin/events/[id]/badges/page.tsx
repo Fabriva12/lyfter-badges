@@ -61,8 +61,9 @@ export default async function AdminBadgesPage({
         </Link>
         <h1 className="mt-3 text-2xl font-bold sm:text-3xl">Insignias y QR</h1>
         <p className="mt-2 text-sm text-muted">
-          Cada insignia tiene su propio token QR. Imprímelo y pégalo en la pared
-          de las charlas o en el stand; el token de bienvenida va en la entrada.
+          Las insignias se reclaman con el QR rotatorio de cada stand o charla;
+          acá solo se crea el token de bienvenida para la entrada. Los códigos
+          fijos heredados se listan como referencia.
         </p>
       </div>
 
